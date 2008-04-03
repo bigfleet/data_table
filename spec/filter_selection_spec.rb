@@ -69,22 +69,14 @@ describe "A 'time' filter selection" do
     @fs.label.should == "Testing"
   end
   
-  it "should have a time anchor to use for comparison" do
-    anchor = Time.now
-    @fs.anchor = anchor
-    @fs.anchor.should == anchor
-  end
-  
   it "should indicate how much time has elapsed" do
     @fs.span = 259200 # 3.days in seconds
     @fs.span.should == 259200
   end
   
-  # e.g. three days before <date>, three days from <date>
-  it "should indicate in which direction time has elapsed" do
-    @fs.direction = :future
-    @fs.direction.should == :future
-  end
-  
+end
+
+describe "Filter selections" do
+  it "should be of "
 end
 
