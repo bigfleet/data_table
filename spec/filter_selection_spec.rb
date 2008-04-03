@@ -19,6 +19,10 @@ end
 
 describe "A 'between' filter selection" do
   
+  before(:each) do
+    @fs = BetweenFilterSelection.new
+  end
+  
   it "should have a label" do
     @fs.label = "Testing"
     @fs.label.should == "Testing"
@@ -32,6 +36,10 @@ end
 
 describe "An 'in' filter selection" do
   
+  before(:each) do
+    @fs = InFilterSelection.new
+  end
+  
   it "should have a label" do
     @fs.label = "Testing"
     @fs.label.should == "Testing"
@@ -42,6 +50,10 @@ describe "An 'in' filter selection" do
 end
 
 describe "A 'time' filter selection" do
+  
+  before(:each) do
+    @fs = TimeFilterSelection.new
+  end
   
   it "should have a label" do
     @fs.label = "Testing"
