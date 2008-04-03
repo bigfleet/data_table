@@ -28,9 +28,15 @@ describe "A 'between' filter selection" do
     @fs.label.should == "Testing"
   end
   
-  it "should have an low range value"
+  it "should have an low range value" do
+    @fs.low_range = 1
+    @fs.low_range.should == 1
+  end
   
-  it "should have a high range value"
+  it "should have a high range value" do
+    @fs.high_range = 10
+    @fs.high_range.should == 10
+  end
   
 end
 
@@ -45,7 +51,10 @@ describe "An 'in' filter selection" do
     @fs.label.should == "Testing"
   end
   
-  it "should have an array of acceptable values"
+  it "should have an array of acceptable values" do
+    @fs.values = [1,2,3,4]
+    @fs.values.should == [1,2,3,4]
+  end
   
 end
 
@@ -60,12 +69,22 @@ describe "A 'time' filter selection" do
     @fs.label.should == "Testing"
   end
   
-  it "should have a time anchor to use for comparison"
+  it "should have a time anchor to use for comparison" do
+    anchor = Time.now
+    @fs.anchor = anchor
+    @fs.anchor.should == anchor
+  end
   
-  it "should indicate how much time has elapsed"
+  it "should indicate how much time has elapsed" do
+    @fs.span = 259200 # 3.days in seconds
+    @fs.span.should == 259200
+  end
   
   # e.g. three days before <date>, three days from <date>
-  it "should indicate in which direction time has elapsed"
+  it "should indicate in which direction time has elapsed" do
+    @fs.direction = :future
+    @fs.direction.should == :future
+  end
   
 end
 
