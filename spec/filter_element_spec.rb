@@ -45,10 +45,16 @@ describe "A filter element" do
   describe "fully defined" do
     
     before(:each) do
-      @fe.default  "Equities + Options", nil
-      @fe.option   "Equities",          'stock'
-      @fe.option   "Options",           'option'
+      @default = (@fe.default  "Equities + Options", nil)
+      @option1 = (@fe.option   "Equities",          'stock')
+      @option2 = (@fe.option   "Options",           'option')
     end
+    
+    it "should recognize the default option"
+    
+    it "should respond differently in the presence of selected parameters"
+    
+    it "should render an appropriate HTML tag"
     
   end
     
