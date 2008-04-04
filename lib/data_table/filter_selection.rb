@@ -1,7 +1,16 @@
 class FilterSelection
+  
   attr_accessor :label
   
   def to_hash; {}; end
+  
+  def valuize_label
+    @label.to_param
+  end
+  
+  def to_option
+    [@label, valuize_label]
+  end
   
   def self.for(element, *args)
     case element.operator

@@ -76,7 +76,4 @@ describe "A 'time' filter selection" do
   
 end
 
-describe "Filter selections" do
-  it "should be of "
-end
 

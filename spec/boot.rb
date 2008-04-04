@@ -19,6 +19,7 @@ else
   else
     gem 'actionpack'
     gem 'activerecord'
+    gem 'activesupport'    
   end
 end
 

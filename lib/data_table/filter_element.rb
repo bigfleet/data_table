@@ -1,18 +1,47 @@
+gem 'actionpack'
+require 'action_controller' #orly?
+require 'action_view'
+
 class FilterElement
   
-  attr_accessor :table, :field, :operator, :html_options, :selected
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::FormTagHelper  
+  include ActionView::Helpers::FormOptionsHelper
   
-  def initialize
+  attr_accessor :table, :field, :operator, :html_options, :selected, :default
+  
+  def initialize(_field = nil)
+    @field = _field
+    @html_options = {}
     @operator = "="
     @elements = []
   end
   
+  def active?
+    @selected != @default
+  end
+  
   def default(label, *args)
-    @selected = form_element(label, args)
+    elt = form_element(label, args)
+    @default = elt
+    @selected = elt
   end
     
   def option(label, *args)
     form_element(label, args)
+  end
+  
+  def with(params)
+    param_val = params[@field]
+    puts param_val
+    return self unless param_val
+    @selected = @elements.select{ |e| e.valuize_label == param_val }.first
+    return self
+  end
+  
+  def to_html
+    select_tag("filter[#{@field}]", options_for_select(@elements.map(&:to_option), @selected.valuize_label), 
+                          { :onchange => "submit_function" }.merge(@html_options))
   end
   
   protected

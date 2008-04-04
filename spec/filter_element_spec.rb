@@ -6,6 +6,8 @@ describe "A filter element" do
     @fe = FilterElement.new
   end
   
+  it "should retain an association to the filter of which it's a part"
+  
   it "should allow specification of which table is to be filtered" do
     @fe.table = "users"
     @fe.table.should == "users"
@@ -45,16 +47,42 @@ describe "A filter element" do
   describe "fully defined" do
     
     before(:each) do
+      @fe = FilterElement.new(:etype)
       @default = (@fe.default  "Equities + Options", nil)
       @option1 = (@fe.option   "Equities",          'stock')
       @option2 = (@fe.option   "Options",           'option')
     end
     
-    it "should recognize the default option"
+    it "should recognize the default option" do
+      @fe.selected.should == @default
+    end
     
-    it "should respond differently in the presence of selected parameters"
+    it "should not indicate that this element should be included in filter options" do
+      @fe.should_not be_active
+    end
     
-    it "should render an appropriate HTML tag"
+    it "should render an appropriately selected HTML tag" do
+      @fe.to_html.should_not be_nil
+      puts @fe.to_html
+    end
+    
+    describe "in the presence of selected parameters" do
+      
+      before(:each) do
+        @params = {:etype => "Equities"}
+      end
+      
+      it "should indicate that this element should be included in filter options" do
+        @fe.with(@params).should be_active
+      end
+      
+      it "should select based on parameter" do
+        @fe.with(@params).selected.should == @option1
+      end
+      
+      it "should render an appropriately selected HTML tag"
+      
+    end
     
   end
     
