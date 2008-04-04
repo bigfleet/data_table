@@ -4,8 +4,17 @@ class FilterSelection
   
   def to_hash; {}; end
   
+  def escape(str)
+    s = str.dup
+    s.gsub!(/\W+/, ' ') # all non-word chars to spaces
+    s.strip!            # ohh la la
+    s.downcase!         #
+    s.gsub!(/\ +/, '-') # spaces to dashes, preferred separator char everywhere
+    s
+  end
+  
   def valuize_label
-    @label.to_param
+    escape(@label)
   end
   
   def to_option

@@ -33,7 +33,6 @@ class FilterElement
   
   def with(params)
     param_val = params[@field]
-    puts param_val
     return self unless param_val
     @selected = @elements.select{ |e| e.valuize_label == param_val }.first
     return self

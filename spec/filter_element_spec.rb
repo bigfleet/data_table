@@ -63,13 +63,12 @@ describe "A filter element" do
     
     it "should render an appropriately selected HTML tag" do
       @fe.to_html.should_not be_nil
-      puts @fe.to_html
     end
     
     describe "in the presence of selected parameters" do
       
       before(:each) do
-        @params = {:etype => "Equities"}
+        @params = {:etype => "equities"}
       end
       
       it "should indicate that this element should be included in filter options" do
