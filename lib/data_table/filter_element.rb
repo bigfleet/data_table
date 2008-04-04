@@ -14,7 +14,7 @@ class FilterElement
     @field = _field
     @html_options = {}
     @operator = "="
-    @elements = []
+    @selections = []
   end
   
   def active?
@@ -22,33 +22,33 @@ class FilterElement
   end
   
   def default(label, *args)
-    elt = form_element(label, args)
+    elt = form_selection(label, args)
     @default = elt
     @selected = elt
   end
     
   def option(label, *args)
-    form_element(label, args)
+    form_selection(label, args)
   end
   
   def with(params)
     param_val = params[@field]
     return self unless param_val
-    @selected = @elements.select{ |e| e.valuize_label == param_val }.first
+    @selected = @selections.select{ |e| e.valuize_label == param_val }.first
     return self
   end
   
   def to_html
-    select_tag("filter[#{@field}]", options_for_select(@elements.map(&:to_option), @selected.valuize_label), 
+    select_tag("filter[#{@field}]", options_for_select(@selections.map(&:to_option), @selected.valuize_label), 
                           { :onchange => "submit_function" }.merge(@html_options))
   end
   
   protected
   
-  def form_element(label, *args)
+  def form_selection(label, *args)
     elt = FilterSelection.for(self, args)
     elt.label = label
-    @elements << elt
+    @selections << elt
     elt
   end
   

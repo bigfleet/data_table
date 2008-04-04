@@ -65,21 +65,28 @@ describe "A filter element" do
       @fe.to_html.should_not be_nil
     end
     
+    it "should have the HTML tag specced out a great deal more"
+    
     describe "in the presence of selected parameters" do
       
       before(:each) do
         @params = {:etype => "equities"}
+        @fe = @fe.with(@params)
       end
       
       it "should indicate that this element should be included in filter options" do
-        @fe.with(@params).should be_active
+        @fe.should be_active
       end
       
       it "should select based on parameter" do
-        @fe.with(@params).selected.should == @option1
+        @fe.selected.should == @option1
       end
       
-      it "should render an appropriately selected HTML tag"
+      it "should render an appropriately selected HTML tag"  do
+        @fe.to_html.should_not be_nil
+      end
+      
+      it "should have the HTML tag specced out a great deal more"
       
     end
     
