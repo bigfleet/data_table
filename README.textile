@@ -1,0 +1,28 @@
+h1. data_table:
+
+h2. Status
+
+We're in pre-alpha right now, I am trying to get this to meet my first requirements.
+
+h2. Goal:
+
+Define a filter in your controller, like so:
+
+<pre><code>
+Filter.spec(:name => :testing ) do |f|
+  f.element(:type) do |e|
+    e.default  "Foos and Bars", nil
+    e.option   "Foos",          'foo'
+    e.option   "Bars",          'bar'
+  end
+end
+</code></pre>
+
+resulting in the following:
+
+* helpers on the front end to render selection box filters that know what option was selected, if any
+* asking for a set of additional conditions to pass to a model-based finder
+* helpers that avoid rendering complex filter data in query params
+* sorting for free
+* AJAX or non-AJAX modes
+
