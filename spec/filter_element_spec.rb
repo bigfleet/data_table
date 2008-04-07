@@ -44,6 +44,21 @@ describe "A filter element" do
     @fe.selected.should == fs
   end
   
+  describe "at initialization" do
+    
+    it "should be initializable with a symbol, in the simple case" do
+      fe = FilterElement.new(:etype)
+      fe.field.should == :etype
+    end
+    
+    it "should be initializable with a symbol, in the complicated case" do
+      fe = FilterElement.new(:field => :etype, :table => :equities)
+      fe.table.should == :equities
+      fe.field.should == :etype
+    end
+    
+  end
+  
   describe "fully defined" do
     
     before(:each) do

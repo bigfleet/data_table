@@ -10,10 +10,12 @@ class FilterElement
   
   attr_accessor :table, :field, :operator, :html_options, :selected, :default
   
-  def initialize(_field = nil)
-    @field = _field
-    @html_options = {}
-    @operator = "="
+  def initialize(options = {})
+    opts = (options.class == Symbol ? {:field => options} : options)
+    @field = opts[:field] || "element_field_must_be_supplied"
+    @table = opts[:table]
+    @html_options = opts[:html_options] || {}
+    @operator = opts[:operator] || "="
     @selections = []
   end
   

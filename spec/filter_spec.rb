@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/spec_helper'
+
 describe "A filter" do
   
   before(:each) do
@@ -21,14 +23,35 @@ describe "A filter" do
   describe "when fully initialized" do
     before(:each) do
       @f = Filter.spec(:name => "testing") do |f|
-        f.element(:etype) do |e|
+        f.element(:field => :etype) do |e|
           e.default  "Equities + Options", nil
           e.option   "Equities",          'stock'
           e.option   "Options",           'option'
         end
       end
+    end
+    
+    it "should have one element" do
+      @f.elements.should have_at_least(1).things
+    end
+    
+    it "should not yield any selected options without params"
+    
+    describe "and with input parameters" do
+      
+      before(:each) do
+        @params = {}
+        @params[:filter] = {}
+        @params[:filter][:testing] = {}
+        @params[:filter][:testing][:etype] = 'equities'
+      end
+      
+      it "should yield the expected options" do
+        @f.conditions(@params).should == {:etype => "stock"}
+      end
       
     end
+    
   end
   
 end
