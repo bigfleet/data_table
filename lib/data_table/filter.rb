@@ -9,7 +9,8 @@ class Filter
   end
   
   def element(options)
-    elt = FilterElement.new
+    elt = FilterElement.new(options)
+    @elements << elt
   end
   
   def self.spec(options)
