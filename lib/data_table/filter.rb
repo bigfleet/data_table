@@ -10,6 +10,7 @@ class Filter
   
   def element(options)
     elt = FilterElement.new(options)
+    yield(elt)
     @elements << elt
   end
   
@@ -24,14 +25,16 @@ class Filter
     # I'd like to see if we can ingest @params silently,
     # but that may compromise testing
     cond_hash = {}
-    active_elements.each {|elt| cond_hash = cond_hash.merge(elt)}
+    parms = params[:filter][@name]
+    active_elements(parms).each {|elt| cond_hash = cond_hash.merge(elt)}
     return cond_hash
   end
   
-  protected
+  # Like to be protected maybe?
+  #protected
   
-  def active_elements
-    @elements.map{|e| e.with(@params) }.select{ |e| e.activated }
+  def active_elements(params = {})
+    @elements.map{|e| e.with(params) }.select{ |e| e.active? }
   end
   
 end

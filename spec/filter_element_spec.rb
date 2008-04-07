@@ -68,6 +68,12 @@ describe "A filter element" do
       @option2 = (@fe.option   "Options",           'option')
     end
     
+    it "should have three total options registered" do
+      @fe.selections.should_not be_nil
+      @fe.selections.should_not be_empty
+      @fe.selections.should have(3).things
+    end
+    
     it "should recognize the default option" do
       @fe.selected.should == @default
     end
@@ -87,6 +93,12 @@ describe "A filter element" do
       before(:each) do
         @params = {:etype => "equities"}
         @fe = @fe.with(@params)
+      end
+      
+      it "should have three total options registered" do
+        @fe.selections.should_not be_nil
+        @fe.selections.should_not be_empty
+        @fe.selections.should have(3).things
       end
       
       it "should indicate that this element should be included in filter options" do

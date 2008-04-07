@@ -9,6 +9,7 @@ class FilterElement
   include ActionView::Helpers::FormOptionsHelper
   
   attr_accessor :table, :field, :operator, :html_options, :selected, :default
+  attr_reader :selections
   
   def initialize(options = {})
     opts = (options.class == Symbol ? {:field => options} : options)
@@ -33,7 +34,7 @@ class FilterElement
     form_selection(label, args)
   end
   
-  def with(params)
+  def with(params = {})
     param_val = params[@field]
     return self unless param_val
     @selected = @selections.select{ |e| e.valuize_label == param_val }.first
@@ -45,9 +46,15 @@ class FilterElement
                           { :onchange => "submit_function" }.merge(@html_options))
   end
   
+  def to_hash
+    pairs = {}
+    pairs[@field] = @selected.phrase
+    return pairs
+  end
+  
   protected
   
-  def form_selection(label, *args)
+  def form_selection(label, args)
     elt = FilterSelection.for(self, args)
     elt.label = label
     @selections << elt
