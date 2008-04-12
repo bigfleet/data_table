@@ -25,7 +25,8 @@ describe "When integrating with Rails" do
     end
     
     it "should add expected methods to the controller" do
-      @controller.respond_to?(:filter_conditions).should == true
+      @controller.respond_to?(:conditions_for).should == true
+      @controller.respond_to?(:filter_spec).should == true
     end
     
   end
