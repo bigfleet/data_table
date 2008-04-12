@@ -23,8 +23,8 @@ module DataTable
   
   
     def conditions(params = {})
-      # I'd like to see if we can ingest @params silently,
-      # but that may compromise testing
+      # figure out if we can get params directly from ActionController
+      return nil unless params and params[:filter]
       cond_hash = {}
       parms = params[:filter][@name]
       active_elements(parms).each {|elt| cond_hash = cond_hash.merge(elt)}

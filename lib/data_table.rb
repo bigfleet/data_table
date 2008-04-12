@@ -10,13 +10,15 @@ module DataTable
 
   module InstanceMethods
     
-    def filter_spec(&block)
-      filter = Filter.spec &block
+    def filter_spec(options, &block)
+      filter = Filter.spec(options, &block)
       (@filters ||= {})[filter.name] = filter
+      #raise @filters.inspect
     end
     
     def conditions_for(filter_name)
-      raise @filters[filter_name]
+      filter = @filters[filter_name]
+      filter.conditions(@params)
     end
     
   end
