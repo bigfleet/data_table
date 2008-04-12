@@ -4,6 +4,7 @@ describe "When integrating with Rails" do
   
   before(:each) do
     class TestController < ActionController::Base
+      uses_data_table
       def index
         Filter.spec(:name => :testing ) do |f|
           f.element(:etype) do |e|

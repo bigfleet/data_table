@@ -6,13 +6,7 @@ require 'data_table/filter_element'
 require 'data_table/filter_selection'
 require 'data_table/filter'
 
-
-
 module DataTable
-  
-  def self.included(base) # :nodoc:
-    base.extend ClassMethods
-  end
 
   module InstanceMethods
     
@@ -28,8 +22,16 @@ module DataTable
   end
 
   module ClassMethods
-    include DataTable::InstanceMethods
+    def uses_data_table
+      include DataTable::InstanceMethods
+    end
   end
+  
+  
+  def self.included(base) # :nodoc:
+    base.extend ClassMethods
+  end
+  
   
 end
 
