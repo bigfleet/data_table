@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-#Some day, when this project is all grown up, I envision different spec
+# Some day, when this project is all grown up, I envision different spec
 # files for the different kinds of filtering that can be done, with a
 # special file to tax the limits and integrate bugs into.  For now, it's
 # all in this spec

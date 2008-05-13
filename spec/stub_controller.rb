@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../lib/data_table'
 
-class MockController
+class StubController
   
   # For our integration tests, we are testing that data table
   # interacts with an object in a certain way.  Since we are
@@ -15,7 +15,5 @@ class MockController
   # In this respect, we will need a params method 
   
   attr_accessor :params
-  
-  
   
 end

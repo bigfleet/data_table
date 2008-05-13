@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), 'mock_controller')
+require File.join(File.dirname(__FILE__), 'stub_controller')
 
-class FilterController < MockController
+class FilterController < StubController
   
   def basic_filter
     filter_spec(:name => :cars) do |f|
