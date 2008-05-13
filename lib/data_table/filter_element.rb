@@ -9,7 +9,7 @@ module DataTable
     include ActionView::Helpers::FormTagHelper  
     include ActionView::Helpers::FormOptionsHelper
   
-    attr_accessor :table, :field, :operator, :html_options, :selected, :default
+    attr_accessor :table, :field, :operator, :html_options, :selected, :default, :parent
     attr_reader :selections
   
     def initialize(options = {})
@@ -19,6 +19,7 @@ module DataTable
       @html_options = opts[:html_options] || {}
       @operator = opts[:operator] || "="
       @selections = []
+      @parent = opts[:parent]
     end
   
     def active?

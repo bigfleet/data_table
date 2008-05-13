@@ -11,6 +11,7 @@ module DataTable
   
     def element(options)
       elt = FilterElement.new(options)
+      elt.parent = self
       yield(elt)
       @elements << elt
     end
