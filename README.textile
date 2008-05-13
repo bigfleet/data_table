@@ -9,7 +9,7 @@ h2. Goal:
 Define a filter in your controller, like so:
 
 <pre><code>
-Filter.spec(:name => :testing ) do |f|
+filter_spec_(:name => :testing ) do |f|
   f.element(:type) do |e|
     e.default  "Foos and Bars", nil
     e.option   "Foos",          'foo'
@@ -23,7 +23,7 @@ resulting in the following:
 * helpers on the front end to render selection box filters that know what option was selected, if any
 * asking for a set of additional conditions to pass to a model-based finder
 * helpers that avoid rendering complex filter data in query params
-* sorting for free
+* sorting "for free"
 * AJAX or non-AJAX modes
 
 h2. Philosophy
@@ -38,7 +38,7 @@ This project will look to integrate with other plugins in this space rather than
 
 * Finders in the model are the place for complex queries
 
-In short, this project's philosophy is that's where complex queries lead to the overall highest quality of testing.
+This project's philosophy is that's where complex queries lead to the overall highest quality of testing.
 
 * Easy things should be easy...
 
@@ -46,4 +46,4 @@ In many cases, a filter will just be operating on a couple of important fields o
 
 * Difficult things should be possible
 
-Sometimes, things get pretty hairy in those finders.  For times when the filter's AR-ready conditions cannot be reliable, the filter should still provide an expressive options hash which the finder code can manipulate and react to before ultimately issuing a query.
+Sometimes, things get pretty hairy in those finders.  For times when the filter's AR-ready conditions cannot be reliable, the filter should still provide an expressive options hash which the finder code can inspect before ultimately issuing a query.
