@@ -35,19 +35,36 @@ describe FilterController, "When integrating with Rails" do
       @conditions.should be_nil
     end
     
+    it "should render a default option as selected"
+    
+    it "should indicate no special sorting"
+    
+    it "should retrieve the first page of listings"
+    
+    it "should contain links to the second page of listings"
+    
   end
   
   describe "a simulated request with parameters" do
     
     before(:each) do
       @controller.basic_filter
-      @controller.params = {:filter => {:cars => 'equities'}}
+      @controller.params = {:filter => {:cars => 'red'}}
       @conditions = @controller.conditions_for(:cars)
     end
     
     it "should have no conditions when not provided with params" do
       @conditions.should_not be_nil
     end
+    
+    it "should render the selected option as selected"
+    
+    it "should indicate no special sorting"
+    
+    it "should retrieve the first page of listings"
+    
+    it "should contain links to the second page of listings"
+    
     
   end
   
