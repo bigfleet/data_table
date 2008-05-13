@@ -1,4 +1,4 @@
-require 'data_table'
+require File.dirname(__FILE__) + '/../lib/data_table'
 
 class MockController
   

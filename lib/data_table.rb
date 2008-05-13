@@ -10,6 +10,8 @@ module DataTable
 
   module InstanceMethods
     
+    
+    # TODO: I definitely prefer the Filter.spec syntax
     def filter_spec(options, &block)
       filter = Filter.spec(options, &block)
       (@filters ||= {})[filter.name] = filter

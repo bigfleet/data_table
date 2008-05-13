@@ -1,9 +1,14 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe TestController, "When integrating with Rails" do
+#Some day, when this project is all grown up, I envision different spec
+# files for the different kinds of filtering that can be done, with a
+# special file to tax the limits and integrate bugs into.  For now, it's
+# all in this spec
+
+describe FilterController, "When integrating with Rails" do
   
   before(:each) do
-    @controller = MockController.new
+    @controller = FilterController.new
   end
   
   describe "this test" do
@@ -22,8 +27,8 @@ describe TestController, "When integrating with Rails" do
   describe "a simulated request with no parameters" do
     
     before(:each) do
-      @controller.index #simulate a request
-      @conditions = @controller.conditions_for(:testing)
+      @controller.basic_filter
+      @conditions = @controller.conditions_for(:cars)
     end
     
     it "should have no conditions when not provided with params" do
@@ -35,9 +40,9 @@ describe TestController, "When integrating with Rails" do
   describe "a simulated request with parameters" do
     
     before(:each) do
-      @controller.index #simulate a request
-      @controller.params = {:filter => {:testing => 'equities'}}
-      @conditions = @controller.conditions_for(:testing)
+      @controller.basic_filter
+      @controller.params = {:filter => {:cars => 'equities'}}
+      @conditions = @controller.conditions_for(:cars)
     end
     
     it "should have no conditions when not provided with params" do

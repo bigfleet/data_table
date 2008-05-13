@@ -6,7 +6,8 @@ require File.join(File.dirname(__FILE__), 'boot') unless defined?(ActiveRecord)
 require 'data_table'
 include DataTable
 
-require File.join(File.dirname(__FILE__), 'test_controller')
+#require File.join(File.dirname(__FILE__), 'mock_controller')
+require File.join(File.dirname(__FILE__), 'filter_controller')
 
 # Wrap tests that use Mocha and skip if unavailable.
 def uses_mocha(test_name)
