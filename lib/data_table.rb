@@ -1,10 +1,7 @@
 require 'active_support'
 include ActiveSupport::CoreExtensions::String::Inflections 
 
-# THIS DRIVES ME CRAZY
-require 'data_table/filter_element'
-require 'data_table/filter_selection'
-require 'data_table/filter'
+%w[filter_element filter_selection filter].each {|file| require "data_table/#{file}"}
 
 module DataTable
 

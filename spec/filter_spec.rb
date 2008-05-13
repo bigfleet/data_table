@@ -40,6 +40,10 @@ describe "A filter" do
       @f.active_elements.should be_empty
     end
     
+    it "should be referenced by it's elements" do
+      @f.elements.each {|elt| elt.parent.should == @f} 
+    end
+    
     it "should not yield any selected options without params"
     
     describe "and with input parameters" do

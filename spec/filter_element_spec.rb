@@ -6,7 +6,10 @@ describe "A filter element" do
     @fe = FilterElement.new
   end
   
-  it "should retain an association to the filter of which it's a part"
+  it "should retain an association to the filter of which it's a part" do
+    @fe.parent = Filter.new
+    @fe.parent.should be_a_kind_of( Filter )
+  end
   
   it "should allow specification of which table is to be filtered" do
     @fe.table = "users"
