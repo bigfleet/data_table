@@ -65,7 +65,9 @@ describe "A filter element" do
   describe "fully defined" do
     
     before(:each) do
+      parent_filter = Filter.new(:name => :testing)
       @fe = FilterElement.new(:etype)
+      @fe.parent = parent_filter
       @default = (@fe.default  "Equities + Options", nil)
       @option1 = (@fe.option   "Equities",          'stock')
       @option2 = (@fe.option   "Options",           'option')

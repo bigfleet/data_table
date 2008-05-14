@@ -12,12 +12,15 @@ module DataTable
     def filter_spec(options, &block)
       filter = Filter.spec(options, &block)
       (@filters ||= {})[filter.name] = filter
-      #raise @filters.inspect
     end
     
     def conditions_for(filter_name)
-      filter = @filters[filter_name]
+      filter = find_filter(filter_name)
       filter.conditions(@params)
+    end
+    
+    def find_filter(filter_name)
+      @filters[filter_name]
     end
     
   end
@@ -37,3 +40,5 @@ module DataTable
 end
 
 ActionController::Base.send :include, DataTable
+require 'data_table/view_helpers' unless ActionView::Base.instance_methods.include? 'filter_form'
+ActionView::Base.class_eval { include DataTable::ViewHelpers }

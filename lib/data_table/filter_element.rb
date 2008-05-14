@@ -19,7 +19,7 @@ module DataTable
       @html_options = opts[:html_options] || {}
       @operator = opts[:operator] || "="
       @selections = []
-      @parent = opts[:parent]
+      @parent ||= opts[:parent]
     end
   
     def active?
@@ -36,16 +36,17 @@ module DataTable
       form_selection(label, args)
     end
   
-    def with(params = {})
-      param_val = params[@field]
+    def with(request_params = {})
+      param_val = request_params[@field]
       return self unless param_val
       @selected = @selections.select{ |e| e.valuize_label == param_val }.first
       return self
     end
   
-    def to_html
-      select_tag("filter[#{@field}]", options_for_select(@selections.map(&:to_option), @selected.valuize_label), 
-                            { :onchange => "submit_function" }.merge(@html_options))
+    def to_html(options = {})
+      select_tag("#{@parent.name}[#{@field}]", 
+                    options_for_select(@selections.map(&:to_option), @selected.valuize_label), 
+                    options.merge(@html_options))
     end
   
     def to_hash
