@@ -14,6 +14,23 @@ class FilterController < StubController
       end
     end
   end
+  
+  def basic_filter_with_sorting
+    filter_spec(:name => :cars) do |f|
+      to_sort(f) do |s|
+        s.default 'make'
+        s.option  'year', 'desc'
+      end
+      f.element(:colors) do |e|
+        e.default "All"
+        e.option  "Blue"
+        e.option  "Red"
+        e.option  "Silver"
+        e.option  "Black"
+        e.option  "Other"
+      end
+    end
+  end
 
   def binary_value_filter
     filter_spec(:name => :artists) do |f|

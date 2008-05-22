@@ -1,7 +1,7 @@
 require 'active_support'
 include ActiveSupport::CoreExtensions::String::Inflections 
 
-%w[filter_element filter_selection filter].each {|file| require "data_table/#{file}"}
+%w[filter_element filter_selection filter sort sort_option].each {|file| require "data_table/#{file}"}
 
 module DataTable
 
@@ -12,6 +12,12 @@ module DataTable
     def filter_spec(options, &block)
       filter = Filter.spec(options, &block)
       (@filters ||= {})[filter.name] = filter
+    end
+    
+    # TODO: And I'd like this to not require the filter parameter
+    def to_sort(filter, options = {}, &block)
+      sort = Sort.spec(options, &block)
+      filter.sort = sort
     end
     
     def conditions_for(filter_name)

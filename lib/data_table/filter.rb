@@ -1,12 +1,11 @@
 module DataTable
   class Filter
   
-    attr_accessor :name, :elements, :mode, :sort_fields
+    attr_accessor :name, :elements, :mode, :sort
   
     def initialize(options = {})
       @name = options[:name] || "filter"
       @elements = []
-      @sort_fields = []
       @mode = options[:mode] || :standard
     end
   
