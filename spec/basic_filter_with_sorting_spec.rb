@@ -16,10 +16,16 @@ describe FilterController, "When integrating with Rails" do
     before(:each) do
       @controller.basic_filter_with_sorting
       @conditions = @controller.conditions_for(:cars)
+      @options = @controller.options_for(:cars)
     end
     
-    it "should have no conditions when not provided with params" do
+    it "should have no conditions" do
       @conditions.should be_nil
+    end
+    
+    it "should have a sparse set of options" do
+      @options.should_not be_nil
+      @options.should == {:colors => nil}
     end
     
     it "should not error when rendering the filter form" do

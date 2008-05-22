@@ -22,7 +22,12 @@ module DataTable
     
     def conditions_for(filter_name)
       filter = find_filter(filter_name)
-      filter.conditions(@params)
+      filter.conditions(params)
+    end
+    
+    def options_for(filter_name)
+      filter = find_filter(filter_name)
+      filter.options(params)
     end
     
     def find_filter(filter_name)
