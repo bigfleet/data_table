@@ -26,21 +26,25 @@ module DataTable
     # used in an ActiveRecord context directly
     def conditions(params = {})
       # figure out if we can get params directly from ActionController
-      return nil unless params and params[:filter]
-      cond_hash = {}
-      parms = params[:filter][@name]
-      active_elements(parms).each {|elt| cond_hash = cond_hash.merge(elt)}
-      return cond_hash
+      return nil unless params and params[@name]
+      parms = params[@name]
+      all_conds = active_elements(parms).map {|elt| 
+          ["#{elt.field} #{elt.operator} ?", elt.selected.phrase] 
+      }
+      all_conds.flatten # that's all for now-- combine later
     end
     
 
     
     # returns an options hash, for greater flexibility.
     def options(params = {})
-      act_elts = active_elements
-      idle_elts = @elements - act_elts
-      idle_options = idle_elts.inject({}){|acc, elt| acc.merge({elt.field => nil})}
-      idle_options.merge(active_options)
+      cond_hash = {}
+      parms = params && params[@name] ? params[@name] : {}
+      actives = active_elements(parms)
+      actives.each {|elt| cond_hash = cond_hash.merge(elt)}
+      idles = @elements - actives
+      idles.each { |elt| cond_hash = cond_hash.merge({elt.field => nil})}
+      return cond_hash
     end
   
     # Like to be protected maybe?
@@ -48,10 +52,6 @@ module DataTable
   
     def active_elements(params = {})
       @elements.map{|e| e.with(params) }.select{ |e| e.active? }
-    end
-    
-    def active_options
-      active_elements.inject({}){|acc, elt| acc.merge(elt.to_hash)}
     end
   
   end

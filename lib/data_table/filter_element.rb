@@ -37,7 +37,8 @@ module DataTable
     end
   
     def with(request_params = {})
-      param_val = request_params[@field]
+      return self unless request_params
+      param_val = (request_params[@field] || request_params[@field.to_s])
       return self unless param_val
       @selected = @selections.select{ |e| e.valuize_label == param_val }.first
       return self

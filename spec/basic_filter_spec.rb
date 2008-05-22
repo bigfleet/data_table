@@ -38,4 +38,43 @@ describe FilterController, "When integrating with Rails" do
     
   end
   
+  describe "a simulated request with parameters" do
+    
+    #?most_traded%5Betype%5D=all&most_traded%5Btraded_at%5D=15-days
+    
+    before(:each) do
+      @controller.params = {:cars => {:colors => 'blue' }}
+      @controller.basic_filter
+      @conditions = @controller.conditions_for(:cars)
+    end
+    
+    it "should yield AR-ready conditions" do
+      @conditions.should_not be_nil
+    end
+    
+    it "should yield an appropriate options hash" do
+      
+    end
+    
+    it "should not error when rendering the filter form" do
+      @controller.filter_form(:cars).should_not be_nil
+    end
+    
+    it "should no longer render the default option as selected" do
+      @controller.filter_form(:cars).should_not match(/<option value=\"all\" selected/)
+    end
+
+    it "should choose the parameter selection option as selected" do
+      @controller.filter_form(:cars).should match(/<option value=\"blue\" selected/)
+    end
+
+    
+    it "should indicate no special sorting"
+    
+    it "should retrieve the first page of listings"
+    
+    it "should contain links to the second page of listings"
+    
+  end
+  
 end

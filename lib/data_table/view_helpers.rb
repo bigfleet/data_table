@@ -61,12 +61,12 @@ module DataTable
       end
       xml.div do |inner_frame|
         filter.elements.inject("") do |memo, elt|
-          # TODO: find a way to work around this-- want to get params from request/controller
-          element = elt.with(params||{})
+          element = elt.with(params)
+          Logger.new(STDOUT).info("SELECTED: #{element.selected.inspect}")
           if options[:remote]
             # AJAX style submission
             submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
-            xml << element.to_html((options[:selects]||{}).merge(:onchange => submit_function))
+            xml << element.to_html(options[:selects]||{}).merge(:onchange => submit_function)
           else
             # standard style submission
             xml << element.to_html

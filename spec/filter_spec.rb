@@ -22,7 +22,7 @@ describe "A filter" do
   
   describe "when fully initialized" do
     before(:each) do
-      @f = Filter.spec(:name => :testing ) do |f|
+      @f = Filter.spec(:name => :testing) do |f|
         f.element(:etype) do |e|
           e.default  "Equities + Options", nil
           e.option   "Equities",          'stock'
@@ -50,20 +50,24 @@ describe "A filter" do
       
       before(:each) do
         @params = {}
-        @params[:filter] = {}
-        @params[:filter][:testing] = {}
-        @params[:filter][:testing][:etype] = 'equities'
+        @params[:testing] = {}
+        @params[:testing][:etype] = 'equities'
       end
       
       it "should register an active element" do
-        active_elts = @f.active_elements(@params[:filter][:testing])
+        active_elts = @f.active_elements(@params[:testing])
         active_elts.should_not be_nil
         active_elts.should_not be_empty
         active_elts.should have(1).things
       end
+
+      it "should yield the expected conditions" do
+        @f.conditions(@params).should == ["etype = ?", 'stock']
+      end
+
       
       it "should yield the expected options" do
-        @f.conditions(@params).should == {:etype => "stock"}
+        @f.options(@params).should == {:etype => "stock"}
       end
       
     end
