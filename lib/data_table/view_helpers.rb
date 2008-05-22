@@ -51,35 +51,29 @@ module DataTable
       xml = Builder::XmlMarkup.new
       html_options = options[:html] || {}
       form_options = (options[:form] || {}).reverse_merge({:url => ""})
-      remote_options = (options[:remote] || {}).reverse_merge({:url => ""})
-      xml.div do |frame|
-        frame.attributes = html_options[:frame]
-        xml.label "Show: "
-        case filter.mode
-        when :ajax
-          xml << form_remote_tag(remote_options.merge(:id => options[:id]))
-        else
-          xml << form_tag(form_options[:url], form_options.merge(:id => options[:id]))
-        end
-        xml.div do |inner_frame|
-          inner_frame.html_attributes = html_options[:inner_frame]
-          filter.elements.inject("") do |memo, elt|
-            # TODO: find a way to work around this-- want to get params from request/controller
-            element = elt.with(params||{})
-            if options[:remote]
-              # AJAX style submission
-              submit_function = remote_function(options[:remote].merge({:submit => options[:id]}))
-              xml << element.to_html(options.merge(:onchange => submit_function))
-            else
-              # standard style submission
-              xml << element.to_html
-            end
-          end
-          #xml << filter.sort_fields.map(&:to_html)
-        end
-        xml << "</form>"
+      remote_options = (options[:remote] || {}).reverse_merge({:url => "", :method => :get})
+      xml.label html_options[:label] if html_options[:label]
+      case filter.mode
+      when :ajax
+        xml << form_remote_tag(remote_options.merge(:id => options[:id]))
+      else
+        xml << form_tag(form_options[:url], form_options.merge(:id => options[:id]))
       end
-      
+      xml.div do |inner_frame|
+        filter.elements.inject("") do |memo, elt|
+          # TODO: find a way to work around this-- want to get params from request/controller
+          element = elt.with(params||{})
+          if options[:remote]
+            # AJAX style submission
+            submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
+            xml << element.to_html((options[:selects]||{}).merge(:onchange => submit_function))
+          else
+            # standard style submission
+            xml << element.to_html
+          end
+        end
+      end
+      xml << "</form>"
     end
     
   end
