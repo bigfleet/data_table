@@ -1,4 +1,5 @@
 require 'active_support'
+require 'erb'
 include ActiveSupport::CoreExtensions::String::Inflections 
 
 %w[filter_element filter_selection filter sort sort_option].each {|file| require "data_table/#{file}"}
@@ -14,7 +15,7 @@ module DataTable
       (@filters ||= {})[filter.name] = filter
     end
     
-    # TODO: And I'd like this to not require the filter parameter
+    # TODO: Take care that the sorting can be used without filtering
     def to_sort(filter, options = {}, &block)
       sort = Sort.spec(options, &block)
       filter.sort = sort

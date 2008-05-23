@@ -14,6 +14,7 @@ describe FilterController, "When integrating with Rails" do
   describe "a simulated request with no parameters" do
     
     before(:each) do
+      @controller.params = {}
       @controller.basic_filter_with_sorting
       @conditions = @controller.conditions_for(:cars)
       @options = @controller.options_for(:cars)
@@ -36,9 +37,21 @@ describe FilterController, "When integrating with Rails" do
       @controller.filter_form(:cars).should match(/<option value=\"all\" selected/)
     end
     
-    it "should have a default sorting by make"
+    it "should render a sort header" do
+      @controller.sort_header(:cars).should_not be_nil
+    end
     
-    it "should have the first request to sort by year be in descending order"
+    it "should indicate that make is currently sorted in ascending order" do
+      @controller.sort_header(:cars).should =~ /<img alt=\"Sort by Make\" src=\"(.+)sort_asc.gif/
+    end
+    
+    it "should have a click on make sort in descending order" do
+      @controller.sort_header(:cars).should =~ /\?key=make&order=desc/
+    end
+    
+    it "should have the first request to sort by year be in descending order" do
+      @controller.sort_header(:cars).should =~ /\?key=year&order=desc/
+    end
         
   end
   

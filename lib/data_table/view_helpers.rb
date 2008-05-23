@@ -18,12 +18,22 @@ module DataTable
     #    :complete => The method to call when the remote connection is complete
     # :html =>
     #   :label => The introductory label of the filter form
-    #   :frame => The options hash of HTML options you'd like the filter's div wrapper to use
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_form(name=nil, options={})
       remote_options = finalize_options(options)
       filter = find_filter(name)
       form_for_filter(filter, options)
+    end
+    
+    # TODO: *UGH* including filter_name *FAIL*
+    def sort_header(name = nil, options = {})
+      filter = find_filter(name)
+      filter.sort.with(params).options.collect{ 
+        |s| s.to_html 
+      }.join(<<-CR
+      
+      CR
+      )
     end
     
     protected
@@ -62,11 +72,10 @@ module DataTable
       xml.div do |inner_frame|
         filter.elements.inject("") do |memo, elt|
           element = elt.with(params)
-          Logger.new(STDOUT).info("SELECTED: #{element.selected.inspect}")
           if options[:remote]
             # AJAX style submission
             submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
-            xml << element.to_html(options[:selects]||{}).merge(:onchange => submit_function)
+            xml << element.to_html((options[:selects]||{}).merge(:onchange => submit_function))
           else
             # standard style submission
             xml << element.to_html
