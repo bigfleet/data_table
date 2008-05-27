@@ -7,6 +7,7 @@ describe "A sorting option" do
     before(:each) do
       @sort = Sort.new
       @default = SortOption.new(@sort, :make)
+      @option  = SortOption.new(@sort, :year, :desc)
     end
     
     it "should know of its parent sort specification" do
@@ -17,14 +18,33 @@ describe "A sorting option" do
       @default.key.should == :make
     end
     
-    it "should reflect a current sort order"
+    it "should reflect no current ordering by default" do
+      @default.current_order.should be_nil
+      @option.current_order.should be_nil
+    end
     
+    it "should reflect the preferred ordering as current when active" do
+      @sort.selected = @default
+      @default.current_order.should == 'asc'
+    end
+        
     it "should respect a preferred sort order" do
       @default.preferred_order.should == 'asc'
     end
     
     it "should support an 'only' order option"
     # so that it is either unsorted or in preferred order
+    
+    it "should be aware if it is selected or not" do
+      @option.should_not be_active
+      @sort.selected = @option
+      @option.should be_active
+    end
+    
+    it "should be aware of the alternate ordering to the current order" do
+      @sort.selected = @default
+      @default.other_order.should == 'desc'
+    end
     
   end
   

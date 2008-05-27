@@ -13,41 +13,20 @@ class SortOption
     @current_order = nil
   end
   
-  # make parameters from sorting, filtering, and pagination locally available in preferred form
-  def fetch_parameters
-    parms = @parent.params
-    parms = parms.reverse_merge({:url => '?'})
-    form_options = {:key => @key, :order => @order }
-    parms.merge(form_options)
-  end
-  
+  # returns whether this option is the currently active sort ordering
   def active?
     self == @parent.selected
   end
   
+  # returns the inverse of current_order, or 'desc' by default
   def other_order
-    other_order = (ORDERS - [@order]).first
+    other_order = (ORDERS - [current_order]).last
   end
   
-  def href
-    # for the url that we generate, we link to the *opposite* sort
-    order_to_use = active? ? other_order : @order
-    "?sort_key=#{@key}&sort_order=#{order_to_use}"
-  end
-  
-  # examine fetched parameters and set up, determine appearance of sort arrow
-  def assemble_sort_icon(options = {})
-    icon = if active?
-      "sort_#{@order}"
-    else
-      "sortArrow001"
-    end    
-    image_tag("chrome/#{icon}.gif", :alt => "Sort by #{Inflector::humanize(key).titleize}")
-  end
-  
-  # examine fetched parameters, options, and set up to determine linked caption
-  def assemble_caption(options = {})
-    caption = options.delete(:caption) || Inflector::humanize(key).titleize
+  # returns 'asc', 'desc', or nil, depending on the order (or disorder) of
+  # this element
+  def current_order
+    @current_order || (@preferred_order if active?)
   end
   
 end
