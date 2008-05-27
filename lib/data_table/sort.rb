@@ -34,7 +34,7 @@ class Sort
   def with(params = {})
     @params = params
     sort_order = params[:sort_order] || 'asc'
-    sort_key = params[:key] || default_key
+    sort_key = params[:sort_key] || default_key
     @selected = options.select{ |o| o.key == sort_key }.first
     self
   end
