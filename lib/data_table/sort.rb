@@ -36,6 +36,7 @@ class Sort
     sort_order = params[:sort_order] || 'asc'
     sort_key = params[:sort_key] || default_key
     @selected = options.select{ |o| o.key == sort_key }.first
+    @selected.current_order = sort_order
     self
   end
   

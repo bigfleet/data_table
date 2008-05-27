@@ -60,11 +60,11 @@ describe DataTable::ViewHelpers do
     end
 
     it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?key=make&order=desc/
+      sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
     end
 
     it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?key=year&order=desc/
+      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
     end
     
   end
@@ -96,11 +96,11 @@ describe DataTable::ViewHelpers do
     end
 
     it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?key=make&order=desc/
+      sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
     end
 
     it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?key=year&order=desc/
+      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
     end
     
   end
@@ -128,15 +128,15 @@ describe DataTable::ViewHelpers do
     end
 
     it "should indicate that make is currently sorted in descending order" do
-      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" src=\"(.+)sort_desc.gif/
+      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" src=\"(.+)sort_asc.gif/
     end
 
     it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?key=make&order=asc/
+      sort_header(:cars).should =~ /\?sort_key=make&sort_order=asc/
     end
 
     it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?key=year&order=desc/
+      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
     end
     
   end

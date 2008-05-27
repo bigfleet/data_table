@@ -1,22 +1,16 @@
 class SortOption
   
-  include ERB::Util
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::FormTagHelper  
-  include ActionView::Helpers::FormOptionsHelper
-  include ActionView::Helpers::AssetTagHelper
-  
   ORDERS = ['asc', 'desc']
   
   # TODO: examine global option for sort icon path
   
-  attr_accessor :key, :order, :parent
+  attr_accessor :key, :preferred_order, :parent, :current_order
   
   def initialize(parent, key, order = 'asc')
     @parent = parent
     @key = key
-    @order = order || 'asc'
+    @preferred_order = order || 'asc'
+    @current_order = nil
   end
   
   # make parameters from sorting, filtering, and pagination locally available in preferred form
@@ -38,7 +32,7 @@ class SortOption
   def href
     # for the url that we generate, we link to the *opposite* sort
     order_to_use = active? ? other_order : @order
-    "?key=#{@key}&order=#{order_to_use}"
+    "?sort_key=#{@key}&sort_order=#{order_to_use}"
   end
   
   # examine fetched parameters and set up, determine appearance of sort arrow
@@ -54,17 +48,6 @@ class SortOption
   # examine fetched parameters, options, and set up to determine linked caption
   def assemble_caption(options = {})
     caption = options.delete(:caption) || Inflector::humanize(key).titleize
-  end
-  
-  def to_html(options = {})
-
-    sort_icon = assemble_sort_icon(options)
-    caption = assemble_caption(options)
-    content = [caption, sort_icon].join(" ")
-    # FIXME: this should change completely
-    
-    link_tag = "<a href=\"#{href}\">#{content}</a>"
-    content_tag('th', link_tag, options)
   end
   
 end

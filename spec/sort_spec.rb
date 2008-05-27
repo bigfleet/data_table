@@ -17,12 +17,12 @@ describe "A filter-attached sort" do
     end
     
     it "should not change the selected option for alternate default sort" do
-      @s = @s.with(:key => 'make', :order => 'desc')
+      @s = @s.with(:sort_key => 'make', :sort_order => 'desc')
       @s.selected.should == @s.default_option
     end
     
     it "should change the selected option for alternate sort" do
-      @s = @s.with(:key => 'year', :order => 'desc')
+      @s = @s.with(:sort_key => 'year', :sort_order => 'desc')
       @s.selected.should_not == @s.default_option
       @s.selected.should == @other
     end

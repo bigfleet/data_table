@@ -28,15 +28,21 @@ module DataTable
     # TODO: *UGH* including filter_name *FAIL*
     def sort_header(name = nil, options = {})
       filter = find_filter(name).with(params)
-      filter.sort.options.collect{ 
-        |s| s.to_html 
-      }.join(<<-CR
+      filter.sort.with(params).options.each do |o| 
+        render_sort_option_to_html(o)
+      end.join(<<-CR
       
       CR
       )
     end
     
+    def render_sort_option_to_html(s)
+      ""
+    end
+    
     protected
+    
+
     
     def finalize_options(options)
       remote_options = { 
