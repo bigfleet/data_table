@@ -2,13 +2,6 @@ require File.dirname(__FILE__) + '/../lib/data_table'
 
 class StubController
   
-  # Required Rails includes
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::FormTagHelper
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::JavaScriptHelper
-  include ActionView::Helpers::PrototypeHelper
-  
   # Ignore this for now
   def protect_against_forgery?
     
@@ -23,10 +16,6 @@ class StubController
   # can interface with it in the same way.  
   
   uses_data_table
-  
-  # For convenience sake during testing, we'll include the view
-  # helpers here as well.  This may be *wrong*
-  include DataTable::ViewHelpers
   
   
   

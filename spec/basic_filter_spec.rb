@@ -22,13 +22,9 @@ describe FilterController, "When integrating with Rails" do
       @conditions.should be_nil
     end
     
-    it "should not error when rendering the filter form" do
-      @controller.filter_form(:cars).should_not be_nil
-    end
+    it "should not error when rendering the filter form"
     
-    it "should render a default option as selected" do
-      @controller.filter_form(:cars).should match(/<option value=\"all\" selected/)
-    end
+    it "should render a default option as selected"
     
     it "should indicate no special sorting"
     
@@ -56,18 +52,11 @@ describe FilterController, "When integrating with Rails" do
       
     end
     
-    it "should not error when rendering the filter form" do
-      @controller.filter_form(:cars).should_not be_nil
-    end
+    it "should not error when rendering the filter form"
     
-    it "should no longer render the default option as selected" do
-      @controller.filter_form(:cars).should_not match(/<option value=\"all\" selected/)
-    end
+    it "should no longer render the default option as selected"
 
-    it "should choose the parameter selection option as selected" do
-      @controller.filter_form(:cars).should match(/<option value=\"blue\" selected/)
-    end
-
+    it "should choose the parameter selection option as selected"
     
     it "should indicate no special sorting"
     
