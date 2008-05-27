@@ -21,14 +21,14 @@ module DataTable
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_form(name=nil, options={})
       remote_options = finalize_options(options)
-      filter = find_filter(name)
+      filter = find_filter(name).with(params)
       form_for_filter(filter, options)
     end
     
     # TODO: *UGH* including filter_name *FAIL*
     def sort_header(name = nil, options = {})
-      filter = find_filter(name)
-      filter.sort.with(params).options.collect{ 
+      filter = find_filter(name).with(params)
+      filter.sort.options.collect{ 
         |s| s.to_html 
       }.join(<<-CR
       
@@ -71,14 +71,13 @@ module DataTable
       end
       xml.div do |inner_frame|
         filter.elements.inject("") do |memo, elt|
-          element = elt.with(params)
           if options[:remote]
             # AJAX style submission
             submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
-            xml << element.to_html((options[:selects]||{}).merge(:onchange => submit_function))
+            xml << elt.to_html((options[:selects]||{}).merge(:onchange => submit_function))
           else
             # standard style submission
-            xml << element.to_html
+            xml << elt.to_html
           end
         end
       end

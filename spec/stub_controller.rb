@@ -1,11 +1,10 @@
 require File.dirname(__FILE__) + '/../lib/data_table'
 
+#TODO: This entire class may be subject to elimination
 class StubController
   
   # Ignore this for now
-  def protect_against_forgery?
-    
-  end
+
   
   # For our integration tests, we are testing that data table
   # interacts with an object in a certain way.  Since we are

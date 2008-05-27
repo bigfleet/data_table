@@ -9,21 +9,20 @@ module DataTable
     include ActionView::Helpers::FormTagHelper  
     include ActionView::Helpers::FormOptionsHelper
   
-    attr_accessor :table, :field, :operator, :html_options, :selected, :default, :parent
+    attr_accessor :table, :field, :operator, :selected, :default, :parent
     attr_reader :selections
   
     def initialize(options = {})
       opts = (options.class == Symbol ? {:field => options} : options)
       @field = opts[:field] || "element_field_must_be_supplied"
       @table = opts[:table]
-      @html_options = opts[:html_options] || {}
       @operator = opts[:operator] || "="
       @selections = []
       @parent ||= opts[:parent]
     end
   
     def active?
-      @selected != @default
+      !@selected.equal?(@default)
     end
   
     def default(label, *args)
@@ -35,19 +34,23 @@ module DataTable
     def option(label, *args)
       form_selection(label, args)
     end
+    
+    def update_selection_with(params)
+      return unless param_val(params)
+      @selected = @selections.select{ |e| e.valuize_label == param_val(params) }.first
+    end
   
-    def with(request_params = {})
-      return self unless request_params
-      param_val = (request_params[@field] || request_params[@field.to_s])
-      return self unless param_val
-      @selected = @selections.select{ |e| e.valuize_label == param_val }.first
+
+    def with(params = {})
+      update_selection_with(params)
       return self
     end
   
+    # TODO: Deprecate this and move it to the view helper
     def to_html(options = {})
       select_tag("#{@parent.name}[#{@field}]", 
                     options_for_select(@selections.map(&:to_option), @selected.valuize_label), 
-                    options.merge(@html_options))
+                    options)
     end
   
     def to_hash
@@ -55,14 +58,21 @@ module DataTable
       pairs[@field] = @selected.phrase
       return pairs
     end
+    
+    def equal?(other)
+      other.field == self.field && other.table == self.table
+    end
   
     protected
   
     def form_selection(label, args)
-      elt = FilterSelection.for(self, args)
-      elt.label = label
-      @selections << elt
-      elt
+      sel = FilterSelection.for(label, args)
+      @selections << sel
+      sel
+    end
+    
+    def param_val(params)
+      (params[@field] || params[@field.to_s])
     end
   
   end

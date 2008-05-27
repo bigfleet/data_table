@@ -14,10 +14,15 @@ describe FilterController, "When integrating with Rails" do
   describe "a simulated request with no parameters" do
     
     before(:each) do
-      @controller.params = {}
+      @params = {}
       @controller.basic_filter_with_sorting
-      @conditions = @controller.conditions_for(:cars)
-      @options = @controller.options_for(:cars)
+      @filter = @controller.find_filter(:cars).with(@params)
+      @conditions = @filter.conditions
+      @options = @filter.options
+    end
+    
+    it "should have no active elements" do
+      @filter.active_elements.should be_empty
     end
     
     it "should have no conditions" do
@@ -26,7 +31,33 @@ describe FilterController, "When integrating with Rails" do
     
     it "should have a sparse set of options" do
       @options.should_not be_nil
-      @options.should == {:colors => nil}
+      @options.should == {:color => nil}
+    end
+        
+  end
+  
+  describe "a simulated request with filtering parameters" do
+    
+    before(:each) do
+      @params = {:cars => {:color => "blue"}}
+      @controller.basic_filter_with_sorting
+      @filter = @controller.find_filter(:cars).with(@params)
+      @conditions = @filter.conditions
+      @options = @filter.options
+    end
+    
+    it "should have activated some elements" do
+      @filter.active_elements.should_not be_nil
+    end
+    
+    it "should have conditions ready for ActiveRecords" do
+      @conditions.should_not be_nil
+      @conditions.should == ["color = ?", "blue"]
+    end
+    
+    it "should have a populated set of options" do
+      @options.should_not be_nil
+      @options.should == {:color => "blue"}
     end
         
   end

@@ -11,42 +11,6 @@ describe "A filter element" do
     @fe.parent.should be_a_kind_of( Filter )
   end
   
-  it "should allow specification of which table is to be filtered" do
-    @fe.table = "users"
-    @fe.table.should == "users"
-  end
-  
-  it "should store the field to be filtered" do
-    @fe.field = "first_name"
-    @fe.field.should == "first_name"
-  end
-  
-  it "should support comparison filtration" do
-    @fe.operator = ">="
-    @fe.operator.should == ">="
-  end
-  
-  it "should support between filtration" do
-    @fe.operator = "BETWEEN"
-    @fe.operator.should == "BETWEEN"
-  end
-  
-  it "should support equality filtration" do
-    @fe.operator.should == "="
-  end
-  
-  it "should support similarity filtration" do
-    @fe.operator = "LIKE"
-    @fe.operator.should == "LIKE"
-  end
-  
-  it "should allow specification of which filter is selected" do
-    fs = DefaultFilterSelection.new("buyopen")
-    fs.label = "Buy To Open"
-    @fe.selected = fs
-    @fe.selected.should == fs
-  end
-  
   describe "at initialization" do
     
     it "should be initializable with a symbol, in the simple case" do
@@ -91,7 +55,7 @@ describe "A filter element" do
       @fe.to_html.should_not be_nil
     end
     
-    it "should have the HTML tag specced out a great deal more"
+    it "should have the HTML tag moved to the view helper"
     
     describe "in the presence of selected parameters" do
       
@@ -111,35 +75,15 @@ describe "A filter element" do
       end
       
       it "should select based on parameter" do
-        @fe.selected.should == @option1
+        @fe.selected.should equal(@option1)
       end
       
       it "should render an appropriately selected HTML tag"  do
         @fe.to_html.should_not be_nil
       end
       
-      it "should have the HTML tag specced out a great deal more"
-      
     end
     
   end
-    
-end
-
-describe "A time filtration element" do
-  
-  it "should allow specification of which table is to be filtered"
-  
-  it "should store the field to be filtered"
-  
-  it "should support comparison filtration"
-  
-  it "should support between filtration"
-  
-  it "should support equality filtration"
-  
-  it "should support similarity filtration"
-  
-  it "should allow specification of which filter is selected"
     
 end

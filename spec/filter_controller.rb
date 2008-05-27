@@ -4,7 +4,7 @@ class FilterController < StubController
   
   def basic_filter
     filter_spec(:name => :cars) do |f|
-      f.element(:colors) do |e|
+      f.element(:color) do |e|
         e.default "All"
         e.option  "Blue"
         e.option  "Red"
@@ -21,7 +21,7 @@ class FilterController < StubController
         s.default 'make'
         s.option  'year', 'desc'
       end
-      f.element(:colors) do |e|
+      f.element(:color) do |e|
         e.default "All"
         e.option  "Blue"
         e.option  "Red"
