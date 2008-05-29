@@ -13,9 +13,10 @@ module DataTable
     end
     
     def render_sort_option_to_html(s, options)
-      caption = caption_for(s)
-      sort_option_url = sort_option_url_for(s)
-      icon = icon_for(s)
+      caption = caption_for(s, options)
+      sort_option_url = sort_option_url_for(s, options)
+      icon = icon_for(s, options)
+      content_tag("td", [caption, link_to(icon, sort_option_url)].join(" "))
       # assemble the bits
     end
     

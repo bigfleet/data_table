@@ -5,6 +5,7 @@ describe DataTable::ViewHelpers do
   uses_data_table
   
   # Required Rails includes
+  include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::UrlHelper
