@@ -123,7 +123,7 @@ describe DataTable::ViewHelpers do
     it "should render a default option as selected" do
       filter_form(:cars).should match(/<option value=\"all\" selected/)
     end
-
+    
     it "should render a sort header" do
       sort_header(:cars).should_not be_nil
     end

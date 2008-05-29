@@ -5,9 +5,11 @@ describe "A sorting option" do
   describe "in its basic structure" do
     
     before(:each) do
+      @f = Filter.new(:name => :cars)
       @sort = Sort.new
-      @default = SortOption.new(@sort, :make)
-      @option  = SortOption.new(@sort, :year, :desc)
+      @default = @sort.default 'make'
+      @option = @sort.option  'year', 'desc'
+      @f.sort = @sort
     end
     
     it "should know of its parent sort specification" do
@@ -15,11 +17,11 @@ describe "A sorting option" do
     end
 
     it "should be affiliated with a certain sort key" do
-      @default.key.should == :make
+      @default.key.should == 'make'
     end
     
     it "should reflect no current ordering by default" do
-      @default.current_order.should be_nil
+      @default.current_order.should == 'asc'
       @option.current_order.should be_nil
     end
     
