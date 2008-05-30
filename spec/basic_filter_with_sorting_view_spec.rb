@@ -129,7 +129,7 @@ describe DataTable::ViewHelpers do
     end
 
     it "should indicate that make is currently sorted in descending order" do
-      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" src=\"(.+)sort_asc.gif/
+      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" src=\"(.+)sort_desc.gif/
     end
 
     it "should have a click on make sort in descending order" do
