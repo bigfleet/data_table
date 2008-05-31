@@ -4,7 +4,7 @@ module DataTable
     # TODO: *UGH* including filter_name *FAIL*
     def sort_header(name = nil, options = {})
       scoped_params = params && params[name] ? params[name] : {}
-      filter = find_filter(name).with(scoped_params)
+      filter = controller.find_filter(name).with(scoped_params)
       filter.sort.with(scoped_params).options.collect do |o| 
         render_sort_option_to_html(o, options)
       end.join(<<-CR

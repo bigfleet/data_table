@@ -149,4 +149,10 @@ describe DataTable::ViewHelpers do
     
   end
   
+  # This is way too tricky-- made to get these tests and needed 
+  # Rails plugin structure living and working together
+  def controller
+    self
+  end
+  
 end

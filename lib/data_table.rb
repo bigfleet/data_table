@@ -53,4 +53,8 @@ end
 
 ActionController::Base.send :include, DataTable
 require 'data_table/view_helpers' unless ActionView::Base.instance_methods.include? 'filter_form'
-ActionView::Base.class_eval { include DataTable::ViewHelpers }
+ActionView::Base.class_eval { 
+  include DataTable::ViewHelpers
+  include DataTable::SortViewHelpers
+  include DataTable::FilterViewHelpers
+}

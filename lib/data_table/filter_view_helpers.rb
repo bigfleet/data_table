@@ -15,7 +15,7 @@ module DataTable
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_form(name=nil, options={})
       remote_options = finalize_options(options)
-      filter = find_filter(name).with(params)
+      filter = controller.find_filter(name).with(params)
       form_for_filter(filter, options)
     end
     
