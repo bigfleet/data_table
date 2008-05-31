@@ -4,6 +4,7 @@ h1. data_table:
 h2. Goal:
 
 h3. Give a little...
+
 Define a filter in your controller, like so:
 
 <pre><code>
@@ -46,15 +47,34 @@ YourController#options_for(:cars) => {:color => 'blue'}
 
 h4. In the view
 
+
 <pre><code>
+filter_form(:cars) 
 </code></pre>
 
+This fellow recognizes what, if any, options were selected, respects your
+selection of URL to use for form submission, can be used in AJAX or
+non-AJAX mode, and many other goodies.
 
-* helpers on the front end to render selection box filters that know what option was selected, if any
-* asking for a set of additional conditions to pass to a model-based finder
-* helpers that avoid rendering complex filter data in query params
-* sorting "for free"
-* AJAX or non-AJAX modes
+<pre><code>
+sort_header(:cars) 
+</code></pre>
+
+This fellow knows which sorting scheme has been selected, knows of preferred
+sort orders for other sorts that aren't being used at the moment, and
+communicates with the filter so that a user has a seamless experience when
+going back and forth between sorting and filtering in AJAX or non-AJAX modes.
+
+h2. For more information.
+
+If you are interested in seeing more specifically what kinds of filtration 
+that you can do, check out these wishlists.  I have not yet updated them
+to be in line with the codebase, but it should give you a lot better idea
+about the API that I am aiming for.
+
+* "Filtering":http://github.com/bigfleet/data_table/wikis/filteringwishlist
+* "Sorting":http://github.com/bigfleet/data_table/wikis/sortingwishlist
+* "UI":http://github.com/bigfleet/data_table/wikis/uiwishlist
 
 h2. Philosophy
 
