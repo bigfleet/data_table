@@ -1,24 +1,54 @@
 h1. data_table:
 
-h2. Status
-
-We're in pre-alpha right now, I am trying to get this to meet my first requirements.
 
 h2. Goal:
 
+h3. Give a little...
 Define a filter in your controller, like so:
 
 <pre><code>
-filter_spec_(:name => :testing ) do |f|
-  f.element(:type) do |e|
-    e.default  "Foos and Bars", nil
-    e.option   "Foos",          'foo'
-    e.option   "Bars",          'bar'
+filter_spec(:cars ) do |f|
+  f.element(:color) do |e|
+    e.default  "All"
+    e.option   "Blue",          'blue'
+    e.option   "Green",         'green'
   end
 end
 </code></pre>
 
-resulting in the following:
+
+h3. get a lot.
+
+h4. In your controlller
+
+You get two ways of communicating with a finder in the model layer that
+faithfully represent what your user is looking for.
+
+h5. When the user has made no selection
+
+<pre><code>
+YourController#conditions_for(:cars) => []
+</code></pre>
+
+<pre><code>
+YourController#options_for(:cars) => {:color => nil}
+</code></pre>
+
+h5. When the user has made a selection of blue
+
+<pre><code>
+YourController#conditions_for(:cars) => ["color => ?", 'blue']
+</code></pre>
+
+<pre><code>
+YourController#options_for(:cars) => {:color => 'blue'}
+</code></pre>
+
+h4. In the view
+
+<pre><code>
+</code></pre>
+
 
 * helpers on the front end to render selection box filters that know what option was selected, if any
 * asking for a set of additional conditions to pass to a model-based finder
