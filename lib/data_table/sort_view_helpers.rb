@@ -23,6 +23,15 @@ module DataTable
     
     def sort_option_url_for(sort_option, options)
       # for the url that we generate, we link to the *opposite* sort
+      base_url = "?"
+      url_params = if sort_option.filter_name
+        {sort_option.filter_name => {:sort_key => sort_option.key,
+                                     :sort_order => sort_option.other_order}}
+      else
+        {:sort_key => sort_option.key,
+         :sort_order => sort_option.other_order}}
+      end
+      # still need to get these filtered in with filter options
       "?sort_key=#{sort_option.key}&sort_order=#{sort_option.other_order}"
     end
 
@@ -33,7 +42,7 @@ module DataTable
       else
         "sortArrow001"
       end    
-      image_tag("chrome/#{icon}.gif", :alt => "Sort by #{caption_for(sort_option, options)}")
+      image_tag("chrome/#{icon}.gif", :border => 0, :alt => "Sort by #{caption_for(sort_option, options)}")
     end
 
     # examine fetched parameters, options, and set up to determine linked caption

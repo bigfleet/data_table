@@ -7,7 +7,7 @@ class Sort
   # pass the same options in over and over again unless
   # you want specific behavior.
   
-  attr_accessor :options, :mode, :default_option, :selected, :params
+  attr_accessor :options, :mode, :default_option, :selected, :params, :filter
   
   def initialize(_options = {})
     @mode = _options[:mode] || :standard
