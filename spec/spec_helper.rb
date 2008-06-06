@@ -14,19 +14,19 @@ class HaveHtmlLinkWith
   def matches?(target)
     @target = target
     dat_match = Regexp.compile( '<a href="(.+)">', Regexp::MULTILINE)
-    match = @target.match dat_match
-    return false unless match
-    matched_link = match[1]
-    all_matched = @expected_options.each.inject(true) do |acc, opt|
-      puts "matching #{matched_link} against #{opt[0]}=#{opt[1]}"
-      acc = acc && Regexp.compile("#{opt[0]}=#{opt[1]}", Regexp::MULTILINE), matched_link
+    @match = @target.match dat_match
+    return false unless @match
+    matched_link = @match[0]
+    all_matched = true
+    @expected_options.inject(true) do |acc, opt|
+      acc && (matched_link =~ Regexp.compile(Regexp.escape("#{opt[0]}=#{opt[1]}"), Regexp::MULTILINE))
     end
   end
   def failure_message
-    "expected #{@target.inspect} to match all of #{@expected_options}, but did not"
+    "expected #{@match[0].inspect} to match all of #{@expected_options.inspect}, but did not"
   end
   def negative_failure_message
-    "expected #{@target.inspect} not to match all of #{@expected_options}, but did"
+    "expected #{@match[0].inspect} not to match all of #{@expected_options.inspect}, but did"
   end
 end
 

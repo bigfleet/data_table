@@ -130,7 +130,9 @@ describe DataTable::ViewHelpers do
 
     describe "for the make sort option" do
       before(:each) do
-        @controller.should_receive(:url_for).with({:sort_key => "make", :sort_order => "desc"}).and_return("?sort_key=make&sort_order=desc")        
+        @controller.should_receive(:url_for).with(
+          {:sort_key => "make", :sort_order => "desc"}
+        ).and_return("?cars[sort_key]=make&cars[sort_order]=desc&cars[color]=blue")        
         @sort = @controller.find_filter(:cars).sort
         @make_html = key_for(@sort, "make", {})
       end
@@ -141,7 +143,7 @@ describe DataTable::ViewHelpers do
 
       it "should have a click on make sort in descending order" do
         @make_html.should have_html_link_with(
-        {:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}}
+        flatten_hash({:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}})
         )
       end
 
