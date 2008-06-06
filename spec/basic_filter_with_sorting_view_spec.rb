@@ -29,11 +29,8 @@ describe DataTable::ViewHelpers do
         e.option  "Other"
       end
     end
-  end
-  
-  it "should find the filter storable and retrievable" do
-    find_filter(:cars).should_not be_nil
-    find_filter(:cars).should == @car_filter
+    @controller = Object.new
+    @controller.should_receive(:find_filter).with(:cars).and_return(@car_filter)
   end
   
   it "should be skinnable"
@@ -44,45 +41,50 @@ describe DataTable::ViewHelpers do
       @params = {}
     end
     
-    it "should not error when rendering the filter form" do
-      filter_form(:cars).should_not be_nil
-    end
+    describe "the filter form" do
+    
+      it "should not error when rendering the filter form" do
+        filter_form(:cars).should_not be_nil
+      end
 
-    it "should render a default option as selected" do
-      filter_form(:cars).should match(/<option value=\"all\" selected/)
-    end
-
-    it "should render a sort header" do
-      sort_header(:cars).should_not be_nil
-    end
-
-    it "should indicate that make is currently sorted in ascending order" do
-      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
-    end
-
-    it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
-    end
-
-    it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+      it "should render a default option as selected" do
+        filter_form(:cars).should match(/<option value=\"all\" selected/)
+      end
+    
     end
     
-    describe "using a key-by-key approach" do
+    describe "the sort header" do
+      
       before(:each) do
-        @sort = @car_filter.sort
-        @sort_option = @sort.option_with_name("make")
+        @controller.should_receive(:url_for).at_least(1).and_return("BLABLALBA")
       end
-      
-      it "should expose a utilizable key" do
-        @sort.should_not be_nil
-        @sort_option.should_not be_nil
-        @sort_option.key.should == "make"
+
+      it "should render a sort header" do
+        sort_header(:cars).should_not be_nil
       end
+
+      it "should indicate that make is currently sorted in ascending order" do
+        sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
+      end
+
+      it "should have a click on make sort in descending order" do
+        sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
+      end
+
+      it "should have the first request to sort by year be in descending order" do
+        sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+      end
+    
+      describe "using a key-by-key approach" do
+        before(:each) do
+          @sort = @controller.find_filter(:cars).sort
+          @make_html = key_for(@sort, "make", {:caption => "Make of Automobile"})
+        end
       
-      it "should allow overriding of the default caption" do
-        results = key(@sort, "make", {:caption => "Make of Automobile"})
-        results.should =~ /Make of Automobile/
+        it "should allow overriding of the default caption" do
+          @make_html.should =~ /Make of Automobile/
+        end
+      
       end
       
     end
@@ -95,49 +97,64 @@ describe DataTable::ViewHelpers do
       @params = {:cars => {:color => "blue"}}
     end
     
-    it "should not error when rendering the filter form" do
-      filter_form(:cars).should_not be_nil
-    end
+    describe "the filter form" do
+    
+      it "should not error when rendering the filter form" do
+        filter_form(:cars).should_not be_nil
+      end
 
-    it "should not render a default option as selected" do
-      filter_form(:cars).should_not match(/<option value=\"all\" selected/)
+      it "should not render a default option as selected" do
+        filter_form(:cars).should_not match(/<option value=\"all\" selected/)
+      end
+    
+      it "should render the selected parameter as selected" do
+        filter_form(:cars).should match(/<option value=\"blue\" selected/)
+      end
+      
     end
     
-    it "should render the selected parameter as selected" do
-      filter_form(:cars).should match(/<option value=\"blue\" selected/)
-    end
+    describe "the sort header" do
 
-    it "should render a sort header" do
-      sort_header(:cars).should_not be_nil
-    end
-    
-    describe "for the make sort option" do
       before(:each) do
-        @sort = @car_filter.sort
-        @make_html = key(@sort, "make", {})
-      end
-      
-      it "should indicate that make is currently sorted in ascending order" do
-        @make_html.should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
+        @controller.should_receive(:url_for).at_least(1).and_return("BLABLALBA")
       end
 
-      it "should have a click on make sort in descending order" do
-        @make_html.should =~ /\?sort_key=make&sort_order=desc/
-      end
-      
-    end
-    
-    describe "for the year sort option" do
-      
-      before(:each) do
-        @sort = @car_filter.sort
-        @year_html = key(@sort, "year", {})
+
+      it "should render a sort header" do
+        sort_header(:cars).should_not be_nil
       end
 
-      it "should have the first request to sort by year be in descending order" do
-        @year_html.should =~ /\?sort_key=year&sort_order=desc/
+      describe "for the make sort option" do
+        before(:each) do
+          @sort = @controller.find_filter(:cars).sort
+          @make_html = key_for(@sort, "make", {})
+        end
+
+        it "should indicate that make is currently sorted in ascending order" do
+          @make_html.should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
+        end
+
+        # it "should have a click on make sort in descending order" do
+        #   @make_html.should have_html_link_with(
+        #     {:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}}
+        #   )
+        # end
+
       end
-      
+
+      describe "for the year sort option" do
+
+        before(:each) do
+          @sort = @car_filter.sort
+          @year_html = key_for(@sort, "year", {})
+        end
+
+        it "should have the first request to sort by year be in descending order" do
+          @year_html.should =~ /\?sort_key=year&sort_order=desc/
+        end
+
+      end
+
     end
     
   end
@@ -146,34 +163,49 @@ describe DataTable::ViewHelpers do
     
     before(:each) do
       @params = {:cars => {:sort_key => "make", :sort_order => "desc"}}
+      @controller.should_receive(:url_for).at_least(1).and_return("BLABLALBA")
     end
     
-    it "should not error when rendering the filter form" do
-      filter_form(:cars).should_not be_nil
-    end
+    describe "the filter form" do
+      
+      it "should not error when rendering the filter form" do
+        filter_form(:cars).should_not be_nil
+      end
 
-    it "should not error when rendering the filter form" do
-      filter_form(:cars).should_not be_nil
-    end
+      it "should not error when rendering the filter form" do
+        filter_form(:cars).should_not be_nil
+      end
 
-    it "should render a default option as selected" do
-      filter_form(:cars).should match(/<option value=\"all\" selected/)
+      it "should render a default option as selected" do
+        filter_form(:cars).should match(/<option value=\"all\" selected/)
+      end
+      
+      
     end
     
-    it "should render a sort header" do
-      sort_header(:cars).should_not be_nil
-    end
+    describe "the sort header" do
+      
+      before(:each) do
+        @controller.should_receive(:url_for).at_least(1).and_return("?sort_key=make&sort_order=asc")
+      end
+      
+      it "should render a sort header" do
+        sort_header(:cars).should_not be_nil
+      end
 
-    it "should indicate that make is currently sorted in descending order" do
-      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_desc.gif/
-    end
+      # ?? this doesn't call url_for?
+      it "should indicate that make is currently sorted in descending order" do
+        sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_desc.gif/
+      end
 
-    it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=make&sort_order=asc/
-    end
+      it "should have a click on make sort in descending order" do
+        sort_header(:cars).should =~ /\?sort_key=make&sort_order=asc/
+      end
 
-    it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+      it "should have the first request to sort by year be in descending order" do
+        sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+      end
+      
     end
     
   end
@@ -185,10 +217,8 @@ describe DataTable::ViewHelpers do
     
   end
   
-  # This is way too tricky-- made to get these tests and needed 
-  # Rails plugin structure living and working together
   def controller
-    self
+    @controller
   end
   
 end

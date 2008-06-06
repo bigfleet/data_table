@@ -1,6 +1,7 @@
 %w[sort_view_helpers filter_view_helpers].each {|file| require "data_table/#{file}"}
 
 module DataTable
+  
   include SortViewHelpers
   include FilterViewHelpers
   # = Data Table view helpers

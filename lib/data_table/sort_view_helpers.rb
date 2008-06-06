@@ -19,7 +19,7 @@ module DataTable
       yield(filter.sort.with(scoped_params))
     end
 
-    def key(sort, option_key, options)
+    def key_for(sort, option_key, options)
       opt = sort.option_with_name(option_key)
       render_sort_option_to_html(opt, options)
     end
@@ -32,18 +32,28 @@ module DataTable
       # assemble the bits
     end
     
+    def flatten_hash(hsh)
+      nest_key = hsh.keys.first
+      nested = hsh.values.first
+      result_hash = {}
+      nested.map{ |o| result_hash[nest_key.to_s+'['+o.first.to_s+"]"] = o.last.to_s }
+      result_hash
+    end
+    
     def sort_option_url_for(sort_option, options)
       # for the url that we generate, we link to the *opposite* sort
       base_url = "?"
-      url_params = if sort_option.filter_name
-        {sort_option.filter_name => {:sort_key => sort_option.key,
+      url_params = if sort_option.filter
+        sort_opts = {sort_option.filter_name => {:sort_key => sort_option.key,
                                      :sort_order => sort_option.other_order}}
+        sort_opts.merge(sort_option.filter.exposed_params)
       else
         {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}
       end
       # still need to get these filtered in with filter options
-      "?sort_key=#{sort_option.key}&sort_order=#{sort_option.other_order}"
+      #{}"?sort_key=#{sort_option.key}&sort_order=#{sort_option.other_order}"
+      controller.url_for(url_params)
     end
 
     # examine fetched parameters and set up, determine appearance of sort arrow

@@ -20,7 +20,7 @@ describe "A filter" do
       ajax.mode.should == :ajax
     end
     
-    it "should allow for choosing between AJAX modes" do
+    it "should default to standard mode" do
       non_ajax = Filter.new(:name => :testing)
       non_ajax.mode.should == :standard
     end
@@ -29,7 +29,7 @@ describe "A filter" do
     
   end
   
-  describe "when transforming itself" do
+  describe "when specified in usual format" do
     
     before(:each) do
       @old_f = Filter.spec(:name => :cars) do |f|
@@ -43,58 +43,74 @@ describe "A filter" do
         end
       end
       @params = {:cars => {:color => "blue"}}
-      @new_f = @old_f.with(@params)
     end
     
-    it "should transfer its name successfully" do
-      @new_f.name.should == @old_f.name
-    end
-    
-    it "should transfer the operation mode successfully" do
-      @new_f.mode.should == @old_f.mode
-    end
-    
-    it "should have the same number of elements" do
-      @new_f.elements.size.should == @old_f.elements.size
-    end
-    
-    it "should reflect the change in selection for elements" do
-      @new_f.elements.first.should be_active
-    end
-    
-  end
-  
-  describe "and its ActiveRecord friendly conditions" do
-    
-    describe "without access to parameters" do
-    end
-    
-    describe "with access to parameters" do
-    end
-    
-  end
-  
-  describe "and its flexibile options hash" do
-    
-    describe "without access to parameters" do
-    end
-    
-    describe "with access to parameters" do
+    describe "when transforming itself with parameters" do
       
-      it "should register an active element"
+      before(:each) do
+        @new_f = @old_f.with(@params)
+      end
       
-      it "should yield the expected conditions"
+      it "should transfer its name successfully" do
+        @new_f.name.should == @old_f.name
+      end
 
-      it "should yield the expected options"
+      it "should transfer the operation mode successfully" do
+        @new_f.mode.should == @old_f.mode
+      end
+
+      it "should have the same number of elements" do
+        @new_f.elements.size.should == @old_f.elements.size
+      end
+
+      it "should reflect the change in selection for elements" do
+        @new_f.elements.first.should be_active
+      end
       
+      
+    end
+    
+    describe "its ActiveRecord friendly conditions" do
+
+      it "should expose nothing without access to parameters" do
+        @old_f.conditions.should be_nil
+      end
+
+      it "should expose the original parameters when available" do
+        @new_f = @old_f.with(@params)
+        @new_f.conditions.should == ["color = ?", "blue"]
+      end
+
+    end
+
+    describe "its flexibile options hash" do
+
+      it "should expose nothing without access to parameters" do
+        @old_f.options.should == {:color => nil}
+      end
+
+      it "should expose the original parameters when available" do
+        @new_f = @old_f.with(@params)
+        @new_f.options.should == {:color => "blue"}
+      end
+
+    end
+
+    describe "its exposed parameters for url formation" do
+
+      it "should expose nothing without access to parameters" do
+        @old_f.exposed_params.should be_nil
+      end
+
+      it "should expose the original parameters when available" do
+        @new_f = @old_f.with(@params)
+        @new_f.exposed_params.should == @params
+      end
+
     end
     
   end
   
-  describe "when including a sort specification" do
-    
-    it "should ensure filter elements are serialized along with sort options"
-    
-  end
+
   
 end

@@ -29,8 +29,12 @@ class SortOption
     @current_order || (@preferred_order if active?)
   end
   
+  def filter
+    parent && parent.filter ? parent.filter : nil
+  end
+  
   def filter_name
-    parent && parent.filter ? parent.filter.name : nil
+    filter ? filter.name : nil
   end
   
 end

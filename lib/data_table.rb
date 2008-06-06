@@ -1,4 +1,5 @@
 require 'active_support'
+require 'actionpack'
 require 'erb'
 include ActiveSupport::CoreExtensions::String::Inflections 
 

@@ -71,6 +71,10 @@ module DataTable
       idles.each { |elt| cond_hash = cond_hash.merge({elt.field => nil})}
       return cond_hash
     end
+    
+    def exposed_params
+      @params
+    end
   
     # Like to be protected maybe?
     #protected
