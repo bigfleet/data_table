@@ -68,6 +68,25 @@ describe DataTable::ViewHelpers do
       sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
     end
     
+    describe "using a key-by-key approach" do
+      before(:each) do
+        @sort = @car_filter.sort
+        @sort_option = @sort.option_with_name("make")
+      end
+      
+      it "should expose a utilizable key" do
+        @sort.should_not be_nil
+        @sort_option.should_not be_nil
+        @sort_option.key.should == "make"
+      end
+      
+      it "should allow overriding of the default caption" do
+        results = key(@sort, "make", {:caption => "Make of Automobile"})
+        results.should =~ /Make of Automobile/
+      end
+      
+    end
+    
   end
   
   describe "with request parameters for filtering" do
