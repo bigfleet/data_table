@@ -46,17 +46,15 @@ module DataTable
       url_params = if sort_option.filter
         sort_opts = {sort_option.filter_name => {:sort_key => sort_option.key,
                                      :sort_order => sort_option.other_order}}
-        sort_opts.merge(sort_option.filter.exposed_params)
+        flatten_hash(sort_opts.merge(sort_option.filter.exposed_params))
       else
         {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}
       end
-      # still need to get these filtered in with filter options
-      #{}"?sort_key=#{sort_option.key}&sort_order=#{sort_option.other_order}"
       controller.url_for(url_params)
     end
 
-    # examine fetched parameters and set up, determine appearance of sort arrow
+    # render the appropriate icon for this sort option based on current sorting and state
     def icon_for(sort_option, options)
       icon = if sort_option.current_order
         "sort_#{sort_option.current_order}"
@@ -66,7 +64,7 @@ module DataTable
       image_tag("chrome/#{icon}.gif", :border => 0, :alt => "Sort by #{caption_for(sort_option, options)}")
     end
 
-    # examine fetched parameters, options, and set up to determine linked caption
+    # Determine caption for option, can be overriden by a <code>:caption</code> option
     def caption_for(sort_option, options = {})
       caption = options[:caption] || Inflector::humanize(sort_option.key).titleize
     end

@@ -99,7 +99,7 @@ describe "A filter" do
     describe "its exposed parameters for url formation" do
 
       it "should expose nothing without access to parameters" do
-        @old_f.exposed_params.should be_nil
+        @old_f.exposed_params.should == {}
       end
 
       it "should expose the original parameters when available" do
