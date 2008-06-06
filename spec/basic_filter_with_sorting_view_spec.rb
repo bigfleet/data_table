@@ -110,17 +110,34 @@ describe DataTable::ViewHelpers do
     it "should render a sort header" do
       sort_header(:cars).should_not be_nil
     end
+    
+    describe "for the make sort option" do
+      before(:each) do
+        @sort = @car_filter.sort
+        @make_html = key(@sort, "make", {})
+      end
+      
+      it "should indicate that make is currently sorted in ascending order" do
+        @make_html.should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
+      end
 
-    it "should indicate that make is currently sorted in ascending order" do
-      sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
+      it "should have a click on make sort in descending order" do
+        @make_html.should =~ /\?sort_key=make&sort_order=desc/
+      end
+      
     end
+    
+    describe "for the year sort option" do
+      
+      before(:each) do
+        @sort = @car_filter.sort
+        @year_html = key(@sort, "year", {})
+      end
 
-    it "should have a click on make sort in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
-    end
-
-    it "should have the first request to sort by year be in descending order" do
-      sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+      it "should have the first request to sort by year be in descending order" do
+        @year_html.should =~ /\?sort_key=year&sort_order=desc/
+      end
+      
     end
     
   end
