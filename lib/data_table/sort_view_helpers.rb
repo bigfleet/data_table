@@ -8,9 +8,20 @@ module DataTable
       filter.sort.with(scoped_params).options.collect do |o| 
         render_sort_option_to_html(o, options)
       end.join(<<-CR
-      
+
       CR
       )
+    end
+
+    def sort_header_for(filter_name, &block)
+      scoped_params = params && params[filter_name] ? params[filter_name] : {}
+      filter = controller.find_filter(filter_name).with(scoped_params)
+      yield(filter.sort.with(scoped_params))
+    end
+
+    def key(sort, option_key, options)
+      opt = sort.option_with_name(option_key)
+      render_sort_option_to_html(opt, options)
     end
     
     def render_sort_option_to_html(s, options)
@@ -29,7 +40,7 @@ module DataTable
                                      :sort_order => sort_option.other_order}}
       else
         {:sort_key => sort_option.key,
-         :sort_order => sort_option.other_order}}
+         :sort_order => sort_option.other_order}
       end
       # still need to get these filtered in with filter options
       "?sort_key=#{sort_option.key}&sort_order=#{sort_option.other_order}"

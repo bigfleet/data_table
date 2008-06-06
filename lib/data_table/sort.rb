@@ -27,6 +27,10 @@ class Sort
     opt
   end
   
+  def option_with_name(name)
+    options.select{ |o| o.key == name }.first
+  end
+  
   def default_key
     @default_option ? @default_option.key : nil
   end
