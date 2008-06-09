@@ -1,5 +1,9 @@
 h1. data_table:
 
+h2. Status
+
+If you'd like filtering to use AJAX callbacks, sorting to use page loads, 
+and don't need pagination, data_table is ready for you!
 
 h2. Goal:
 
