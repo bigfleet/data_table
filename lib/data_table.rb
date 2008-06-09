@@ -20,6 +20,8 @@ module DataTable
     def to_sort(filter, options = {}, &block)
       sort = Sort.spec(options, &block)
       filter.sort = sort
+      sort.filter = filter
+      sort
     end
     
     def conditions_for(filter_name)

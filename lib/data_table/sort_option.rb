@@ -20,7 +20,7 @@ class SortOption
   
   # returns the inverse of current_order, or 'desc' by default
   def other_order
-    other_order = (ORDERS - [current_order]).last
+    (ORDERS - [current_order]).last
   end
   
   # returns 'asc', 'desc', or nil, depending on the order (or disorder) of
@@ -30,7 +30,7 @@ class SortOption
   end
   
   def filter
-    parent && parent.filter ? parent.filter : nil
+    @parent && @parent.filter ? @parent.filter : nil
   end
   
   def filter_name

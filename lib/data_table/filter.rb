@@ -41,11 +41,15 @@ module DataTable
     
     def with(params = {})
       return self unless params && params[@name]
-      f = Filter.new(:name => @name, :mode => @mode, :sort => @sort)
+      f = Filter.new(:name => @name, :mode => @mode)
       @elements.each do |elt|
         f.add_element(elt.with(params[@name]))
       end 
       f.params = params
+      if @sort
+        @sort.filter = f
+        f.sort = @sort
+      end
       f
     end
   
@@ -74,6 +78,19 @@ module DataTable
     
     def exposed_params
       @params
+    end
+    
+    def filtered_params
+      if @params && @params[@name] 
+        parms = @params[@name]
+        # if they don't exist, no effect
+        # if they do exist, nothing to do with filter
+        parms.delete(:sort_key)
+        parms.delete(:sort_order)
+        parms
+      else
+        {}
+      end
     end
   
     # Like to be protected maybe?

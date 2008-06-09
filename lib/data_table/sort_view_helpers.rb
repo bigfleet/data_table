@@ -3,9 +3,8 @@ module DataTable
     
     # TODO: *UGH* including filter_name *FAIL*
     def sort_header(name = nil, options = {})
-      scoped_params = params && params[name] ? params[name] : {}
-      filter = controller.find_filter(name).with(scoped_params)
-      filter.sort.with(scoped_params).options.collect do |o| 
+      filter = controller.find_filter(name).with(params)
+      filter.sort.with(params).options.collect do |o| 
         render_sort_option_to_html(o, options)
       end.join(<<-CR
 
@@ -14,9 +13,8 @@ module DataTable
     end
 
     def sort_header_for(filter_name, &block)
-      scoped_params = params && params[filter_name] ? params[filter_name] : {}
-      filter = controller.find_filter(filter_name).with(scoped_params)
-      yield(filter.sort.with(scoped_params))
+      filter = controller.find_filter(filter_name).with(params)
+      yield(filter.sort.with(params))
     end
 
     def key_for(sort, option_key, options)
@@ -42,11 +40,16 @@ module DataTable
     
     def sort_option_url_for(sort_option, options)
       # for the url that we generate, we link to the *opposite* sort
-      base_url = "?"
       url_params = if sort_option.filter
-        sort_opts = {sort_option.filter_name => {:sort_key => sort_option.key,
-                                     :sort_order => sort_option.other_order}}
-        flatten_hash(sort_opts.merge(sort_option.filter.exposed_params))
+        sort_params = {:sort_key => sort_option.key,
+                     :sort_order => sort_option.other_order}
+        filter_params = sort_option.filter.filtered_params
+        all_params = if filter_params 
+          sort_params.merge(filter_params)
+        else
+          sort_params
+        end
+        flatten_hash(sort_option.filter_name => all_params)
       else
         {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}

@@ -31,6 +31,14 @@ describe DataTable::ViewHelpers do
     end
     @controller = Object.new
     @controller.should_receive(:find_filter).with(:cars).and_return(@car_filter)
+    @params_for_make_desc = flatten_hash(:cars => {:sort_key => "make", :sort_order => "desc"})
+    @url_for_make_desc = "?cars[sort_key]=make&cars[sort_order]=desc"
+    @params_for_year_desc = flatten_hash(:cars => {:sort_key => "year", :sort_order => "desc"})
+    @url_for_year_desc = "?cars[sort_key]=year&cars[sort_order]=desc"
+    @params_for_make_asc =  flatten_hash(:cars => {:sort_key => "make", :sort_order => "asc"})
+    @url_for_make_asc = "?cars[sort_key]=make&cars[sort_order]=asc"
+    @params_for_year_asc =  flatten_hash(:cars => {:sort_key => "year", :sort_order => "asc"})
+    @url_for_year_asc = "?cars[sort_key]=year&cars[sort_order]=asc"
   end
   
   it "should be skinnable"
@@ -56,8 +64,8 @@ describe DataTable::ViewHelpers do
     describe "the sort header" do
       
       before(:each) do
-        @controller.should_receive(:url_for).with({:sort_key => "make", :sort_order => "desc"}).and_return("?sort_key=make&sort_order=desc")
-        @controller.should_receive(:url_for).with({:sort_key => "year", :sort_order => "desc"}).and_return("?sort_key=year&sort_order=desc")          
+        @controller.should_receive(:url_for).with(@params_for_make_desc).and_return(@url_for_make_desc)
+        @controller.should_receive(:url_for).with(@params_for_year_desc).and_return(@url_for_year_desc)
       end
 
       it "should render a sort header" do
@@ -69,11 +77,11 @@ describe DataTable::ViewHelpers do
       end
 
       it "should have a click on make sort in descending order" do
-        sort_header(:cars).should =~ /\?sort_key=make&sort_order=desc/
+        sort_header(:cars).should =~ Regexp.compile(Regexp.escape(@url_for_make_desc))
       end
 
       it "should have the first request to sort by year be in descending order" do
-        sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+        sort_header(:cars).should =~ Regexp.compile(Regexp.escape(@url_for_year_desc))
       end
       
     end
@@ -81,7 +89,7 @@ describe DataTable::ViewHelpers do
     describe "using a key-by-key approach" do
       before(:each) do
         @sort = @controller.find_filter(:cars).sort
-        @controller.should_receive(:url_for).with({:sort_key => "make", :sort_order => "desc"}).and_return("?sort_key=make&sort_order=desc")        
+        @controller.should_receive(:url_for).with(@params_for_make_desc).and_return(@url_for_make_desc)
         @make_html = key_for(@sort, "make", {:caption => "Make of Automobile"})
       end
     
@@ -97,6 +105,10 @@ describe DataTable::ViewHelpers do
     
     before(:each) do
       @params = {:cars => {:color => "blue"}}
+      @params_for_make_desc = flatten_hash({:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}})
+      @url_for_make_desc = "?cars[sort_key]=make&cars[sort_order]=desc&cars[color]=blue"
+      @params_for_year_desc = flatten_hash({:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}})
+      @url_for_year_desc = "?cars[sort_key]=year&cars[sort_order]=desc&cars[color]=blue"      
     end
     
     describe "the filter form" do
@@ -118,8 +130,8 @@ describe DataTable::ViewHelpers do
     describe "the sort header" do
       
       before(:each) do
-        @controller.should_receive(:url_for).with({:sort_key => "make", :sort_order => "desc"}).and_return("?sort_key=make&sort_order=desc")
-        @controller.should_receive(:url_for).with({:sort_key => "year", :sort_order => "desc"}).and_return("?sort_key=year&sort_order=desc")        
+        @controller.should_receive(:url_for).with(@params_for_make_desc).and_return(@url_for_make_desc)
+        @controller.should_receive(:url_for).with(@params_for_year_desc).and_return(@url_for_year_desc)
       end
 
 
@@ -130,14 +142,13 @@ describe DataTable::ViewHelpers do
 
     describe "for the make sort option" do
       before(:each) do
-        @controller.should_receive(:url_for).with(
-          {:sort_key => "make", :sort_order => "desc"}
-        ).and_return("?cars[sort_key]=make&cars[sort_order]=desc&cars[color]=blue")        
-        @sort = @controller.find_filter(:cars).sort
-        @make_html = key_for(@sort, "make", {})
+        @controller.should_receive(:url_for).with(@params_for_make_desc).and_return(@url_for_make_desc)        
+        @sort = sort_header_for(:cars) do |sort|
+          @make_html = key_for(sort, "make", {})
+        end
       end
 
-      it "should indicate that make is currently sorted in ascending order" do
+      it "should indicate that make is currently sorted in descending order" do
         @make_html.should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_asc.gif/
       end
 
@@ -152,13 +163,16 @@ describe DataTable::ViewHelpers do
     describe "for the year sort option" do
 
       before(:each) do
-        @controller.should_receive(:url_for).with({:sort_key => "year", :sort_order => "desc"}).and_return("?sort_key=year&sort_order=desc")                
-        @sort = @controller.find_filter(:cars).sort
-        @year_html = key_for(@sort, "year", {})
+        @controller.should_receive(:url_for).with(@params_for_year_desc).and_return(@url_for_year_desc)
+        @sort = sort_header_for(:cars) do |sort|
+          @year_html = key_for(sort, "year", {})
+        end
       end
 
       it "should have the first request to sort by year be in descending order" do
-        @year_html.should =~ /\?sort_key=year&sort_order=desc/
+        @year_html.should have_html_link_with(
+        flatten_hash({:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}})
+        )
       end
 
     end
@@ -191,8 +205,8 @@ describe DataTable::ViewHelpers do
     describe "the sort header" do
       
       before(:each) do
-        @controller.should_receive(:url_for).with({:sort_key => "make", :sort_order => "asc"}).and_return("?sort_key=make&sort_order=asc")
-        @controller.should_receive(:url_for).with({:sort_key => "year", :sort_order => "desc"}).and_return("?sort_key=year&sort_order=desc")          
+        @controller.should_receive(:url_for).with(@params_for_make_asc).and_return(@url_for_make_asc)
+        @controller.should_receive(:url_for).with(@params_for_year_desc).and_return(@url_for_year_desc)
       end
       
       it "should render a sort header" do
@@ -203,12 +217,12 @@ describe DataTable::ViewHelpers do
         sort_header(:cars).should =~ /<img alt=\"Sort by Make\" border=\"0\" src=\"(.+)sort_desc.gif/
       end
 
-      it "should have a click on make sort in descending order" do
-        sort_header(:cars).should =~ /\?sort_key=make&sort_order=asc/
+      it "should have a click on make sort in ascending order" do
+        sort_header(:cars).should =~ Regexp.compile(Regexp.escape(@url_for_make_asc))
       end
 
       it "should have the first request to sort by year be in descending order" do
-        sort_header(:cars).should =~ /\?sort_key=year&sort_order=desc/
+        sort_header(:cars).should =~ Regexp.compile(Regexp.escape(@url_for_year_desc))
       end
       
     end

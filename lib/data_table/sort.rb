@@ -37,8 +37,10 @@ class Sort
   
   def with(params = {})
     @params = params
-    sort_order = params[:sort_order] || 'asc'
-    sort_key = params[:sort_key] || default_key
+    active_params = filter.nil? ? @params : @params[filter.name] || {}
+    sort_key = active_params[:sort_key] || default_key
+    sort_order = active_params[:sort_order] || 'asc'
+    puts "activated #{[sort_key, sort_order].inspect}"
     @selected = options.select{ |o| o.key == sort_key }.first
     @selected.current_order = sort_order
     self
