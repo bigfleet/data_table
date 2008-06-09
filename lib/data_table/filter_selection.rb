@@ -4,7 +4,7 @@ module DataTable
     attr_accessor :label, :value
     def initialize(label, args)
       @label = label
-      @value = (args && !args.empty?) ? args : valuize_label
+      @value = (args && !args.empty?) ? args.first : valuize_label
     end 
     
     def phrase

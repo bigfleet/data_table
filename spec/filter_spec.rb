@@ -40,6 +40,7 @@ describe "A filter" do
           e.option  "Silver"
           e.option  "Black"
           e.option  "Other"
+          e.option  "Polka Dot", "plka-dot"
         end
       end
       @params = {:cars => {:color => "blue"}}
@@ -80,6 +81,11 @@ describe "A filter" do
         @new_f = @old_f.with(@params)
         @new_f.conditions.should == ["color = ?", "blue"]
       end
+      
+      it "should utilize the value phrase, not the titlized label" do
+        @new_f = @old_f.with({:cars => {:color => "polka-dot"}})
+        @new_f.conditions.should == ["color = ?", "plka-dot"]
+      end
 
     end
 
@@ -92,6 +98,11 @@ describe "A filter" do
       it "should expose the original parameters when available" do
         @new_f = @old_f.with(@params)
         @new_f.options.should == {:color => "blue"}
+      end
+      
+      it "should utilize the value phrase, not the titlized label" do
+        @new_f = @old_f.with({:cars => {:color => "polka-dot"}})
+        @new_f.options.should == {:color => "plka-dot"}
       end
 
     end

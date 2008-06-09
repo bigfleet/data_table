@@ -1,5 +1,5 @@
 require 'active_support'
-require 'actionpack'
+gem 'actionpack', ">= 1.13.3"
 require 'erb'
 include ActiveSupport::CoreExtensions::String::Inflections 
 

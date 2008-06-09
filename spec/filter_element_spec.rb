@@ -78,6 +78,10 @@ describe "A filter element" do
         @fe.selected.should equal(@option1)
       end
       
+      it "should " do
+        @fe.to_hash.should == {:etype => 'stock'}
+      end
+      
       it "should render an appropriately selected HTML tag"  do
         @fe.to_html.should_not be_nil
       end
