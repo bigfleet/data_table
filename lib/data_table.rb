@@ -5,6 +5,16 @@ include ActiveSupport::CoreExtensions::String::Inflections
 
 %w[filter_element filter_selection filter sort sort_option].each {|file| require "data_table/#{file}"}
 
+class Hash
+  def flatten_one_level
+    nest_key = keys.first
+    nested = values.first
+    result_hash = {}
+    nested.map{ |o| result_hash[nest_key.to_s+'['+o.first.to_s+"]"] = o.last.to_s }
+    result_hash
+  end
+end
+
 module DataTable
 
   module InstanceMethods

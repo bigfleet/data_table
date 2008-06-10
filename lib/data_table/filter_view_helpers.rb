@@ -18,13 +18,9 @@ module DataTable
       filter = controller.find_filter(name).with(params)
       form_for_filter(filter, options)
     end
-    
-
-    
+        
     protected
-    
-
-    
+  
     def finalize_options(options)
       remote_options = { 
         :url => options.delete(:url),

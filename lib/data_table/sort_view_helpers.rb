@@ -30,14 +30,6 @@ module DataTable
       # assemble the bits
     end
     
-    def flatten_hash(hsh)
-      nest_key = hsh.keys.first
-      nested = hsh.values.first
-      result_hash = {}
-      nested.map{ |o| result_hash[nest_key.to_s+'['+o.first.to_s+"]"] = o.last.to_s }
-      result_hash
-    end
-    
     def sort_option_url_for(sort_option, options)
       # for the url that we generate, we link to the *opposite* sort
       url_params = if sort_option.filter
