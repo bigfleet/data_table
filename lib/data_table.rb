@@ -7,6 +7,7 @@ include ActiveSupport::CoreExtensions::String::Inflections
 
 class Hash
   def flatten_one_level
+    return self if keys.empty?
     nest_key = keys.first
     nested = values.first
     result_hash = {}

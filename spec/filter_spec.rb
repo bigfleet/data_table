@@ -117,6 +117,11 @@ describe "A filter" do
         @new_f = @old_f.with(@params)
         @new_f.exposed_params.should == @params
       end
+      
+      it "should flatten the exposed parameters appropriately" do
+        @new_f = @old_f.with(@params)
+        @new_f.exposed_params.flatten_one_level.should == {"cars[color]"=>"blue"}
+      end
 
     end
     
