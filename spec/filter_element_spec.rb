@@ -78,7 +78,7 @@ describe "A filter element" do
         @fe.selected.should equal(@option1)
       end
       
-      it "should " do
+      it "should use the selection phrase, not the titleized label for conditions" do
         @fe.to_hash.should == {:etype => 'stock'}
       end
       
