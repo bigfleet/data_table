@@ -41,7 +41,7 @@ module DataTable
         else
           sort_params
         end
-        flatten_hash(sort_option.filter_name => all_params)
+        {sort_option.filter_name => all_params}.flatten_one_level
       else
         {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}

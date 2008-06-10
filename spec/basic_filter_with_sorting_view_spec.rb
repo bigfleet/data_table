@@ -31,13 +31,13 @@ describe DataTable::ViewHelpers do
     end
     @controller = Object.new
     @controller.should_receive(:find_filter).with(:cars).and_return(@car_filter)
-    @params_for_make_desc = flatten_hash(:cars => {:sort_key => "make", :sort_order => "desc"})
+    @params_for_make_desc = {:cars => {:sort_key => "make", :sort_order => "desc"}}.flatten_one_level
     @url_for_make_desc = "?cars[sort_key]=make&cars[sort_order]=desc"
-    @params_for_year_desc = flatten_hash(:cars => {:sort_key => "year", :sort_order => "desc"})
+    @params_for_year_desc = {:cars => {:sort_key => "year", :sort_order => "desc"}}.flatten_one_level
     @url_for_year_desc = "?cars[sort_key]=year&cars[sort_order]=desc"
-    @params_for_make_asc =  flatten_hash(:cars => {:sort_key => "make", :sort_order => "asc"})
+    @params_for_make_asc =  {:cars => {:sort_key => "make", :sort_order => "asc"}}.flatten_one_level
     @url_for_make_asc = "?cars[sort_key]=make&cars[sort_order]=asc"
-    @params_for_year_asc =  flatten_hash(:cars => {:sort_key => "year", :sort_order => "asc"})
+    @params_for_year_asc =  {:cars => {:sort_key => "year", :sort_order => "asc"}}.flatten_one_level
     @url_for_year_asc = "?cars[sort_key]=year&cars[sort_order]=asc"
   end
   
@@ -105,9 +105,9 @@ describe DataTable::ViewHelpers do
     
     before(:each) do
       @params = {:cars => {:color => "blue"}}
-      @params_for_make_desc = flatten_hash({:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}})
+      @params_for_make_desc = {:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}}.flatten_one_level
       @url_for_make_desc = "?cars[sort_key]=make&cars[sort_order]=desc&cars[color]=blue"
-      @params_for_year_desc = flatten_hash({:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}})
+      @params_for_year_desc = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}.flatten_one_level
       @url_for_year_desc = "?cars[sort_key]=year&cars[sort_order]=desc&cars[color]=blue"      
     end
     
@@ -154,7 +154,7 @@ describe DataTable::ViewHelpers do
 
       it "should have a click on make sort in descending order" do
         @make_html.should have_html_link_with(
-        flatten_hash({:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}})
+         {:cars => {:sort_key => "make", :sort_order => "desc", :color => "blue"}}.flatten_one_level
         )
       end
 
@@ -171,7 +171,7 @@ describe DataTable::ViewHelpers do
 
       it "should have the first request to sort by year be in descending order" do
         @year_html.should have_html_link_with(
-        flatten_hash({:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}})
+          {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}.flatten_one_level
         )
       end
 
