@@ -48,7 +48,7 @@ module DataTable
       xml.label html_options[:label] if html_options[:label]
       case filter.mode
       when :ajax
-        xml << form_remote_tag(remote_options.merge(:id => options[:id]))
+        xml << form_remote_tag(remote_options.merge(:html =>{:id => options[:id]}))
       else
         xml << form_tag(form_options[:url], form_options.merge(:id => options[:id]))
       end
