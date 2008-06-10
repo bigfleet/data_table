@@ -64,6 +64,12 @@ module DataTable
           end
         end
       end
+      if options[:with]
+        options[:with].each do |opt|
+          xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{filter.name}_#{opt}")
+        end
+      end
+      submit_tag unless filter.mode == :ajax
       xml << "</form>"
     end
   end

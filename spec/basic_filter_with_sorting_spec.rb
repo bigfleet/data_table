@@ -11,6 +11,10 @@ describe FilterController, "When integrating with Rails" do
     @controller = FilterController.new
   end
   
+  it "should allow standard form submission"
+    
+  it "should allow inclusion of non-filter parameters into standard form submission"
+  
   describe "a simulated request with no parameters" do
     
     before(:each) do

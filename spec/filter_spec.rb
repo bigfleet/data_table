@@ -15,13 +15,13 @@ describe "A filter" do
       @f.elements.should have(1).things
     end
     
-    it "should allow for choosing between AJAX modes" do
-      ajax = Filter.new(:name => :testing, :mode => :ajax)
+    it "should default to Ajax mode" do
+      ajax = Filter.new(:name => :testing)
       ajax.mode.should == :ajax
     end
     
-    it "should default to standard mode" do
-      non_ajax = Filter.new(:name => :testing)
+    it "should allow for choosing standard mode" do
+      non_ajax = Filter.new(:name => :testing, :mode => :standard)
       non_ajax.mode.should == :standard
     end
 

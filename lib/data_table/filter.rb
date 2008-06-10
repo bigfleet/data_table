@@ -22,7 +22,7 @@ module DataTable
       @name = options[:name] || "filter"
       @elements = []
       @params = {}
-      @mode = options[:mode] || :standard
+      @mode = options[:mode] || :ajax
       @sort = options[:sort]
     end
   
