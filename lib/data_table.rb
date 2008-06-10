@@ -34,6 +34,11 @@ module DataTable
       sort
     end
     
+    def params_for(filter_name)
+      filter = find_filter(filter_name)
+      filter.with(params).exposed_params.flatten_one_level
+    end
+    
     def conditions_for(filter_name)
       filter = find_filter(filter_name)
       filter.with(params).conditions
