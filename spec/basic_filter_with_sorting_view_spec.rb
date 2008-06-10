@@ -58,7 +58,37 @@ describe DataTable::ViewHelpers do
       it "should render a default option as selected" do
         filter_form(:cars).should match(/<option value=\"all\" selected/)
       end
-    
+      
+      describe "regarding form submission" do
+        
+        it "should use AJAX-style submission by default" do
+          filter_form(:cars).should match(/Ajax.Updater/)
+        end
+        
+        it "should allow standard form submission" do
+          @form_html = filter_form(:cars, :mode => :standard)
+          @form_html.should_not match(/Ajax.Updater/)
+          @form_html.should match(/submit/)
+        end
+        
+        it "should allow inclusion of non-filter parameters into filtering" do
+          @params = {:tab => "used"}
+          @form_html = filter_form(:cars, :with => [params[:tab]])
+          @form_html.should match(/Ajax.Updater/)
+          @form_html.should match(/tab=used/)
+          @form_html.should_not match(/submit/)
+          @form_html
+        end
+        
+        it "should allow AJAX-style submission to a distinct URL" do
+          @form_html = filter_form(:cars, :remote_url => "/blah_url")
+          @form_html.should match(/Ajax.Updater/)
+          @form_html.should_not match(/submit/)
+          @form_html.should match(/\/blah_url/)
+        end
+        
+      end
+          
     end
     
     describe "the sort header" do
