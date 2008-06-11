@@ -4,12 +4,9 @@ describe "A filter-attached sort" do
    
   describe "when fully initialized" do
     before(:each) do
-      @f = Filter.new(:name => :cars)
       @s = Sort.new
       @default = @s.default 'make'
       @other = @s.option  'year', 'desc'
-      @f.sort = @s
-      @s.filter = @f
     end
     
     describe "with default sort" do
@@ -33,7 +30,7 @@ describe "A filter-attached sort" do
     describe "with alternate default sort" do
       
       before(:each) do
-        @s = @s.with(:cars => {:sort_key => 'make', :sort_order => 'desc'})
+        @s = @s.with({:sort_key => 'make', :sort_order => 'desc'})
       end
       
       it "should not change the selected option for alternate default sort" do
@@ -53,7 +50,7 @@ describe "A filter-attached sort" do
     describe "when sorting a secondary sort in preferred mode" do
       
       before(:each) do
-        @s = @s.with(:cars => {:sort_key => 'year', :sort_order => 'desc'})
+        @s = @s.with({:sort_key => 'year', :sort_order => 'desc'})
       end
       
       it "should not change the selected option for alternate default sort" do
@@ -73,7 +70,7 @@ describe "A filter-attached sort" do
     describe "when sorting a secondary sort in alternate mode" do
       
       before(:each) do
-        @s = @s.with(:cars => {:sort_key => 'year', :sort_order => 'asc'})
+        @s = @s.with({:sort_key => 'year', :sort_order => 'asc'})
       end
       
       it "should not change the selected option for alternate default sort" do
