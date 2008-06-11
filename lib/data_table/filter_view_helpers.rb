@@ -66,7 +66,7 @@ module DataTable
       end
       if filter.sort && filter.sort.selected
         active_sort = filter.sort.selected
-        xml << hidden_field_tag("#{filter_name}[sort_key]", active_sort.key.to_s, :id => "#{filter.name}_sort_key")
+        xml << hidden_field_tag("#{filter.name}[sort_key]", active_sort.key.to_s, :id => "#{filter.name}_sort_key")
         xml << hidden_field_tag("#{filter.name}[sort_order]", active_sort.current_order.to_s, :id => "#{filter.name}_sort_order")
       end
       if options[:with]
