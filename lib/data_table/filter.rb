@@ -16,7 +16,7 @@ module DataTable
   # and act on in a manner of its choosing
   class Filter
   
-    attr_accessor :name, :elements, :mode, :sort, :params
+    attr_accessor :name, :elements, :wrapper
   
     def initialize(options = {})
       @name = options[:name] || "filter"

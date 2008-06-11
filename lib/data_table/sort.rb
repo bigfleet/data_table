@@ -7,7 +7,7 @@ class Sort
   # pass the same options in over and over again unless
   # you want specific behavior.
   
-  attr_accessor :options, :mode, :default_option, :selected, :params, :filter
+  attr_accessor :options, :mode, :default_option, :selected, :wrapper
   
   def initialize(_options = {})
     @mode = _options[:mode] || :standard
@@ -36,13 +36,15 @@ class Sort
   end
   
   def with(params = {})
-    @params = params
+    s = Sort.new
+    s.params = @params
     active_params = filter.nil? ? @params : @params[filter.name] || {}
     sort_key = active_params[:sort_key] || default_key
     sort_order = active_params[:sort_order] || 'asc'
-    @selected = options.select{ |o| o.key == sort_key }.first
-    @selected.current_order = sort_order
-    self
+    s.options = @options
+    s.selected = s.options.select{ |o| o.key == sort_key }.first
+    s.selected.current_order = sort_order
+    s
   end
   
     
@@ -50,6 +52,10 @@ class Sort
     s = Sort.new(options)
     yield(s)
     return s
+  end
+  
+  def filter
+    (@filter ||= wrapper.filter) rescue nil
   end
   
 end

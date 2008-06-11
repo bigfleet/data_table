@@ -15,18 +15,20 @@ describe DataTable::ViewHelpers do
   attr_accessor :params
   
   before(:each) do
-    @car_filter = filter_spec(:name => :cars) do |f|
-      to_sort(f) do |s|
+    data_table(:cars) do |table|
+      table.sort_spec do |s|
         s.default 'make'
         s.option  'year', 'desc'
       end
-      f.element(:color) do |e|
-        e.default "All"
-        e.option  "Blue"
-        e.option  "Red"
-        e.option  "Silver"
-        e.option  "Black"
-        e.option  "Other"
+      table.filter_spec do |f|
+        f.element(:color) do |e|
+          e.default "All"
+          e.option  "Blue"
+          e.option  "Red"
+          e.option  "Silver"
+          e.option  "Black"
+          e.option  "Other"
+        end
       end
     end
     @controller = Object.new

@@ -1,9 +1,20 @@
-require 'active_support'
-gem 'actionpack', ">= 1.13.3"
-require 'erb'
-include ActiveSupport::CoreExtensions::String::Inflections 
+# Stolen outright from will_paginate
 
-%w[filter_element filter_selection filter sort sort_option].each {|file| require "data_table/#{file}"}
+plugin_root = File.join(File.dirname(__FILE__), '..')
+
+# simply use installed gems if available.  data_table's goal is max compatability
+
+require 'rubygems'
+  
+gem 'actionpack', ">= 1.13.3"
+gem 'activerecord', ">= 1.15.3"
+gem 'activesupport', ">= 1.4.2"
+
+
+
+$:.unshift "#{plugin_root}/lib"
+
+%w[filter_element filter_selection filter sort sort_option wrapper].each {|file| require "data_table/#{file}"}
 
 class Hash
   def flatten_one_level
@@ -19,41 +30,39 @@ end
 module DataTable
 
   module InstanceMethods
+        
     
-    
-    # TODO: I definitely prefer the Filter.spec syntax
-    def filter_spec(options, &block)
-      filter = Filter.spec(options, &block)
-      (@filters ||= {})[filter.name] = filter
+    def data_table(name, &block)
+      if block
+        yield(data_table_lookup[name] ||= Wrapper.new)
+      else
+        find_data_table_by_name(name)
+      end
     end
     
-    # TODO: Take care that the sorting can be used without filtering
-    def to_sort(filter, options = {}, &block)
-      sort = Sort.spec(options, &block)
-      filter.sort = sort
-      sort.filter = filter
-      sort
+    def params_for(name)
+      find_data_table_by_name(name).with(params).params
     end
     
-    def params_for(filter_name)
-      filter = find_filter(filter_name)
-      filter.with(params).exposed_params.flatten_one_level
+    def conditions_for(name)
+      find_data_table_by_name(name).with(params).conditions
     end
     
-    def conditions_for(filter_name)
-      filter = find_filter(filter_name)
-      filter.with(params).conditions
+    def options_for(name)
+      find_data_table_by_name(name).with(params).options
     end
     
-    def options_for(filter_name)
-      filter = find_filter(filter_name)
-      filter.with(params).options
+    
+    protected 
+    
+    def find_data_table_by_name(name)
+      data_table_lookup[name]
     end
     
-    def find_filter(filter_name)
-      @filters[filter_name]
+    def data_table_lookup
+      @data_tables ||= {}
     end
-    
+        
   end
 
   module ClassMethods

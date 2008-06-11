@@ -1,9 +1,8 @@
 module DataTable
   module SortViewHelpers
     
-    # TODO: *UGH* including filter_name *FAIL*
-    def sort_header(name = nil, options = {})
-      filter = controller.find_filter(name).with(params)
+    def sort_header(name)
+      data_table = controller.find_data_table_by_name(name).with(params)
       filter.sort.with(params).options.collect do |o| 
         render_sort_option_to_html(o, options)
       end.join(<<-CR

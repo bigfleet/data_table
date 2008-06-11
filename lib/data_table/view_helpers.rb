@@ -9,5 +9,6 @@ module DataTable
   # These methods are made available in your view templates to render
   # the table.  
   module ViewHelpers
+    
   end
 end

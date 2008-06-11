@@ -1,8 +1,8 @@
-require 'rubygems'
+require File.join(File.dirname(__FILE__), '/../lib/data_table')
 require 'spec'
 gem 'mocha'
 
-require File.join(File.dirname(__FILE__), 'boot') unless defined?(ActiveRecord)
+
 
 require 'data_table'
 include DataTable
