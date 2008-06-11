@@ -1,6 +1,10 @@
 module DataTable
   class Wrapper
-    attr_accessor :sort, :filter, :params, :form_options
+    attr_accessor :name, :sort, :filter, :params, :form_options
+    
+    def initialize(options)
+      @name = options[:name]
+    end
     
     def filter_spec(options={}, &block)
       @filter = Filter.spec(options, &block)
@@ -15,7 +19,7 @@ module DataTable
     end
     
     def with(params)
-      w = Wrapper.new
+      w = Wrapper.new(:name => @name)
       w.sort = @sort.with(params)
       w.filter = @filter.with(params)
       w.params = params
@@ -23,7 +27,7 @@ module DataTable
     end
     
     def exposed_params
-      params.flatten_one_level
+      (params||{}).flatten_one_level
     end
     
     def conditions
@@ -32,6 +36,10 @@ module DataTable
     
     def options
       @filter.options
+    end
+    
+    def all_options
+      exposed_params.merge((form_options||{}))
     end
     
     

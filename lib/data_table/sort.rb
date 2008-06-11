@@ -37,8 +37,7 @@ class Sort
   
   def with(params = {})
     s = Sort.new
-    s.params = @params
-    active_params = filter.nil? ? @params : @params[filter.name] || {}
+    active_params = wrapper.nil? ? params : params[wrapper.name] || {}
     sort_key = active_params[:sort_key] || default_key
     sort_order = active_params[:sort_order] || 'asc'
     s.options = @options
@@ -53,9 +52,5 @@ class Sort
     yield(s)
     return s
   end
-  
-  def filter
-    (@filter ||= wrapper.filter) rescue nil
-  end
-  
+
 end

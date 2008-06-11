@@ -100,41 +100,41 @@ describe "a data_table" do
       end
       
       it "should be able to expose parameters that should be used by other libraries" do
-        @cars.exposed_params.should == @parms.flatten_one_level
+        @sorted_cars.exposed_params.should == @parms.flatten_one_level
       end
 
       
       it "should be able to store remote form submission parameters" do
-        @cars.form_options = @opts
-        @cars.form_options.should == @opts
+        @sorted_cars.form_options = @opts
+        @sorted_cars.form_options.should == @opts
       end
 
       it "should be able to generate a hash of all known form data, including full current state" do
-        @cars.form_options = @opts
-        @cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @sorted_cars.form_options = @opts
+        @sorted_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
       end
       
     end
     
     describe "when filtered" do
       before(:each) do
-        @parms = :cars => {:color => "blue"}
+        @parms = {:cars => {:color => "blue"}}
         @filtered_cars = data_table(:cars).with(@parms)
       end
       
       it "should be able to expose parameters that should be used by other libraries" do
-        @cars.exposed_params.should == @parms.flatten_one_level
+        @filtered_cars.exposed_params.should == @parms.flatten_one_level
       end
 
       
       it "should be able to store remote form submission parameters" do
-        @cars.form_options = @opts
-        @cars.form_options.should == @opts
+        @filtered_cars.form_options = @opts
+        @filtered_cars.form_options.should == @opts
       end
 
       it "should be able to generate a hash of all known form data, including full current state" do
-        @cars.form_options = @opts
-        @cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @filtered_cars.form_options = @opts
+        @filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
       end
       
     end
@@ -146,18 +146,18 @@ describe "a data_table" do
       end
       
       it "should be able to expose parameters that should be used by other libraries" do
-        @cars.exposed_params.should == @parms.flatten_one_level
+        @sorted_and_filtered_cars.exposed_params.should == @parms.flatten_one_level
       end
 
       
       it "should be able to store remote form submission parameters" do
-        @cars.form_options = @opts
-        @cars.form_options.should == @opts
+        @sorted_and_filtered_cars.form_options = @opts
+        @sorted_and_filtered_cars.form_options.should == @opts
       end
 
       it "should be able to generate a hash of all known form data, including full current state" do
-        @cars.form_options = @opts
-        @cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @sorted_and_filtered_cars.form_options = @opts
+        @sorted_and_filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
       end
       
     end

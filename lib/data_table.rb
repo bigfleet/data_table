@@ -34,7 +34,7 @@ module DataTable
     
     def data_table(name, &block)
       if block
-        yield(data_table_lookup[name] ||= Wrapper.new)
+        yield(data_table_lookup[name] ||= Wrapper.new(:name => name))
       else
         find_data_table_by_name(name)
       end
