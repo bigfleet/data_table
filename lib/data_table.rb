@@ -54,6 +54,10 @@ module DataTable
       @filters[filter_name]
     end
     
+    def pagination_for(collection, filter_name, options)
+      will_paginate collection, options
+    end
+    
   end
 
   module ClassMethods
