@@ -9,5 +9,11 @@ module DataTable
   # These methods are made available in your view templates to render
   # the table.  
   module ViewHelpers
+    
+    def pagination_for(collection, filter_name, options)
+      will_paginate collection, options.reverse_merge(:renderer => "DataTable::LinkRenderer")
+    end
+    
+    
   end
 end
