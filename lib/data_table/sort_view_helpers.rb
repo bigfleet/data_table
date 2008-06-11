@@ -26,8 +26,7 @@ module DataTable
       caption = caption_for(s, options)
       sort_option_url = sort_option_url_for(s, options)
       icon = icon_for(s, options)
-      content_tag("td", [caption, link_to(icon, sort_option_url)].join(" "))
-      # assemble the bits
+      content_tag("td", link_to([caption, icon].join(" "), sort_option_url))
     end
     
     def sort_option_url_for(sort_option, options)
