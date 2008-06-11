@@ -5,6 +5,15 @@ h2. Status
 If you'd like filtering to use AJAX callbacks, sorting to use page loads, 
 and don't need pagination, data_table is ready for you!
 
+h2. Upcoming Initiative
+
+The full picture of data_table has come into view.
+  * optional filtering
+  * optional sorting
+  * included pagination
+  
+At its simplest, data_table can be a wrapper around will_paginate.  At it's most complex, it can ensure that information is supplied only once, and shared and used among those interrelated pieces as freely as possible
+
 h2. Goal:
 
 h3. Give a little...
