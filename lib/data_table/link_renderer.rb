@@ -1,11 +1,15 @@
-module DataTable
+class DataTable
   # This classis used by +will_paginate+ view helper to render our pagination
   # links.  
   class LinkRenderer
 
+    # The gap in page links is represented by:
+    #
+    #   <span class="gap">&hellip;</span>
+    attr_accessor :gap_marker
     
-    def initialize(arg1, arg2, arg3)
-      prepare(arg1, arg2, arg3)
+    def initialize
+      @gap_marker = '<span class="gap">&hellip;</span>'
     end
     
     # * +collection+ is a WillPaginate::Collection instance or any other object
