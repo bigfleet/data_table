@@ -1,6 +1,12 @@
+require File.dirname(__FILE__) + '/spec_helper'
+
 describe "a data_table" do
   
-  it "should have optional sorting"
+  uses_data_table
+  
+  it "should have optional sorting" do
+    self.should respond_to(:filter_spec)
+  end
   
   it "should have optional filtering"
   
