@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe "A filter-attached sort" do
+describe "A sort that is not attached to a wrapper" do
    
   describe "when fully initialized" do
     before(:each) do
@@ -9,7 +9,7 @@ describe "A filter-attached sort" do
       @other = @s.option  'year', 'desc'
     end
     
-    describe "with default sort" do
+    describe "with the default sort" do
       
       it "should store the default option correctly" do
         @s.default_option.should == @default
@@ -27,7 +27,7 @@ describe "A filter-attached sort" do
       
     end
     
-    describe "with alternate default sort" do
+    describe "with a alternate default sort" do
       
       before(:each) do
         @s = @s.with({:sort_key => 'make', :sort_order => 'desc'})
@@ -47,7 +47,7 @@ describe "A filter-attached sort" do
       
     end
     
-    describe "when sorting a secondary sort in preferred mode" do
+    describe "with a secondary sort in preferred mode" do
       
       before(:each) do
         @s = @s.with({:sort_key => 'year', :sort_order => 'desc'})
@@ -67,7 +67,7 @@ describe "A filter-attached sort" do
       
     end
     
-    describe "when sorting a secondary sort in alternate mode" do
+    describe "with a secondary sort in alternate mode" do
       
       before(:each) do
         @s = @s.with({:sort_key => 'year', :sort_order => 'asc'})
