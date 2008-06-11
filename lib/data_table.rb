@@ -55,7 +55,7 @@ module DataTable
     end
     
     def pagination_for(collection, filter_name, options)
-      will_paginate collection, options
+      will_paginate collection, options.reverse_merge(:renderer => "DataTable::LinkRenderer")
     end
     
   end
