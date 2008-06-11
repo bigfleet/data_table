@@ -36,11 +36,11 @@ class Sort
   
   def with(params = {})
     s = Sort.new
-    s.default_option = self.default_option
     active_params = wrapper.nil? ? params : params[wrapper.name] || {}
     sort_key = active_params[:sort_key] || default_key
     sort_order = active_params[:sort_order] || 'asc'
     s.options = @options.collect{|o| o.clone(s) }
+    s.default_option = s.options.select{ |o| o.key == self.default_option.key }.first
     s.selected = s.options.select{ |o| o.key == sort_key }.first
     s.selected.current_order = sort_order
     s

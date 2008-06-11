@@ -30,11 +30,7 @@ class SortOption
   end
   
   def clone(_parent)
-    so = SortOption.new
-    so.parent = _parent
-    so.key = @key
-    so.preferred_order = @preferred_order
-    so.current_order = @current_order
+    SortOption.new(_parent, @key, @preferred_order)
   end
   
 end
