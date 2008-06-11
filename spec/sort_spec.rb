@@ -90,3 +90,11 @@ describe "A sort that is not attached to a wrapper" do
   end
     
 end
+
+describe "A sort that is attached to a wrapper" do
+  
+  it "should be specced out" do
+    pending "not enough interdependence yet to justify full testing"
+  end
+  
+end
