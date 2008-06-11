@@ -5,11 +5,9 @@ describe "A sorting option" do
   describe "in its basic structure" do
     
     before(:each) do
-      @f = Filter.new(:name => :cars)
       @sort = Sort.new
       @default = @sort.default 'make'
       @option = @sort.option  'year', 'desc'
-      @f.sort = @sort
     end
     
     it "should know of its parent sort specification" do
