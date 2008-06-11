@@ -64,6 +64,11 @@ module DataTable
           end
         end
       end
+      if filter.sort && filter.sort.selected
+        active_sort = filter.sort.selected
+        xml << hidden_field_tag(active_sort.key.to_s, "sort_key", :id => "#{filter.name}_sort_key")
+        xml << hidden_field_tag(active_sort.current_order.to_s, "sort_order", :id => "#{filter.name}_sort_order")
+      end
       if options[:with]
         options[:with].each do |opt|
           xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{filter.name}_#{opt}")
