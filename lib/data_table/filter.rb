@@ -16,14 +16,11 @@ module DataTable
   # and act on in a manner of its choosing
   class Filter
   
-    attr_accessor :name, :elements, :wrapper
+    attr_accessor :elements, :wrapper
   
     def initialize(options = {})
-      @name = options[:name] || "filter"
       @elements = []
       @params = {}
-      @mode = options[:mode] || :ajax
-      @sort = options[:sort]
     end
   
     def element(options)
@@ -45,11 +42,6 @@ module DataTable
       @elements.each do |elt|
         f.add_element(elt.with(params[@name]))
       end 
-      f.params = params
-      if @sort
-        @sort.filter = f
-        f.sort = @sort
-      end
       f
     end
   
@@ -74,23 +66,6 @@ module DataTable
       idles = @elements - actives
       idles.each { |elt| cond_hash = cond_hash.merge({elt.field => nil})}
       return cond_hash
-    end
-    
-    def exposed_params
-      @params
-    end
-    
-    def filtered_params
-      if @params && @params[@name] 
-        parms = @params[@name]
-        # if they don't exist, no effect
-        # if they do exist, nothing to do with filter
-        parms.delete(:sort_key)
-        parms.delete(:sort_order)
-        parms
-      else
-        {}
-      end
     end
   
     # Like to be protected maybe?

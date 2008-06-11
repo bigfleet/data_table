@@ -15,18 +15,6 @@ describe "A filter" do
       @f.elements.should have(1).things
     end
     
-    it "should default to Ajax mode" do
-      ajax = Filter.new(:name => :testing)
-      ajax.mode.should == :ajax
-    end
-    
-    it "should allow for choosing standard mode" do
-      non_ajax = Filter.new(:name => :testing, :mode => :standard)
-      non_ajax.mode.should == :standard
-    end
-
-    it "should allow setting the default AJAX mode on an application wide level"
-    
   end
   
   describe "when specified in usual format" do
@@ -52,14 +40,6 @@ describe "A filter" do
         @new_f = @old_f.with(@params)
       end
       
-      it "should transfer its name successfully" do
-        @new_f.name.should == @old_f.name
-      end
-
-      it "should transfer the operation mode successfully" do
-        @new_f.mode.should == @old_f.mode
-      end
-
       it "should have the same number of elements" do
         @new_f.elements.size.should == @old_f.elements.size
       end
@@ -106,27 +86,7 @@ describe "A filter" do
       end
 
     end
-
-    describe "its exposed parameters for url formation" do
-
-      it "should expose nothing without access to parameters" do
-        @old_f.exposed_params.should == {}
-      end
-
-      it "should expose the original parameters when available" do
-        @new_f = @old_f.with(@params)
-        @new_f.exposed_params.should == @params
-      end
-      
-      it "should flatten the exposed parameters appropriately" do
-        @new_f = @old_f.with(@params)
-        @new_f.exposed_params.flatten_one_level.should == {"cars[color]"=>"blue"}
-      end
-
-    end
     
   end
-  
-
   
 end
