@@ -37,11 +37,10 @@ module DataTable
     end
     
     def with(params = {})
-      return self unless params && params[@name]
-      f = Filter.new(:name => @name, :mode => @mode)
+      f = Filter.new
       @elements.each do |elt|
-        f.add_element(elt.with(params[@name]))
-      end 
+        f.add_element(elt.with(params))
+      end
       f
     end
   

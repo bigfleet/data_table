@@ -1,13 +1,5 @@
-gem 'actionpack'
-require 'action_controller' #orly?
-require 'action_view'
-
 module DataTable
   class FilterElement
-  
-    include ActionView::Helpers::TagHelper
-    include ActionView::Helpers::FormTagHelper  
-    include ActionView::Helpers::FormOptionsHelper
   
     attr_accessor :table, :field, :operator, :selected, :default, :parent
     attr_reader :selections
@@ -42,8 +34,10 @@ module DataTable
   
 
     def with(params = {})
-      update_selection_with(params)
-      return self
+      fe = FilterElement.new(:table => @table, :field => @field, :operator => @operator, 
+                                :default => @default, :selected => @default)
+      fe.selected = fe.selections.select{ |e| e.valuize_label == param_val(params) }.first
+      return fe
     end
   
     def to_hash

@@ -9,7 +9,7 @@ require 'rubygems'
 gem 'actionpack', ">= 1.13.3"
 gem 'activerecord', ">= 1.15.3"
 gem 'activesupport', ">= 1.4.2"
-
+require 'action_controller'
 
 
 $:.unshift "#{plugin_root}/lib"

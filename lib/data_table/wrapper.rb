@@ -21,7 +21,9 @@ module DataTable
     def with(params)
       w = Wrapper.new(:name => @name)
       w.sort = @sort.with(params)
+      w.sort.wrapper = self
       w.filter = @filter.with(params)
+      w.filter.wrapper = self
       w.params = params
       w
     end

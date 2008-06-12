@@ -2,8 +2,6 @@ require File.join(File.dirname(__FILE__), '/../lib/data_table')
 require 'spec'
 gem 'mocha'
 
-
-
 require 'data_table'
 include DataTable
 
@@ -36,12 +34,6 @@ def have_html_link_with(expected)
   HaveHtmlLinkWith.new(expected)
 end
 
-
-
-
-
-#require File.join(File.dirname(__FILE__), 'mock_controller')
-require File.join(File.dirname(__FILE__), 'filter_controller')
 
 # Wrap tests that use Mocha and skip if unavailable.
 def uses_mocha(test_name)
