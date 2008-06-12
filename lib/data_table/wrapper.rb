@@ -44,6 +44,10 @@ module DataTable
       exposed_params.merge((form_options||{}))
     end
     
+    def mode
+      form_options && form_options[:form] ? :standard : :ajax
+    end
+    
     
   end
 end

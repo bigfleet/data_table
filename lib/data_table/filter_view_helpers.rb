@@ -36,7 +36,7 @@ module DataTable
     end
     
     def form_for_filter(wrapper)
-      return unless filter
+      return unless wrapper && wrapper.filter
       return "YAY" if templates_detected?(wrapper)
       return form_for_filter_via_builder(wrapper)
     end
@@ -50,7 +50,7 @@ module DataTable
       form_options = (options[:form] || {}).reverse_merge({:url => ""})
       remote_options = (options[:remote] || {}).reverse_merge({:url => "", :method => :get})
       xml.label html_options[:label] if html_options[:label]
-      case filter.mode
+      case wrapper.mode
       when :ajax
         xml << form_remote_tag(remote_options.merge(:html =>{:id => options[:id]}))
       else
@@ -69,17 +69,18 @@ module DataTable
           end
         end
       end
-      if filter.sort && filter.sort.selected
-        active_sort = filter.sort.selected
-        xml << hidden_field_tag("#{filter.name}[sort_key]", active_sort.key.to_s, :id => "#{filter.name}_sort_key")
-        xml << hidden_field_tag("#{filter.name}[sort_order]", active_sort.current_order.to_s, :id => "#{filter.name}_sort_order")
+      if wrapper.sort && wrapper.sort.selected
+        active_sort = wrapper.sort.selected
+        name = wrapper.name
+        xml << hidden_field_tag("#{name}[sort_key]", active_sort.key.to_s, :id => "#{name}_sort_key")
+        xml << hidden_field_tag("#{name}[sort_order]", active_sort.current_order.to_s, :id => "#{name}_sort_order")
       end
       if options[:with]
         options[:with].each do |opt|
-          xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{filter.name}_#{opt}")
+          xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{wrapper.name}_#{opt}")
         end
       end
-      submit_tag unless filter.mode == :ajax
+      submit_tag unless wrapper.mode == :ajax
       xml << "</form>"
     end
   end
