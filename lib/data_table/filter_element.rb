@@ -46,13 +46,6 @@ module DataTable
       return self
     end
   
-    # TODO: Deprecate this and move it to the view helper
-    def to_html(options = {})
-      select_tag("#{@parent.name}[#{@field}]", 
-                    options_for_select(@selections.map(&:to_option), @selected.valuize_label), 
-                    options)
-    end
-  
     def to_hash
       pairs = {}
       pairs[@field] = @selected.phrase

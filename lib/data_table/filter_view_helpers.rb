@@ -57,10 +57,11 @@ module DataTable
           if options[:remote]
             # AJAX style submission
             submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
-            xml << elt.to_html((options[:selects]||{}).merge(:onchange => submit_function))
+            elt_html = element_to_html(elt, filter.wrapper.name, (options[:selects]||{}).merge(:onchange => submit_function))
+            xml << elt_html
           else
             # standard style submission
-            xml << elt.to_html
+            xml << element_to_html(elt, filter.wrapper.name)
           end
         end
       end
@@ -77,5 +78,11 @@ module DataTable
       submit_tag unless filter.mode == :ajax
       xml << "</form>"
     end
+  end
+  
+  def element_to_html(sort_element, nest_name, options = {})
+    select_tag("#{nest_name}[#{sort_element.field}]", 
+                  options_for_select(sort_element.selections.map(&:to_option), sort_element.selected.valuize_label), 
+                  options)
   end
 end

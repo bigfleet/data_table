@@ -50,13 +50,7 @@ describe "A filter element" do
     it "should not indicate that this element should be included in filter options" do
       @fe.should_not be_active
     end
-    
-    it "should render an appropriately selected HTML tag" do
-      @fe.to_html.should_not be_nil
-    end
-    
-    it "should have the HTML tag moved to the view helper"
-    
+
     describe "in the presence of selected parameters" do
       
       before(:each) do
@@ -81,11 +75,7 @@ describe "A filter element" do
       it "should use the selection phrase, not the titleized label for conditions" do
         @fe.to_hash.should == {:etype => 'stock'}
       end
-      
-      it "should render an appropriately selected HTML tag"  do
-        @fe.to_html.should_not be_nil
-      end
-      
+
     end
     
   end
