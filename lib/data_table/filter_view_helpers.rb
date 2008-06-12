@@ -43,22 +43,20 @@ module DataTable
     
     def form_for_filter_via_builder(wrapper)
       filter = wrapper.filter
-      options = wrapper.form_options
       # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
-      html_options = options[:html] || {}
-      form_options = (options[:form] || {}).reverse_merge({:url => ""})
-      remote_options = (options[:remote] || {}).reverse_merge({:url => "", :method => :get})
-      xml.label html_options[:label] if html_options[:label]
       case wrapper.mode
       when :ajax
+        remote_options = wrapper.remote_options
         xml << form_remote_tag(remote_options.merge(:html =>{:id => options[:id]}))
       else
+        form_options = wrapper.form_options
         xml << form_tag(form_options[:url], form_options.merge(:id => options[:id]))
       end
-      xml.div do |inner_frame|
-        filter.elements.inject("") do |memo, elt|
-          if options[:remote]
+      xml.div do
+        filter.elements.each do |memo, elt|
+          case wrapper.mode
+          when :ajax
             # AJAX style submission
             submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
             elt_html = element_to_html(elt, filter.wrapper.name, (options[:selects]||{}).merge(:onchange => submit_function))

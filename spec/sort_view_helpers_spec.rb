@@ -35,6 +35,160 @@ describe DataTable::SortViewHelpers do
     @controller = Object.new
   end
   
+  describe "in partial rendering mode" do
+    
+    it "should be implemented"
+    
+  end
+  
+  describe "in ERB mode" do
+    
+    describe "with no additional parameters" do
+
+      it "should render in AJAX mode"
+
+      it "should internalize the form options correctly"
+
+      describe "the default sort tag" do
+
+        it "should reference its field name"
+
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use the icon for the default sort"
+
+      end
+
+      describe "the secondary sort tag" do
+
+        it "should reference its field name"
+        
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use an icon representing an unsorted condition"        
+
+      end
+
+    end
+    
+    describe "with parameters for sorting" do
+
+      it "should render in AJAX mode"
+
+      it "should internalize the form options correctly"
+
+      describe "the default sort tag" do
+
+        it "should reference its field name"
+
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use the icon for the default sort"
+
+      end
+
+      describe "the secondary sort tag" do
+
+        it "should reference its field name"
+        
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use an icon representing an unsorted condition"        
+
+      end
+      
+    end
+    
+    describe "with parameters for filtering" do
+
+      it "should render in AJAX mode"
+
+      it "should internalize the form options correctly"
+
+      describe "the default sort tag" do
+
+        it "should reference its field name"
+
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use the icon for the default sort"
+
+      end
+
+      describe "the secondary sort tag" do
+
+        it "should reference its field name"
+        
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use an icon representing an unsorted condition"        
+
+      end
+    end
+    
+    describe "with parameters for sorting and filtering" do
+
+      it "should render in AJAX mode"
+
+      it "should internalize the form options correctly"
+
+      describe "the default sort tag" do
+
+        it "should reference its field name"
+
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use the icon for the default sort"
+
+      end
+
+      describe "the secondary sort tag" do
+
+        it "should reference its field name"
+        
+        it "shoud use AJAX submission"
+
+        it "should have utilize any HTML options"
+        
+        it "should overwrite or ignore any pagination page"
+        
+        it "should use an icon representing an unsorted condition"        
+
+      end
+
+    end
+    
+  end
+  
+  
   protected
   
   # Just eliminating this from the Rails call-stack
