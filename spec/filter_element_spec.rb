@@ -44,6 +44,7 @@ describe "A filter element" do
     end
     
     it "should recognize the default option" do
+      @fe.default_option.should == @default
       @fe.selected.should == @default
     end
     
@@ -62,6 +63,10 @@ describe "A filter element" do
         @fe.selections.should_not be_nil
         @fe.selections.should_not be_empty
         @fe.selections.should have(3).things
+      end
+      
+      it "should still register a default option" do
+        @fe.default_option.should_not be_nil
       end
       
       it "should indicate that this element should be included in filter options" do

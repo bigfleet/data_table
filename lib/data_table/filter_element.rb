@@ -1,7 +1,7 @@
 module DataTable
   class FilterElement
   
-    attr_accessor :table, :field, :operator, :selected, :default, :parent
+    attr_accessor :table, :field, :operator, :selected, :default_option, :parent
     attr_reader :selections
   
     def initialize(options = {})
@@ -14,32 +14,31 @@ module DataTable
     end
   
     def active?
-      !@selected.equal?(@default)
+      !@selected.equal?(@default_option)
     end
   
     def default(label, val=nil)
       elt = form_selection(label, val)
-      @default = elt
+      @default_option = elt
       @selected = elt
     end
     
     def option(label, val=nil)
       form_selection(label, val)
     end
-    
-    def update_selection_with(params)
-      return unless param_val(params)
-      @selected = @selections.select{ |e| e.valuize_label == param_val(params) }.first
-    end
-  
 
     def with(params = {})
-      fe = FilterElement.new(:table => @table, :field => @field, :operator => @operator, 
-                                :default => @default, :selected => @default)
+      fe = FilterElement.new(:table => @table, :field => @field, :operator => @operator)
       self.selections.each do |s|
-        fe.selections << s.clone
+        new_sel = s.clone
+        if new_sel.equal?(@default_option)
+          fe.default_option = new_sel
+          fe.selected = new_sel
+        end
+        fe.selections << new_sel
       end
-      fe.selected = fe.selections.select{ |e| e.valuize_label == param_val(params) }.first
+      matching_selections = fe.selections.select{ |e| e.valuize_label == param_val(params) }
+      fe.selected = matching_selections.first if matching_selections && !matching_selections.empty?
       return fe
     end
   
@@ -64,6 +63,7 @@ module DataTable
     def param_val(params)
       (params[@field] || params[@field.to_s])
     end
+    
   
   end
 end

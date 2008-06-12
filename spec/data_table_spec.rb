@@ -69,6 +69,7 @@ describe "a data_table" do
       @cars = data_table(:cars)
       @opts = opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'},
                             :with => [:tab] }
+      @default_opts = {:id => "filterForm"}
     end
     
     it "should be able to have sort and filter specifications" do
@@ -86,13 +87,8 @@ describe "a data_table" do
       end
       
       it "should be able to store remote form submission parameters" do
-        @cars.form_options = @opts
-        @cars.form_options.should == @opts
-      end
-
-      it "should be able to generate a hash of all known form data, including full current state" do
-        @cars.form_options = @opts
-        @cars.all_options.should == @opts
+        @cars.options = @opts
+        @cars.options.should == @opts.merge(@default_opts)
       end
 
     end
@@ -109,13 +105,8 @@ describe "a data_table" do
 
       
       it "should be able to store remote form submission parameters" do
-        @sorted_cars.form_options = @opts
-        @sorted_cars.form_options.should == @opts
-      end
-
-      it "should be able to generate a hash of all known form options" do
-        @sorted_cars.form_options = @opts
-        @sorted_cars.all_options.should == @opts
+        @sorted_cars.options = @opts
+        @sorted_cars.options.should == @opts.merge(@default_opts)
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -138,13 +129,8 @@ describe "a data_table" do
 
       
       it "should be able to store remote form submission parameters" do
-        @filtered_cars.form_options = @opts
-        @filtered_cars.form_options.should == @opts
-      end
-
-      it "should be able to generate a hash of all known form options" do
-        @filtered_cars.form_options = @opts
-        @filtered_cars.all_options.should == @opts
+        @filtered_cars.options = @opts
+        @filtered_cars.options.should == @opts.merge(@default_opts)
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -167,13 +153,8 @@ describe "a data_table" do
 
       
       it "should be able to store remote form submission parameters" do
-        @sorted_and_filtered_cars.form_options = @opts
-        @sorted_and_filtered_cars.form_options.should == @opts
-      end
-
-      it "should be able to generate a hash of all known form options" do
-        @sorted_and_filtered_cars.form_options = @opts
-        @sorted_and_filtered_cars.all_options.should == @opts
+        @sorted_and_filtered_cars.options = @opts
+        @sorted_and_filtered_cars.options.should == @opts.merge(@default_opts)
       end
       
       it "should be able to override sort parameters for form submission" do

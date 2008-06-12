@@ -51,7 +51,7 @@ describe DataTable::FilterViewHelpers do
     describe "with no additional parameters" do
       
       before(:each) do
-        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
       end
@@ -75,6 +75,8 @@ describe DataTable::FilterViewHelpers do
       describe "the select tag" do
 
         it "should reference its field name"
+        
+        it "should highlight the default filter selection"
 
         it "should have the right number of options"
         
@@ -98,7 +100,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
-        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
       end
@@ -145,7 +147,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @params = {:cars => {:color => "blue"}}
-        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
         
@@ -193,7 +195,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}
-        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
       end

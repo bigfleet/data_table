@@ -49,7 +49,6 @@ module DataTable
           when :ajax
             # AJAX style submission
             # Is there anything more ridiculous than the remote options in Rails?
-            puts [remote_options, form_options].inspect
             submit_function = remote_function(remote_options.merge(form_options))
             elt_html = element_to_html(elt, wrapper.name, (form_options[:selects]||{}).merge(:onchange => submit_function))
             xml << elt_html
@@ -75,9 +74,9 @@ module DataTable
     end
   end
   
-  def element_to_html(sort_element, nest_name, options = {})
-    select_tag("#{nest_name}[#{sort_element.field}]", 
-                  options_for_select(sort_element.selections.map(&:to_option), sort_element.selected.valuize_label), 
+  def element_to_html(filter_element, nest_name, options = {})
+    select_tag("#{nest_name}[#{filter_element.field}]", 
+                  options_for_select(filter_element.selections.map(&:to_option), filter_element.selected.valuize_label), 
                   options)
   end
 end
