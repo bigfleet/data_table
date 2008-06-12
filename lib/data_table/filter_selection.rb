@@ -2,13 +2,10 @@ module DataTable
   class FilterSelection
   
     attr_accessor :label, :value
-    def initialize(label, args)
-      @label = label
-      @value = (args && !args.empty?) ? args.first : valuize_label
-    end 
     
     def phrase
-      @value
+      # FIXME: This is not the finest interface here.
+      @value.nil? ? valuize_label : @value.first
     end
 
     def escape(str)
@@ -29,11 +26,22 @@ module DataTable
     end
   
     def self.for(label, args = [])
-      FilterSelection.new(label, args)
+      sel = FilterSelection.new
+      sel.label = label
+      sel.value = args
+      sel
     end
     
     def equal?(other)
+      return false unless other.respond_to?(:label) && other.respond_to?(:value)
       other.label == self.label && other.value == self.value
+    end
+    
+    def clone
+      s = FilterSelection.new
+      s.label = @label
+      s.value = @value
+      s
     end
   
   end

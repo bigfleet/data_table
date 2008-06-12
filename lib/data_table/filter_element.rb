@@ -36,6 +36,9 @@ module DataTable
     def with(params = {})
       fe = FilterElement.new(:table => @table, :field => @field, :operator => @operator, 
                                 :default => @default, :selected => @default)
+      self.selections.each do |s|
+        fe.selections << s.clone
+      end
       fe.selected = fe.selections.select{ |e| e.valuize_label == param_val(params) }.first
       return fe
     end

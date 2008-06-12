@@ -2,7 +2,7 @@
 
 plugin_root = File.join(File.dirname(__FILE__), '..')
 
-# simply use installed gems if available.  data_table's goal is max compatability
+# One of data_table's goals is max compatability-- these are the gems for Rails 1.2.3
 
 require 'rubygems'
   
