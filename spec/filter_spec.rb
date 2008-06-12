@@ -31,7 +31,7 @@ describe "A filter" do
           e.option  "Polka Dot", "plka-dot"
         end
       end
-      @params = {:cars => {:color => "blue"}}
+      @params = {:color => "blue"}
     end
     
     describe "when transforming itself with parameters" do
@@ -63,7 +63,7 @@ describe "A filter" do
       end
       
       it "should utilize the value phrase, not the titlized label" do
-        @new_f = @old_f.with({:cars => {:color => "polka-dot"}})
+        @new_f = @old_f.with({:color => "polka-dot"})
         @new_f.conditions.should == ["color = ?", "plka-dot"]
       end
 
@@ -81,7 +81,7 @@ describe "A filter" do
       end
       
       it "should utilize the value phrase, not the titlized label" do
-        @new_f = @old_f.with({:cars => {:color => "polka-dot"}})
+        @new_f = @old_f.with({:color => "polka-dot"})
         @new_f.options.should == {:color => "plka-dot"}
       end
 
