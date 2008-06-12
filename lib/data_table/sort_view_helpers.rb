@@ -3,8 +3,8 @@ module DataTable
     
     def sort_header(name)
       data_table = controller.find_data_table_by_name(name).with(params)
-      data_table.sort.with(params).options.collect do |o| 
-        render_sort_option_to_html(o, options)
+      data_table.sort.options.collect do |o| 
+        render_sort_option_to_html(o, data_table.form_options)
       end.join(<<-CR
 
       CR
@@ -30,16 +30,10 @@ module DataTable
     
     def sort_option_url_for(sort_option, options)
       # for the url that we generate, we link to the *opposite* sort
-      url_params = if sort_option.filter
+      url_params = if sort_option.wrapper
         sort_params = {:sort_key => sort_option.key,
                      :sort_order => sort_option.other_order}
-        filter_params = sort_option.filter.filtered_params
-        all_params = if filter_params 
-          sort_params.merge(filter_params)
-        else
-          sort_params
-        end
-        {sort_option.filter_name => all_params}.flatten_one_level
+        sort_option.wrapper.merged_params(sort_params)
       else
         {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}
@@ -59,7 +53,7 @@ module DataTable
 
     # Determine caption for option, can be overriden by a <code>:caption</code> option
     def caption_for(sort_option, options = {})
-      caption = options[:caption] || Inflector::humanize(sort_option.key).titleize
+      caption = (options && options[:caption]) || Inflector::humanize(sort_option.key).titleize
     end
     
   end

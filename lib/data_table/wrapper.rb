@@ -28,6 +28,19 @@ module DataTable
       w
     end
     
+    # this returns a list of parameters suitable for passing to any Rails
+    # helper containing all the parameters bound to this data_table, 
+    # including any parameters that you pass in to this method.
+    #
+    # this call assumes that the parameters that you pass in are properly
+    # (and flatly) scoped (e.g. :key => "value", not name[:key] => "value")
+    # and not {:name => {:key => "value"}}
+    def merged_params(other_hash)
+      return {} unless params && params[@name]
+      named_params = params[@name]
+      {@name => (named_params.merge(other_hash))}.flatten_one_level
+    end
+    
     def exposed_params
       (params||{}).flatten_one_level
     end

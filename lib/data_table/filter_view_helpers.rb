@@ -15,7 +15,7 @@ module DataTable
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_form(name=nil, options={})
       remote_options = finalize_options(options)
-      wrapper = data_table(name)
+      wrapper = controller.find_data_table_by_name(name)
       wrapper.form_options = remote_options
       form_for_filter(wrapper)
     end
@@ -43,7 +43,7 @@ module DataTable
     
     def form_for_filter_via_builder(wrapper)
       filter = wrapper.filter
-      options = wrapper.options
+      options = wrapper.form_options
       # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
       html_options = options[:html] || {}

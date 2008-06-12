@@ -33,4 +33,8 @@ class SortOption
     SortOption.new(_parent, @key, @preferred_order)
   end
   
+  def wrapper
+    @parent.wrapper rescue nil
+  end
+  
 end

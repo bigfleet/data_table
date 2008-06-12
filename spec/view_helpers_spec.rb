@@ -33,7 +33,7 @@ describe DataTable::ViewHelpers do
       end
     end
     @controller = Object.new
-    @controller.should_receive(:data_table).with(:cars).and_return(data_table(:cars))
+    @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
     @params_for_make_desc = {:cars => {:sort_key => "make", :sort_order => "desc"}}.flatten_one_level
     @url_for_make_desc = "?cars[sort_key]=make&cars[sort_order]=desc"
     @params_for_year_desc = {:cars => {:sort_key => "year", :sort_order => "desc"}}.flatten_one_level

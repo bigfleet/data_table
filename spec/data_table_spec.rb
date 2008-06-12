@@ -95,7 +95,7 @@ describe "a data_table" do
     
     describe "when sorted" do
       before(:each) do
-        @parms = {:cars => {:sort_key => "year", :sort => "asc"}}
+        @parms = {:cars => {:sort_key => "year", :sort_order => "asc"}}
         @sorted_cars = data_table(:cars).with(@parms)
       end
       
@@ -112,6 +112,12 @@ describe "a data_table" do
       it "should be able to generate a hash of all known form data, including full current state" do
         @sorted_cars.form_options = @opts
         @sorted_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+      end
+      
+      it "should be able to merge sort parameters for form submission" do
+        new_keys = {:color => "blue"}
+        merged = @sorted_cars.merged_params(new_keys)
+        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "year", "cars[sort_order]" => "asc"}
       end
       
     end
@@ -137,11 +143,17 @@ describe "a data_table" do
         @filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
       end
       
+      it "should be able to merge sort parameters for form submission" do
+        new_keys = {:sort_key => "make", :sort_order => "desc"}
+        merged = @filtered_cars.merged_params(new_keys)
+        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "make", "cars[sort_order]" => "desc"}
+      end
+      
     end
     
     describe "when sorted and filtered" do
       before(:each) do
-        @parms = {:cars => {:sort_key => "year", :sort => "asc", :color => "blue"}}
+        @parms = {:cars => {:sort_key => "year", :sort_order => "asc", :color => "blue"}}
         @sorted_and_filtered_cars = data_table(:cars).with(@parms)
       end
       
@@ -158,6 +170,12 @@ describe "a data_table" do
       it "should be able to generate a hash of all known form data, including full current state" do
         @sorted_and_filtered_cars.form_options = @opts
         @sorted_and_filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+      end
+      
+      it "should be able to override sort parameters for form submission" do
+        new_keys = {:sort_key => "make", :sort_order => "desc"}
+        merged = @sorted_and_filtered_cars.merged_params(new_keys)
+        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "make", "cars[sort_order]" => "desc"}
       end
       
     end
