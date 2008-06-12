@@ -18,6 +18,22 @@ describe "A standard filter selection" do
   
   end
   
+  describe "invoked via compound" do
+    
+    before(:each) do
+      @fs = FilterSelection.for("Polka Dot", "plka-dot")
+    end
+    
+    it "should valuize the label correctly" do
+      @fs.valuize_label.should == "polka-dot"
+    end
+  
+    it "should use the label valuization as the activation phrase" do
+      @fs.phrase.should == "plka-dot"
+    end
+    
+  end
+  
 end
 
 # TODO: Your day will come, more intricate selections!

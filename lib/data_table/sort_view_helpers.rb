@@ -3,7 +3,7 @@ module DataTable
     
     def sort_header(name)
       data_table = controller.find_data_table_by_name(name).with(params)
-      filter.sort.with(params).options.collect do |o| 
+      data_table.sort.with(params).options.collect do |o| 
         render_sort_option_to_html(o, options)
       end.join(<<-CR
 
@@ -11,9 +11,9 @@ module DataTable
       )
     end
 
-    def sort_header_for(filter_name, &block)
-      filter = controller.find_filter(filter_name).with(params)
-      yield(filter.sort.with(params))
+    def sort_header_for(name, &block)
+      controller.find_data_table_by_name(name).with(params)
+      yield(data_table(name).sort)
     end
 
     def key_for(sort, option_key, options)

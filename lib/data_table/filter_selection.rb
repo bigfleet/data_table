@@ -5,7 +5,7 @@ module DataTable
     
     def phrase
       # FIXME: This is not the finest interface here.
-      @value.nil? ? valuize_label : @value.first
+      @value.nil? ? valuize_label : @value
     end
 
     def escape(str)
@@ -25,10 +25,10 @@ module DataTable
       [@label, valuize_label] 
     end
   
-    def self.for(label, args = [])
+    def self.for(label, val = nil)
       sel = FilterSelection.new
       sel.label = label
-      sel.value = args
+      sel.value = val.nil? ? sel.valuize_label : val
       sel
     end
     

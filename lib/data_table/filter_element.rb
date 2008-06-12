@@ -17,14 +17,14 @@ module DataTable
       !@selected.equal?(@default)
     end
   
-    def default(label, *args)
-      elt = form_selection(label, args)
+    def default(label, val=nil)
+      elt = form_selection(label, val)
       @default = elt
       @selected = elt
     end
     
-    def option(label, *args)
-      form_selection(label, args)
+    def option(label, val=nil)
+      form_selection(label, val)
     end
     
     def update_selection_with(params)

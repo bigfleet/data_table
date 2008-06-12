@@ -15,8 +15,9 @@ module DataTable
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_form(name=nil, options={})
       remote_options = finalize_options(options)
-      filter = controller.find_filter(name).with(params)
-      form_for_filter(filter, options)
+      wrapper = data_table(name)
+      wrapper.form_options = remote_options
+      form_for_filter(wrapper)
     end
         
     protected
@@ -30,17 +31,20 @@ module DataTable
       options.reverse_merge!({:id => 'filterForm'})
     end
     
-    def templates_detected?
+    def templates_detected?(wrapper)
       # Should expand a RAILS_ROOT and render the needed 
     end
     
-    def form_for_filter(filter, options)
+    def form_for_filter(wrapper)
       return unless filter
-      return "YAY" if templates_detected?
-      return form_for_filter_via_builder(filter, options)
+      return "YAY" if templates_detected?(wrapper)
+      return form_for_filter_via_builder(wrapper)
     end
     
-    def form_for_filter_via_builder(filter, options)
+    def form_for_filter_via_builder(wrapper)
+      filter = wrapper.filter
+      options = wrapper.options
+      # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
       html_options = options[:html] || {}
       form_options = (options[:form] || {}).reverse_merge({:url => ""})
