@@ -80,7 +80,7 @@ module DataTable
 end
 
 ActionController::Base.send :include, DataTable
-require 'data_table/view_helpers' unless ActionView::Base.instance_methods.include? 'filter_form'
+require 'data_table/view_helpers'
 ActionView::Base.class_eval { 
   include DataTable::ViewHelpers
   include DataTable::SortViewHelpers
