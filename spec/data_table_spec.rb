@@ -44,6 +44,10 @@ describe "a data_table" do
   
   it "should provide options suitable for will_paginate integration"
   
+  it "should handle options gracefully from everywhere, including the kitchen sink"
+  
+  # html options for form elements, url options for url generation, etc.
+  
   describe "fully specced" do
     before(:each) do
       data_table(:cars) do |table|

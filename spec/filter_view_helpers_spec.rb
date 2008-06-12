@@ -33,6 +33,7 @@ describe DataTable::FilterViewHelpers do
         end
       end
     end
+    @params = {}
     @cars = data_table(:cars)
     @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'}, 
     :with => [:tab] }
@@ -48,6 +49,12 @@ describe DataTable::FilterViewHelpers do
   describe "in XML builder mode" do
     
     describe "with no additional parameters" do
+      
+      before(:each) do
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:url_for).with({}).and_return("")
+        @form_html = filter_for(:cars)
+      end
 
       it "should render in AJAX mode"
 
@@ -88,6 +95,13 @@ describe DataTable::FilterViewHelpers do
     end
     
     describe "with parameters for sorting" do
+      
+      before(:each) do
+        @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:url_for).with({}).and_return("")
+        @form_html = filter_for(:cars)
+      end
 
       it "should render in AJAX mode"
 
@@ -128,6 +142,14 @@ describe DataTable::FilterViewHelpers do
     end
     
     describe "with parameters for filtering" do
+      
+      before(:each) do
+        @params = {:cars => {:color => "blue"}}
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:url_for).with({}).and_return("")
+        @form_html = filter_for(:cars)
+        
+      end
 
       it "should render in AJAX mode"
 
@@ -168,6 +190,13 @@ describe DataTable::FilterViewHelpers do
     end
     
     describe "with parameters for sorting and filtering" do
+      
+      before(:each) do
+        @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(data_table(:cars))
+        @controller.should_receive(:url_for).with({}).and_return("")
+        @form_html = filter_for(:cars)
+      end
 
       it "should render in AJAX mode"
 

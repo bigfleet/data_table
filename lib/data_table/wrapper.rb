@@ -10,6 +10,13 @@ module DataTable
   # URL's, callbacks, CSS classes, Ajax, JavaScript activation, moon phase,
   # etc.  If you are trying to set which URL to hit or jimmy with the way
   # that your page works
+  #
+  # Known options:
+  #
+  # :selects => HTML styling to be applied to the select inputs in a filter
+  #             form
+  # 
+  # :with => See below
   # 
   # Of course, to make this interesting, there is one exception.  The :with
   # option allows the client code to define a set of parameters that will
@@ -17,11 +24,17 @@ module DataTable
   # be used to handle nested routing contents, controller actions that
   # behave differently in the presence of certain parameters, etc. withou
   # needing to hack the crap out of data_table.
+  #
+  # Note:  the default rendering mode is Ajax.  That's the only one well
+  # supported right now
   class Wrapper
-    attr_accessor :name, :sort, :filter, :params, :form_options
+    
+    DEFAULT_FORM_ID = "filterForm"
+    
+    attr_accessor :name, :sort, :filter, :params, :options
     
     def initialize(options)
-      @name = options[:name]
+      @name = options[:name] || "data_table"
     end
     
     def filter_spec(options={}, &block)
@@ -71,14 +84,20 @@ module DataTable
       @filter.conditions
     end
     
-    # FIXME: this needs to be renamed to something more clearly not
-    # the view layer
-    def options
+    def condition_options
       @filter.options
     end
     
-    def all_options
-      form_options||{}
+    def remote_options
+      options[:remote] || {}
+    end
+    
+    def form_options
+      options[:form] || {:id => DEFAULT_FORM_ID}
+    end
+    
+    def options=(other_options)
+      @options = other_options.reverse_merge(:id => DEFAULT_FORM_ID, :remote => {:url => ""})
     end
     
     def mode

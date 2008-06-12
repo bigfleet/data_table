@@ -13,23 +13,13 @@ module DataTable
     # :html =>
     #   :label => The introductory label of the filter form
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
-    def filter_form(name=nil, options={})
-      remote_options = finalize_options(options)
-      wrapper = controller.find_data_table_by_name(name)
-      wrapper.form_options = remote_options
+    def filter_for(name=nil, options={})
+      wrapper = controller.find_data_table_by_name(name).with(params)
+      wrapper.options = options
       form_for_filter(wrapper)
     end
-        
+    
     protected
-  
-    def finalize_options(options)
-      remote_options = { 
-        :url => options.delete(:url),
-        :update => options.delete(:update),
-        :method => :get
-      }
-      options.reverse_merge!({:id => 'filterForm'})
-    end
     
     def templates_detected?(wrapper)
       # Should expand a RAILS_ROOT and render the needed 
@@ -43,27 +33,29 @@ module DataTable
     
     def form_for_filter_via_builder(wrapper)
       filter = wrapper.filter
+      remote_options = wrapper.remote_options
+      form_options = wrapper.options
       # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
       case wrapper.mode
       when :ajax
-        remote_options = wrapper.remote_options
-        xml << form_remote_tag(remote_options.merge(:html =>{:id => options[:id]}))
+        xml << form_remote_tag(remote_options.merge(form_options))
       else
-        form_options = wrapper.form_options
-        xml << form_tag(form_options[:url], form_options.merge(:id => options[:id]))
+        xml << form_tag(form_options[:url], form_options)
       end
       xml.div do
-        filter.elements.each do |memo, elt|
+        filter.elements.each do |elt|
           case wrapper.mode
           when :ajax
             # AJAX style submission
-            submit_function = remote_function(remote_options.merge({:submit => options[:id]}))
-            elt_html = element_to_html(elt, filter.wrapper.name, (options[:selects]||{}).merge(:onchange => submit_function))
+            # Is there anything more ridiculous than the remote options in Rails?
+            puts [remote_options, form_options].inspect
+            submit_function = remote_function(remote_options.merge(form_options))
+            elt_html = element_to_html(elt, wrapper.name, (form_options[:selects]||{}).merge(:onchange => submit_function))
             xml << elt_html
           else
             # standard style submission
-            xml << element_to_html(elt, filter.wrapper.name)
+            xml << element_to_html(elt, wrapper.name)
           end
         end
       end
@@ -73,8 +65,8 @@ module DataTable
         xml << hidden_field_tag("#{name}[sort_key]", active_sort.key.to_s, :id => "#{name}_sort_key")
         xml << hidden_field_tag("#{name}[sort_order]", active_sort.current_order.to_s, :id => "#{name}_sort_order")
       end
-      if options[:with]
-        options[:with].each do |opt|
+      if with_options = form_options[:with] # note this IS intentionally an assignment
+        with_options.each do |opt|
           xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{wrapper.name}_#{opt}")
         end
       end
