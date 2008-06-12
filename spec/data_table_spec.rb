@@ -109,9 +109,9 @@ describe "a data_table" do
         @sorted_cars.form_options.should == @opts
       end
 
-      it "should be able to generate a hash of all known form data, including full current state" do
+      it "should be able to generate a hash of all known form options" do
         @sorted_cars.form_options = @opts
-        @sorted_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @sorted_cars.all_options.should == @opts
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -138,9 +138,9 @@ describe "a data_table" do
         @filtered_cars.form_options.should == @opts
       end
 
-      it "should be able to generate a hash of all known form data, including full current state" do
+      it "should be able to generate a hash of all known form options" do
         @filtered_cars.form_options = @opts
-        @filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @filtered_cars.all_options.should == @opts
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -167,9 +167,9 @@ describe "a data_table" do
         @sorted_and_filtered_cars.form_options.should == @opts
       end
 
-      it "should be able to generate a hash of all known form data, including full current state" do
+      it "should be able to generate a hash of all known form options" do
         @sorted_and_filtered_cars.form_options = @opts
-        @sorted_and_filtered_cars.all_options.should == @opts.merge(@parms.flatten_one_level)
+        @sorted_and_filtered_cars.all_options.should == @opts
       end
       
       it "should be able to override sort parameters for form submission" do
