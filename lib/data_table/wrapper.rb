@@ -101,7 +101,7 @@ module DataTable
     end
     
     def mode
-      form_options && form_options[:form] ? :standard : :ajax
+      @options && @options[:form] ? :standard : :ajax
     end
     
     

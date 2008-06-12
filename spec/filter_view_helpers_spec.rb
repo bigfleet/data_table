@@ -52,17 +52,24 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
       end
 
-      it "should render in AJAX mode"
+      it "should render in AJAX mode" do
+        @cars.mode.should == :ajax
+      end
 
-      it "should internalize the form options correctly"
+      it "should internalize the form options correctly" do
+        @cars.options = @opts
+        @cars.mode.should == :ajax
+        @cars.remote_options.should == @opts[:remote]
+      end
 
       describe "the form tag" do
 
-        it "should have one appearance"
+        it "should have one appearance" do
+          @form_html.should be_nil
+        end
 
         it "shoud use AJAX submission"
 
@@ -104,8 +111,6 @@ describe DataTable::FilterViewHelpers do
         @controller.should_receive(:url_for).with({}).and_return("")
         @form_html = filter_for(:cars)
       end
-
-      it "should render in AJAX mode"
 
       it "should internalize the form options correctly"
 

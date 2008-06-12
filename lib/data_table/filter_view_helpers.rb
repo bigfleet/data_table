@@ -38,23 +38,23 @@ module DataTable
       # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
       case wrapper.mode
-      when :ajax
-        xml << form_remote_tag(remote_options.merge(form_options))
+      when :standard
+        xml << form_tag(form_options[:url], form_options)        
       else
-        xml << form_tag(form_options[:url], form_options)
+        xml << form_remote_tag(remote_options.merge(form_options))
       end
       xml.div do
         filter.elements.each do |elt|
           case wrapper.mode
-          when :ajax
+          when :standard
+            # standard style submission
+            xml << element_to_html(elt, wrapper.name)
+          else
             # AJAX style submission
             # Is there anything more ridiculous than the remote options in Rails?
             submit_function = remote_function(remote_options.merge(form_options))
             elt_html = element_to_html(elt, wrapper.name, (form_options[:selects]||{}).merge(:onchange => submit_function))
             xml << elt_html
-          else
-            # standard style submission
-            xml << element_to_html(elt, wrapper.name)
           end
         end
       end
