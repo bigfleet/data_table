@@ -52,15 +52,10 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @form_html = filter_for(:cars)
-      end
-
-      it "should render in AJAX mode" do
-        @cars.mode.should == :ajax
+        @form_html = filter_for(:cars, @opts)
       end
 
       it "should internalize the form options correctly" do
-        @cars.options = @opts
         @cars.mode.should == :ajax
         @cars.remote_options.should == @opts[:remote]
       end

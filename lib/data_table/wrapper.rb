@@ -89,11 +89,11 @@ module DataTable
     end
     
     def remote_options
-      options[:remote] || {}
+      @options[:remote] || {}
     end
     
     def form_options
-      options[:form] || {:id => DEFAULT_FORM_ID}
+      @options[:form] || {:id => DEFAULT_FORM_ID}
     end
     
     def options=(other_options)
