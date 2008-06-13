@@ -282,6 +282,85 @@ describe DataTable::FilterViewHelpers do
 
     end
     
+    describe "with parameters for sorting and filtering, and external parameters" do
+      
+      before(:each) do
+        @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}, :tab => "used"}
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @form_html = filter_for(:cars, @opts)
+        @cars = @data_tables[:cars]
+      end
+
+      it "should internalize the form options correctly" do
+        @cars.mode.should == :ajax
+        @cars.remote_options.should == @opts[:remote]
+      end
+
+
+      describe "the form tag" do
+
+        it "should render appropriately" do
+          @form_html.should match(Regexp.compile("<form.*form>", Regexp::MULTILINE))
+        end
+        
+        it "should not include the :with option in the Ajax:Updater" do
+          @form_html.should_not match(/parameters:tab/)
+        end
+
+        it "shoud use AJAX submission" do
+          @form_html.should match(/Ajax.Updater/)
+        end
+      end
+
+      describe "the select tag" do
+
+        it "should reference its field name" do
+          @form_html.should match(/name="cars\[color\]"/)
+        end
+        
+        it "should not highlight the default filter selection" do
+          @form_html.should_not match(/value=\"all\" selected=\"selected\"/)
+        end
+        
+        it "should highlight the selected filter option" do
+          @form_html.should match(/value=\"blue\" selected=\"selected\"/)
+        end
+
+        it "should have the right number of options" do
+          @form_html.split(/<option/).should have(7).things
+          # 6 breaks, one for the prelude and the last one includes aftermath
+        end
+
+      end
+
+      describe "any extra parameters" do
+
+        it "should include a hidden field for sort key" do
+          @form_html.should match(
+            regexify('<input id="cars_sort_key" name="cars[sort_key]" type="hidden" value="year" />', 
+              Regexp::MULTILINE)
+          )
+        end
+
+        it "should include a hidden field for sort order" do
+          @form_html.should match(
+            regexify('<input id="cars_sort_order" name="cars[sort_order]" type="hidden" value="desc" />', 
+              Regexp::MULTILINE)
+          )          
+        end
+
+        it "should include a hidden field for tab" do
+          @form_html.should match(
+            regexify('<input id="cars_tab" name="tab" type="hidden" value="used" />', 
+              Regexp::MULTILINE)
+          )
+        end
+
+      end
+
+    end
+    
     describe "with parameters for sorting and filtering" do
       
       before(:each) do
@@ -357,6 +436,7 @@ describe DataTable::FilterViewHelpers do
       end
 
     end
+    
     
   end
 
