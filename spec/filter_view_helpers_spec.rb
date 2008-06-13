@@ -53,6 +53,7 @@ describe DataTable::FilterViewHelpers do
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @form_html = filter_for(:cars, @opts)
+        @cars.options = @opts # why is this necessary?
       end
 
       it "should internalize the form options correctly" do
@@ -62,15 +63,28 @@ describe DataTable::FilterViewHelpers do
 
       describe "the form tag" do
 
-        it "should have one appearance" do
-          @form_html.should be_nil
+        it "should render a form tag" do
+          @form_html.should match(/<form(.*)>(.*)<\/form>/)
+        end
+        
+        it "should not include the :with option in the Ajax:Updater" do
+          @form_html.should_not match(/parameters:tab/)
         end
 
-        it "shoud use AJAX submission"
+        it "shoud use AJAX submission" do
+          @form_html.should match(/Ajax.Updater/)
+        end
 
-        it "should have a customizable DOM ID"
+        it "should have a customizable DOM ID" do
+          # not married to the form of this hash
+          @cars.options = @opts.merge(:html =>{:id => "car_color_filter"})
+          @form_html = filter_for(:cars, @opts)
+          @form_html.should match(/id=\"car_color_filter\"/)
+        end
         
-        it "should be sensitive to a page parameter from will_paginate"
+        it "should be sensitive to a page parameter from will_paginate" do
+          @cars.merged_params({:page => 1}).should == {"cars[page]"=>"1"}
+        end
 
       end
 
@@ -102,8 +116,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
-        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @controller.should_receive(:url_for).with({}).and_return("")
+
         @form_html = filter_for(:cars)
       end
 

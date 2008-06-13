@@ -67,7 +67,7 @@ module DataTable
     # (and flatly) scoped (e.g. :key => "value", not name[:key] => "value")
     # and not {:name => {:key => "value"}}
     def merged_params(other_hash)
-      return {} unless params && params[@name]
+      return {@name => other_hash}.flatten_one_level unless params && params[@name]
       named_params = params[@name]
       {@name => (named_params.merge(other_hash))}.flatten_one_level
     end
@@ -89,11 +89,11 @@ module DataTable
     end
     
     def remote_options
-      @options[:remote] || {}
+      options[:remote] || {}
     end
     
     def form_options
-      @options[:form] || {:id => DEFAULT_FORM_ID}
+      options[:form] || {:id => DEFAULT_FORM_ID}
     end
     
     def options=(other_options)
@@ -101,7 +101,11 @@ module DataTable
     end
     
     def mode
-      @options && @options[:form] ? :standard : :ajax
+      options && options[:form] ? :standard : :ajax
+    end
+    
+    def options
+      @options || {}
     end
     
     
