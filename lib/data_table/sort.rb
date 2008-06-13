@@ -26,8 +26,8 @@ class Sort
     opt
   end
   
-  def option_with_name(name)
-    options.select{ |o| o.key == name }.first
+  def option_by_key(key)
+    options.select{ |o| o.key == key }.first
   end
   
   def default_key

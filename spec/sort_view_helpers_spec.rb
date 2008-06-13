@@ -32,8 +32,8 @@ describe DataTable::SortViewHelpers do
         end
       end
     end
-    @params = {}
     @cars = data_table(:cars)
+    @params = {}
     @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'}, 
     :with => [:tab] }
     @data_tables = {}
@@ -57,14 +57,16 @@ describe DataTable::SortViewHelpers do
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
-        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).and_return "Boobs."
-        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).and_return "Boobs."        
-        @sort_html = sort_header(:cars)
+        @html_helper = sort_header(:cars, @opts) do |sort|
+          # we're capturing the wrapper for test purposes
+        end
+        @make_html = @html_helper.column :make
+        @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]
       end
 
       it "should render in AJAX mode" do
-        @sort_html.should match(/Ajax.Updater/)
+        @html_helper.mode.should == :ajax
       end
 
       it "should internalize the form options correctly"
