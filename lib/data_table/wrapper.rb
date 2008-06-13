@@ -71,6 +71,12 @@ module DataTable
       named_params = params[@name]
       {@name => (named_params.merge(other_hash))}.flatten_one_level
     end
+    
+    # return the relevant options for remote_function calls that are using
+    # this data_table
+    def options_for_remote_function
+      remote_options.merge(html_options)
+    end
 
     # this returns all parameters that have been associated with this
     # data_table in flattened form.
@@ -92,8 +98,8 @@ module DataTable
       options[:remote] || {}
     end
     
-    def form_options
-      options[:form] || {:id => DEFAULT_FORM_ID}
+    def html_options
+      options[:html] || {:id => DEFAULT_FORM_ID}
     end
     
     def options=(other_options)

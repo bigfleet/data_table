@@ -67,9 +67,14 @@ describe "a data_table" do
         end
       end
       @cars = data_table(:cars)
-      @opts = opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'},
+      @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'},
                             :with => [:tab] }
       @default_opts = {:id => "filterForm"}
+    end
+    
+    it "should remove :with option for remote filter form submission" do
+      @cars.options = @opts
+      @cars.options_for_remote_function.should_not include(:with)
     end
     
     it "should be able to have sort and filter specifications" do
