@@ -38,7 +38,7 @@ module DataTable
         when :standard
           content_tag("td", link_to(link_text, controller.url_for(options_params)))
         else
-          content_tag("td", ActionView::Base.link_to_remote(link_text, "boobs", "boobs"))
+          content_tag("td", link_to_remote(link_text, "boobs", "boobs"))
         end
         
       end
