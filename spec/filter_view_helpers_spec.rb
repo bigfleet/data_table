@@ -49,18 +49,22 @@ describe DataTable::FilterViewHelpers do
   
   describe "in XML builder mode" do
     
-    describe "the form tag" do
+    describe "when customizing CSS" do
       
       before(:each) do
+        @opts = @opts.merge(:html =>{:id => "car_color_filter", :selects =>{:class => "filter"}})
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @controller.should_receive(:data_tables).with().and_return({:cars => @cars})
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @form_html = filter_for(:cars, @opts)
+        @cars = @data_tables[:cars]        
       end
       
-      it "should have a customizable DOM ID" do
-        # not married to the form of this hash
-        @cars.options = @opts.merge(:html =>{:id => "car_color_filter"})
-        @form_html = filter_for(:cars, @opts)
+      it "should have a customizable DOM ID for the filter" do
         @form_html.should match(/id=\"car_color_filter\"/)
+      end
+      
+      it "should have a customizable DOM class for the selects" do
+        @form_html.should match(/select class=\"filter\"/)
       end
 
       
@@ -115,8 +119,6 @@ describe DataTable::FilterViewHelpers do
           @form_html.split(/<option/).should have(7).things
           # 6 breaks, one for the prelude and the last one includes aftermath
         end
-        
-        it "should have a customizable DOM class" 
 
       end
 

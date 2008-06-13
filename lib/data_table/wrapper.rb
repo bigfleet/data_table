@@ -79,7 +79,7 @@ module DataTable
     # return the relevant options for remote_function calls that are using
     # this data_table
     def options_for_remote_function
-      remote_options.merge(html_options)
+      remote_options.merge({:html => html_options})
     end
 
     # this returns all parameters that have been associated with this
@@ -107,7 +107,7 @@ module DataTable
     end
     
     def html_select_options
-      html_options[:select] || {}
+      html_options[:selects] || {}
     end
     
     def options=(other_options)
