@@ -40,6 +40,7 @@ module DataTable
       when :standard
         xml << form_tag(form_options[:url], form_options)        
       else
+        # No longer including any form ID (BAD!) [jvf]
         xml << form_remote_tag(wrapper.options_for_remote_function)
       end
       xml.div do
@@ -52,7 +53,7 @@ module DataTable
             # AJAX style submission
             # Is there anything more ridiculous than the remote options in Rails?
             submit_function = remote_function(wrapper.options_for_remote_function)
-            elt_html = element_to_html(elt, wrapper.name, wrapper.html_options.merge(:onchange => submit_function))
+            elt_html = element_to_html(elt, wrapper.name, wrapper.html_select_options.merge(:onchange => submit_function))
             xml << elt_html
           end
         end

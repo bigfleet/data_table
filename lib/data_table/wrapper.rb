@@ -102,8 +102,12 @@ module DataTable
       options[:html] || {:id => DEFAULT_FORM_ID}
     end
     
+    def html_select_options
+      html_options[:select] || {}
+    end
+    
     def options=(other_options)
-      @options = other_options.reverse_merge(:id => DEFAULT_FORM_ID, :remote => {:url => ""})
+      @options = other_options.reverse_merge(:html => {:id => DEFAULT_FORM_ID}, :remote => {:url => ""})
     end
     
     def mode
