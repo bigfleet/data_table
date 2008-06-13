@@ -34,6 +34,9 @@ def have_html_link_with(expected)
   HaveHtmlLinkWith.new(expected)
 end
 
+def regexify(string, options = nil)
+  Regexp.compile(Regexp.escape(string), options)
+end
 
 # Wrap tests that use Mocha and skip if unavailable.
 def uses_mocha(test_name)

@@ -166,31 +166,35 @@ describe DataTable::FilterViewHelpers do
         it "shoud use AJAX submission" do
           @form_html.should match(/Ajax.Updater/)
         end
-        
-        it "should be sensitive to a page parameter from will_paginate" do
-          @cars.merged_params({:page => 1}).should == {"cars[page]"=>"1", 
-            "cars[sort_key]"=>"year", "cars[sort_order]"=>"desc"}
-        end
 
       end
 
       describe "the select tag" do
 
-        it "should reference its field name"
+        it "should reference its field name" do
+          @form_html.should match(/name="cars\[color\]"/)
+        end
 
-        it "should have the right number of options"
-        
-        it "should be sensitive to a page parameter from will_paginate"        
+        it "should have the right number of options" do
+          @form_html.split(/<option/).should have(7).things
+          # 6 breaks, one for the prelude and the last one includes aftermath
+        end
 
       end
 
       describe "any extra parameters" do
 
-        it "should include a hidden field for sort key"
+        it "should include a hidden field for sort key" do
+          @form_html.should match(
+            regexify('<input id="cars_sort_order" name="cars[sort_order]" type="hidden" value="desc" />', Regexp::MULTILINE)
+          )
+        end
 
-        it "should include a hidden field for sort order"
+        it "should include a hidden field for sort order" do
+        end
 
-        it "should not include a hidden field for tab"
+        it "should not include a hidden field for tab" do
+        end
 
       end
 
