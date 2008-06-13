@@ -90,23 +90,34 @@ describe DataTable::FilterViewHelpers do
 
       describe "the select tag" do
 
-        it "should reference its field name"
+        it "should reference its field name" do
+          @form_html.should match(/"cars\[color\]"/)
+        end
         
-        it "should highlight the default filter selection"
+        it "should highlight the default filter selection" do
+          @form_html.should match(/value=\"all\" selected=\"selected\"/)
+        end
 
-        it "should have the right number of options"
-        
-        it "should be sensitive to a page parameter from will_paginate"
+        it "should have the right number of options" do
+          @form_html.split(/<option/).should have(7).things
+          # 6 breaks, one for the prelude and the last one includes aftermath
+        end
 
       end
 
       describe "any extra parameters" do
 
-        it "should not include a hidden field for sort key"
+        it "should not include a hidden field for sort key" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
-        it "should not include a hidden field for sort order"
+        it "should not include a hidden field for sort order" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
-        it "should not include a hidden field for tab"
+        it "should not include a hidden field for tab" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
       end
 
@@ -116,7 +127,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
-
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @form_html = filter_for(:cars)
       end
 
