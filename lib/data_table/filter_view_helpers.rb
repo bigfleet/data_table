@@ -15,6 +15,7 @@ module DataTable
     #   :inner_frame => The options hash of HTML options you'd like the filters inner div to use
     def filter_for(name=nil, options={})
       wrapper = controller.find_data_table_by_name(name).with(params)
+      controller.data_tables[name] = wrapper
       wrapper.options = options
       form_for_filter(wrapper)
     end

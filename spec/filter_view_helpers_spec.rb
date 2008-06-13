@@ -37,6 +37,7 @@ describe DataTable::FilterViewHelpers do
     @cars = data_table(:cars)
     @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'}, 
     :with => [:tab] }
+    @data_tables = {}
     @controller = Object.new
   end
   
@@ -52,6 +53,7 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
+        @controller.should_receive(:data_tables).with().and_return({:cars => @cars})
       end
       
       it "should have a customizable DOM ID" do
@@ -68,8 +70,9 @@ describe DataTable::FilterViewHelpers do
       
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
         @form_html = filter_for(:cars, @opts)
-        @cars.options = @opts # necessary because filter_for operates on a version with parameters
+        @cars = @data_tables[:cars]
       end
 
       it "should internalize the form options correctly" do
@@ -140,8 +143,9 @@ describe DataTable::FilterViewHelpers do
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
         @form_html = filter_for(:cars, @opts)
-        @cars.options = @opts # why is this necessary?        
+        @cars = @data_tables[:cars]
       end
 
       it "should internalize the form options correctly" do
@@ -163,7 +167,10 @@ describe DataTable::FilterViewHelpers do
           @form_html.should match(/Ajax.Updater/)
         end
         
-        it "should be sensitive to a page parameter from will_paginate"
+        it "should be sensitive to a page parameter from will_paginate" do
+          @cars.merged_params({:page => 1}).should == {"cars[page]"=>"1", 
+            "cars[sort_key]"=>"year", "cars[sort_order]"=>"desc"}
+        end
 
       end
 
@@ -194,9 +201,9 @@ describe DataTable::FilterViewHelpers do
       before(:each) do
         @params = {:cars => {:color => "blue"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @controller.should_receive(:url_for).with({}).and_return("")
-        @form_html = filter_for(:cars)
-        
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @form_html = filter_for(:cars, @opts)
+        @cars = @data_tables[:cars]
       end
 
       it "should render in AJAX mode"
@@ -240,8 +247,9 @@ describe DataTable::FilterViewHelpers do
       before(:each) do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
-        @controller.should_receive(:url_for).with({}).and_return("")
-        @form_html = filter_for(:cars)
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @form_html = filter_for(:cars, @opts)
+        @cars = @data_tables[:cars]
       end
 
       it "should render in AJAX mode"

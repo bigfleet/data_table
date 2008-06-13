@@ -29,8 +29,7 @@ end
 
 module DataTable
 
-  module InstanceMethods
-        
+  module InstanceMethods    
     
     def data_table(name, &block)
       if block
@@ -61,6 +60,10 @@ module DataTable
     
     def data_table_lookup
       @data_tables ||= {}
+    end
+    
+    def data_tables
+      @data_tables
     end
         
   end
