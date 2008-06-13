@@ -32,7 +32,16 @@ describe DataTable::SortViewHelpers do
         end
       end
     end
+    @params = {}
+    @cars = data_table(:cars)
+    @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'}, 
+    :with => [:tab] }
+    @data_tables = {}
     @controller = Object.new
+    @make_desc_params = {:cars => {:sort_key => "make", :sort_order => "desc"}}
+    @make_asc_params = {:cars => {:sort_key => "make", :sort_order => "asc"}}
+    @year_desc_params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
+    @year_asc_params = {:cars => {:sort_key => "year", :sort_order => "asc"}}    
   end
   
   describe "in partial rendering mode" do
@@ -44,8 +53,19 @@ describe DataTable::SortViewHelpers do
   describe "in ERB mode" do
     
     describe "with no additional parameters" do
+      
+      before(:each) do
+        @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
+        @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).and_return "Boobs."
+        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).and_return "Boobs."        
+        @sort_html = sort_header(:cars)
+        @cars = @data_tables[:cars]
+      end
 
-      it "should render in AJAX mode"
+      it "should render in AJAX mode" do
+        @sort_html.should match(/Ajax.Updater/)
+      end
 
       it "should internalize the form options correctly"
 

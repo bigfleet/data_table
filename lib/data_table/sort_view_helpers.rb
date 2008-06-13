@@ -2,16 +2,17 @@ module DataTable
   module SortViewHelpers
     
     def sort_header(name)
-      data_table = controller.find_data_table_by_name(name).with(params)
-      data_table.sort.options.collect do |o| 
-        render_sort_option_to_html(o, data_table.form_options)
+      wrapper = controller.find_data_table_by_name(name).with(params)
+      controller.data_tables[name] = wrapper
+      wrapper.sort.options.collect do |o| 
+        render_sort_option_to_html(o, wrapper.html_options)
       end.join(<<-CR
 
       CR
       )
     end
 
-    def sort_header_for(name, &block)
+    def sort_header_for(data_table_name, key)
       controller.find_data_table_by_name(name).with(params)
       yield(data_table(name).sort)
     end
