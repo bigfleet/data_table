@@ -174,6 +174,10 @@ describe DataTable::FilterViewHelpers do
         it "should reference its field name" do
           @form_html.should match(/name="cars\[color\]"/)
         end
+        
+        it "should highlight the default filter selection" do
+          @form_html.should match(/value=\"all\" selected=\"selected\"/)
+        end
 
         it "should have the right number of options" do
           @form_html.split(/<option/).should have(7).things
@@ -186,14 +190,20 @@ describe DataTable::FilterViewHelpers do
 
         it "should include a hidden field for sort key" do
           @form_html.should match(
-            regexify('<input id="cars_sort_order" name="cars[sort_order]" type="hidden" value="desc" />', Regexp::MULTILINE)
+            regexify('<input id="cars_sort_key" name="cars[sort_key]" type="hidden" value="year" />', 
+              Regexp::MULTILINE)
           )
         end
 
         it "should include a hidden field for sort order" do
+          @form_html.should match(
+            regexify('<input id="cars_sort_order" name="cars[sort_order]" type="hidden" value="desc" />', 
+              Regexp::MULTILINE)
+          )          
         end
 
         it "should not include a hidden field for tab" do
+          @form_html.should_not match(/name="tab" type="hidden" value=.*/)
         end
 
       end
@@ -208,39 +218,65 @@ describe DataTable::FilterViewHelpers do
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
+        @cars.filter.active_elements.should_not be_empty
       end
 
-      it "should render in AJAX mode"
+      it "should internalize the form options correctly" do
+        @cars.mode.should == :ajax
+        @cars.remote_options.should == @opts[:remote]
+      end
 
-      it "should internalize the form options correctly"
 
       describe "the form tag" do
 
-        it "should have one appearance"
-
-        it "shoud use AJAX submission"
+        it "should render a form tag" do
+          @form_html.should match(Regexp.compile("<form.*form>", Regexp::MULTILINE))
+        end
         
-        it "should be sensitive to a page parameter from will_paginate"
+        it "should not include the :with option in the Ajax:Updater" do
+          @form_html.should_not match(/parameters:tab/)
+        end
+
+        it "shoud use AJAX submission" do
+          @form_html.should match(/Ajax.Updater/)
+        end
 
       end
 
       describe "the select tag" do
 
-        it "should reference its field name"
-
-        it "should have the right number of options"
+        it "should reference its field name" do
+          @form_html.should match(/name="cars\[color\]"/)
+        end
         
-        it "should be sensitive to a page parameter from will_paginate"
+        it "should not highlight the default filter selection" do
+          @form_html.should_not match(/value=\"all\" selected=\"selected\"/)
+        end
+        
+        it "should highlight the selected filter option" do
+          @form_html.should match(/value=\"blue\" selected=\"selected\"/)
+        end
+
+        it "should have the right number of options" do
+          @form_html.split(/<option/).should have(7).things
+          # 6 breaks, one for the prelude and the last one includes aftermath
+        end
 
       end
 
       describe "any extra parameters" do
 
-        it "should not include a hidden field for sort key"
+        it "should not include a hidden field for sort key" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
-        it "should not include a hidden field for sort order"
+        it "should not include a hidden field for sort order" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
-        it "should not include a hidden field for tab"
+        it "should not include a hidden field for tab" do
+          @form_html.should_not match(/input\[type\]=\"hidden\"/)
+        end
 
       end
 

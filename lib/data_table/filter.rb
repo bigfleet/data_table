@@ -20,7 +20,6 @@ module DataTable
   
     def initialize(options = {})
       @elements = []
-      @params = {}
     end
   
     def element(options)

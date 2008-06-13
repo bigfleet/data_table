@@ -51,11 +51,11 @@ module DataTable
     
     def with(params)
       w = Wrapper.new(:name => @name)
-      w.sort = @sort.with(params)
+      w.params = params      
+      w.sort = @sort.with(w.nested_params)
       w.sort.wrapper = self
-      w.filter = @filter.with(params)
+      w.filter = @filter.with(w.nested_params)
       w.filter.wrapper = self
-      w.params = params
       w
     end
     
@@ -70,6 +70,10 @@ module DataTable
       return {@name => other_hash}.flatten_one_level unless params && params[@name]
       named_params = params[@name]
       {@name => (named_params.merge(other_hash))}.flatten_one_level
+    end
+    
+    def nested_params
+      params && params[@name] ? params[@name] : {}
     end
     
     # return the relevant options for remote_function calls that are using
