@@ -64,7 +64,7 @@ describe DataTable::FilterViewHelpers do
       describe "the form tag" do
 
         it "should render a form tag" do
-          @form_html.should match(/<form(.*)>(.*)<\/form>/)
+          @form_html.should match(Regexp.compile("<form.*form>", Regexp::MULTILINE))
         end
         
         it "should not include the :with option in the Ajax:Updater" do
