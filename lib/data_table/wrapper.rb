@@ -102,6 +102,11 @@ module DataTable
       options[:remote] || {}
     end
     
+    def remote_options_for_link
+      return remote_options if remote_options.empty?
+      {:url => remote_options[:url], :update => remote_options[:update]}
+    end
+    
     def html_options
       options[:html] || {:id => DEFAULT_FORM_ID}
     end

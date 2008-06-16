@@ -38,6 +38,7 @@ describe DataTable::SortViewHelpers do
     :with => [:tab] }
     @data_tables = {}
     @controller = Object.new
+    @base_url = "?cars%5Bsort_key%5D=make&amp;cars%5Bsort_order%5D=desc"
     @make_desc_params = {:cars => {:sort_key => "make", :sort_order => "desc"}}
     @make_asc_params = {:cars => {:sort_key => "make", :sort_order => "asc"}}
     @year_desc_params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
@@ -61,9 +62,9 @@ describe DataTable::SortViewHelpers do
         @html_helper = sort_header(:cars, @opts) do |sort|
           # we're capturing the wrapper for test purposes
         end
-        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(2)
+        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
         @make_html = @html_helper.column :make
-        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(2)  
+        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
         @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]
       end
@@ -78,13 +79,13 @@ describe DataTable::SortViewHelpers do
 
       describe "the default sort tag" do
 
-        it "should reference its field name" do
-          @make_html.should be_nil
+        it "shoud use AJAX submission" do
+          @make_html.should match(/Ajax.Updater/)
         end
 
-        it "shoud use AJAX submission"
-
-        it "should have utilize any HTML options"
+        it "should utilize any HTML options" do
+          @make_html.should be_nil
+        end
         
         it "should overwrite or ignore any pagination page"
         
