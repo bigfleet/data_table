@@ -216,29 +216,39 @@ describe DataTable::SortViewHelpers do
 
       describe "the default sort tag" do
 
-        it "should reference its field name"
+        it "shoud use AJAX submission" do
+          @make_html.should match(/Ajax.Updater/)
+        end
 
-        it "shoud use AJAX submission"
-
-        it "should have utilize any HTML options"
+        it "should utilize any HTML options" do
+          @make_html.should match(/Manufacturer/)
+        end
         
-        it "should overwrite or ignore any pagination page"
-        
-        it "should use the icon for the default sort"
+        it "should use the icon for the default sort" do
+          @make_html.should match(/sort_asc.gif/)
+        end
 
       end
 
       describe "the secondary sort tag" do
 
-        it "should reference its field name"
-        
-        it "shoud use AJAX submission"
+        it "shoud use AJAX submission" do
+          @year_html.should match(/Ajax.Updater/)
+        end
 
-        it "should have utilize any HTML options"
+        it "should have a reasonable default caption" do
+          @year_html.should match(/Year/)
+        end
         
-        it "should overwrite or ignore any pagination page"
+        it "should use the icon for the default sort" do
+          @year_html.should match(/sortArrow001.gif/)
+        end
         
-        it "should use an icon representing an unsorted condition"        
+        it "should respect the preferred initial sort order" do
+          # based on the implementation, this test is sort of redundant;
+          # we had the mock return this.  
+          @year_html.should match(/cars%5Bsort_key%5D=year&amp;cars%5Bsort_order%5D=desc&amp;cars%5Bcolor%5D=blue/)
+        end
 
       end
     end
