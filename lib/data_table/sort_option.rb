@@ -18,9 +18,9 @@ class SortOption
     self == @parent.selected
   end
   
-  # returns the inverse of current_order, or 'desc' by default
+  # returns the inverse of current_order, or preferred order by default
   def other_order
-    (ORDERS - [current_order]).last
+    current_order.nil? ? @preferred_order : (ORDERS - [current_order]).last
   end
   
   # returns 'asc', 'desc', or nil, depending on the order (or disorder) of

@@ -40,6 +40,7 @@ module DataTable
         when :standard
           content_tag("td", link_to(link_text, @controller.url_for(options_params)))
         else
+          
           url = @controller.url_for(options_params)
           link_params = @wrapper.remote_options_for_link.merge({:url => url})
           content_tag("td", link_to_remote(link_text, link_params))
