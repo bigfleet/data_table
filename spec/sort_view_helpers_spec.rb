@@ -60,13 +60,13 @@ describe DataTable::SortViewHelpers do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
         @controller.should_receive(:protect_against_forgery?).at_least(1).and_return(false)
-        @html_helper = sort_header(:cars, @opts) do |sort|
-          # we're capturing the wrapper for test purposes
-        end
         @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@make_desc_url)
-        @make_html = @html_helper.column :make, :caption => "Manufacturer"
         @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@year_desc_url)
-        @year_html = @html_helper.column :year
+
+        @html_helper = sort_header(:cars, @opts) do |sort|
+          @make_html = sort.column :make, :caption => "Manufacturer"
+          @year_html = sort.column :year
+        end
         @cars = @data_tables[:cars]
       end
 
