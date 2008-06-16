@@ -189,10 +189,30 @@ describe DataTable::SortViewHelpers do
     end
     
     describe "with parameters for filtering" do
+      
+      before(:each) do
+        @params = {:cars => {:color => "blue"}}
+        make_params = {:cars => {:color => "blue", :sort_key => "make", :sort_order => "desc"}}
+        year_params = {:cars => {:color => "blue", :sort_key => "year", :sort_order => "desc"}}
+        filtered_make_url = @make_desc_url + "&amp;cars%5Bcolor%5D=blue"
+        filtered_year_url = @year_desc_url + "&amp;cars%5Bcolor%5D=blue"        
+        @controller.should_receive(:url_for).with(make_params.flatten_one_level).at_least(1).and_return(filtered_make_url)
+        @controller.should_receive(:url_for).with(year_params.flatten_one_level).at_least(1).and_return(filtered_year_url)
 
-      it "should render in AJAX mode"
+        @html_helper = sort_header(:cars, @opts) do |sort|
+          @make_html = sort.column :make, :caption => "Manufacturer"
+          @year_html = sort.column :year
+        end
+        @cars = @data_tables[:cars]
+      end
 
-      it "should internalize the form options correctly"
+      it "should render in AJAX mode" do
+        @html_helper.mode.should == :ajax
+      end
+
+      it "should internalize the form options correctly" do
+        @html_helper.wrapper.remote_options.should == @opts[:remote]
+      end
 
       describe "the default sort tag" do
 
