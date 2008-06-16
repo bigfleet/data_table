@@ -57,9 +57,11 @@ describe DataTable::SortViewHelpers do
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:protect_against_forgery?).at_least(1).and_return(false)
         @html_helper = sort_header(:cars, @opts) do |sort|
           # we're capturing the wrapper for test purposes
         end
+        @controller.should_receive(:url_for).at_least(1).and_return("money")
         @make_html = @html_helper.column :make
         @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]

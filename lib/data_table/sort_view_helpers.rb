@@ -20,8 +20,8 @@ module DataTable
         @controller = controller
       end
       
-      def protect_against_forgery?(arg)
-        @controller.protect_against_forgery?(arg)
+      def protect_against_forgery?
+        @controller.protect_against_forgery?
       end
       
       def mode
