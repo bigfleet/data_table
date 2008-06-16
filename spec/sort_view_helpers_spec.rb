@@ -71,7 +71,9 @@ describe DataTable::SortViewHelpers do
         @html_helper.mode.should == :ajax
       end
 
-      it "should internalize the form options correctly"
+      it "should internalize the form options correctly" do
+        @html_helper.wrapper.remote_options.should == @opts[:remote]
+      end
 
       describe "the default sort tag" do
 

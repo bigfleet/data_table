@@ -15,6 +15,8 @@ module DataTable
       include ActionView::Helpers::JavaScriptHelper
       include ActionView::Helpers::PrototypeHelper
       
+      attr_reader :wrapper
+      
       def initialize(wrapper, controller)
         @wrapper = wrapper
         @controller = controller
