@@ -63,7 +63,7 @@ describe DataTable::SortViewHelpers do
           # we're capturing the wrapper for test purposes
         end
         @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
-        @make_html = @html_helper.column :make
+        @make_html = @html_helper.column :make, :caption => "Manufacturer"
         @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
         @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]
@@ -84,12 +84,16 @@ describe DataTable::SortViewHelpers do
         end
 
         it "should utilize any HTML options" do
-          @make_html.should be_nil
+          @make_html.should match(/Manufacturer/)
         end
         
-        it "should overwrite or ignore any pagination page"
+        it "should overwrite or ignore any pagination page" do
+          pending "this should be moved outside this descriptor block"
+        end
         
-        it "should use the icon for the default sort"
+        it "should use the icon for the default sort" do
+          @make_html.should match(/sort_asc.gif/)
+        end
 
       end
 
