@@ -69,7 +69,7 @@ describe "a data_table" do
       @cars = data_table(:cars)
       @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'},
                             :with => [:tab] }
-      @default_opts = {:id => "filterForm"}
+      @default_opts = {:html => {:id => "filterForm"}, :remote => {:url => ""}}
     end
     
     it "should remove :with option for remote filter form submission" do
@@ -93,7 +93,7 @@ describe "a data_table" do
       
       it "should be able to store remote form submission parameters" do
         @cars.options = @opts
-        @cars.options.should == @opts.merge(@default_opts)
+        @cars.options.should == @default_opts.merge(@opts)
       end
 
     end
@@ -111,7 +111,7 @@ describe "a data_table" do
       
       it "should be able to store remote form submission parameters" do
         @sorted_cars.options = @opts
-        @sorted_cars.options.should == @opts.merge(@default_opts)
+        @sorted_cars.options.should == @default_opts.merge(@opts)
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -135,7 +135,7 @@ describe "a data_table" do
       
       it "should be able to store remote form submission parameters" do
         @filtered_cars.options = @opts
-        @filtered_cars.options.should == @opts.merge(@default_opts)
+        @filtered_cars.options.should == @default_opts.merge(@opts)
       end
       
       it "should be able to merge sort parameters for form submission" do
@@ -159,7 +159,7 @@ describe "a data_table" do
       
       it "should be able to store remote form submission parameters" do
         @sorted_and_filtered_cars.options = @opts
-        @sorted_and_filtered_cars.options.should == @opts.merge(@default_opts)
+        @sorted_and_filtered_cars.options.should == @default_opts.merge(@opts)
       end
       
       it "should be able to override sort parameters for form submission" do
