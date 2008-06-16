@@ -51,11 +51,15 @@ module DataTable
     
     def with(params)
       w = Wrapper.new(:name => @name)
-      w.params = params      
-      w.sort = @sort.with(w.nested_params)
-      w.sort.wrapper = self
-      w.filter = @filter.with(w.nested_params)
-      w.filter.wrapper = self
+      w.params = params
+      if @sort
+        w.sort = @sort.with(w.nested_params)
+        w.sort.wrapper = self
+      end
+      if @filter
+        w.filter = @filter.with(w.nested_params)
+        w.filter.wrapper = self
+      end
       w
     end
     
@@ -81,6 +85,11 @@ module DataTable
     def options_for_remote_function
       remote_options.merge({:html => html_options})
     end
+    
+    def remote_options_for_link
+      return remote_options if remote_options.empty?
+      {:url => remote_options[:url], :update => remote_options[:update]}
+    end    
 
     # this returns all parameters that have been associated with this
     # data_table in flattened form.
@@ -100,11 +109,6 @@ module DataTable
     
     def remote_options
       options[:remote] || {}
-    end
-    
-    def remote_options_for_link
-      return remote_options if remote_options.empty?
-      {:url => remote_options[:url], :update => remote_options[:update]}
     end
     
     def html_options

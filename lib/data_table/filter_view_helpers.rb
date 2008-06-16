@@ -22,6 +22,13 @@ module DataTable
     
     protected
     
+    def element_to_html(filter_element, nest_name, options = {})
+      select_tag("#{nest_name}[#{filter_element.field}]", 
+                    options_for_select(filter_element.selections.map(&:to_option), filter_element.selected.valuize_label), 
+                    options)
+    end    
+    
+    
     def templates_detected?(wrapper)
       # Should expand a RAILS_ROOT and render the needed 
     end
@@ -75,9 +82,5 @@ module DataTable
     end
   end
   
-  def element_to_html(filter_element, nest_name, options = {})
-    select_tag("#{nest_name}[#{filter_element.field}]", 
-                  options_for_select(filter_element.selections.map(&:to_option), filter_element.selected.valuize_label), 
-                  options)
-  end
+
 end

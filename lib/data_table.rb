@@ -51,9 +51,6 @@ module DataTable
       find_data_table_by_name(name).with(params).options
     end
     
-    
-    protected 
-    
     def find_data_table_by_name(name)
       data_table_lookup[name]
     end

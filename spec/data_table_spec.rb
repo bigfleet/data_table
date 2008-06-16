@@ -8,7 +8,7 @@ describe "a data_table" do
     self.should respond_to(:data_table)
   end
   
-  it "should have optional sorting" do
+  it "should have support sorting" do
     data_table(:cars) do |table|
       table.sort_spec do |s|
         s.default 'make'
@@ -22,7 +22,7 @@ describe "a data_table" do
     @cars.filter.should be_nil
   end
   
-  it "should have optional filtering" do
+  it "should have support filtering" do
     data_table(:cars) do |table|
       table.filter_spec do |f|
         f.element(:color) do |e|
@@ -83,6 +83,16 @@ describe "a data_table" do
       @cars.sort.options.should have_at_least(2).things
       @cars.filter.should_not be_nil
       @cars.filter.elements.should have_at_least(1).things
+    end
+    
+    describe "when integrating with parameters" do
+      
+      # having no sorting or filtering will crash with nil reference
+      
+      it "should have optional sorting"
+      
+      it "should have optional filtering"
+      
     end
     
     describe "with no additional parameters" do
