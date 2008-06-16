@@ -167,16 +167,22 @@ describe DataTable::SortViewHelpers do
       end
 
       describe "the secondary sort tag" do
+        
+        it "should use AJAX submission" do
+          @year_html.should match(/Ajax.Updater/)
+        end
 
-        it "should reference its field name"
+        it "should use a sensible default for column caption" do
+          @year_html.should match(/Year/)
+        end
         
-        it "shoud use AJAX submission"
-
-        it "should have utilize any HTML options"
+        it "should indicate descending order has been selected" do
+          @year_html.should match(/sort_desc.gif/)
+        end
         
-        it "should overwrite or ignore any pagination page"
-        
-        it "should use an icon representing an unsorted condition"        
+        it "should link to the alternative sort ordering" do
+          @year_html.should match(/cars%5Bsort_key%5D=year&amp;cars%5Bsort_order%5D=asc/)
+        end
 
       end
       
