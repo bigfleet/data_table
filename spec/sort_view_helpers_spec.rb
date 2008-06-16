@@ -61,8 +61,9 @@ describe DataTable::SortViewHelpers do
         @html_helper = sort_header(:cars, @opts) do |sort|
           # we're capturing the wrapper for test purposes
         end
-        @controller.should_receive(:url_for).at_least(1).and_return("money")
+        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(2)
         @make_html = @html_helper.column :make
+        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(2)  
         @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]
       end
@@ -77,7 +78,9 @@ describe DataTable::SortViewHelpers do
 
       describe "the default sort tag" do
 
-        it "should reference its field name"
+        it "should reference its field name" do
+          @make_html.should be_nil
+        end
 
         it "shoud use AJAX submission"
 

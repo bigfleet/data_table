@@ -35,12 +35,14 @@ module DataTable
         caption = caption_for(s, options)
         icon = icon_for(s, options)
         options_params = params_for(s, options)
+        puts options_params.inspect
         link_text = [caption, icon].join(" ")
         case mode
         when :standard
-          content_tag("td", link_to(link_text, controller.url_for(options_params)))
+          content_tag("td", link_to(link_text, @controller.url_for(options_params)))
         else
-          content_tag("td", link_to_remote(link_text, "boobs", "boobs"))
+          puts key
+          content_tag("td", link_to_remote(link_text, {:url => @controller.url_for(options_params)}))
         end
         
       end
