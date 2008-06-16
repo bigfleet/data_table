@@ -38,7 +38,8 @@ describe DataTable::SortViewHelpers do
     :with => [:tab] }
     @data_tables = {}
     @controller = Object.new
-    @base_url = "?cars%5Bsort_key%5D=make&amp;cars%5Bsort_order%5D=desc"
+    @make_desc_url = "?cars%5Bsort_key%5D=make&amp;cars%5Bsort_order%5D=desc"
+    @year_desc_url = "?cars%5Bsort_key%5D=year&amp;cars%5Bsort_order%5D=desc"    
     @make_desc_params = {:cars => {:sort_key => "make", :sort_order => "desc"}}
     @make_asc_params = {:cars => {:sort_key => "make", :sort_order => "asc"}}
     @year_desc_params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
@@ -62,9 +63,9 @@ describe DataTable::SortViewHelpers do
         @html_helper = sort_header(:cars, @opts) do |sort|
           # we're capturing the wrapper for test purposes
         end
-        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
+        @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@make_desc_url)
         @make_html = @html_helper.column :make, :caption => "Manufacturer"
-        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@base_url)
+        @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@year_desc_url)
         @year_html = @html_helper.column :year
         @cars = @data_tables[:cars]
       end
@@ -99,15 +100,27 @@ describe DataTable::SortViewHelpers do
 
       describe "the secondary sort tag" do
 
-        it "should reference its field name"
-        
-        it "shoud use AJAX submission"
+        it "shoud use AJAX submission" do
+          @year_html.should match(/Ajax.Updater/)
+        end
 
-        it "should have utilize any HTML options"
+        it "should have a reasonable default caption" do
+          @year_html.should match(/Year/)
+        end
         
-        it "should overwrite or ignore any pagination page"
+        it "should overwrite or ignore any pagination page" do
+          pending "this should be moved outside this descriptor block"
+        end
         
-        it "should use an icon representing an unsorted condition"        
+        it "should use the icon for the default sort" do
+          @year_html.should match(/sortArrow001.gif/)
+        end
+        
+        it "should respect the preferred initial sort order" do
+          # based on the implementation, this test is sort of redundant;
+          # we had the mock return this.  
+          @year_html.should match(/cars%5Bsort_key%5D=year&amp;cars%5Bsort_order%5D=desc/)
+        end
 
       end
 
