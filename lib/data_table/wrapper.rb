@@ -108,7 +108,7 @@ module DataTable
     end
     
     def remote_options
-      options[:remote] || {}
+      options[:remote].reverse_merge(:method => "get") || {}
     end
     
     def html_options

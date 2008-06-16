@@ -48,7 +48,6 @@ module DataTable
       when :standard
         xml << form_tag(form_options[:url], form_options)        
       else
-        # No longer including any form ID (BAD!) [jvf]
         xml << form_remote_tag(wrapper.options_for_remote_function)
       end
       xml.div do

@@ -35,7 +35,7 @@ describe DataTable::FilterViewHelpers do
     end
     @params = {}
     @cars = data_table(:cars)
-    @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'}, 
+    @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox', :method => "get"}, 
     :with => [:tab] }
     @data_tables = {}
     @controller = Object.new
