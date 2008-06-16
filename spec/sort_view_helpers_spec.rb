@@ -254,36 +254,64 @@ describe DataTable::SortViewHelpers do
     end
     
     describe "with parameters for sorting and filtering" do
+      
+      before(:each) do
+        @params = {:cars => {:color => "blue", :sort_key => "year", :sort_order => "desc"}}
+        make_params = {:cars => {:color => "blue", :sort_key => "make", :sort_order => "asc"}}
+        year_params = {:cars => {:color => "blue", :sort_key => "year", :sort_order => "asc"}}
+        filtered_make_url = @make_desc_url + "&amp;cars%5Bcolor%5D=blue"
+        filtered_year_url = @year_asc_url + "&amp;cars%5Bcolor%5D=blue"        
+        @controller.should_receive(:url_for).with(make_params.flatten_one_level).at_least(1).and_return(filtered_make_url)
+        @controller.should_receive(:url_for).with(year_params.flatten_one_level).at_least(1).and_return(filtered_year_url)
 
-      it "should render in AJAX mode"
+        @html_helper = sort_header(:cars, @opts) do |sort|
+          @make_html = sort.column :make, :caption => "Manufacturer"
+          @year_html = sort.column :year
+        end
+        @cars = @data_tables[:cars]
+      end
 
-      it "should internalize the form options correctly"
+      it "should render in AJAX mode" do
+        @html_helper.mode.should == :ajax
+      end
+
+      it "should internalize the form options correctly" do
+        @html_helper.wrapper.remote_options.should == @opts[:remote]
+      end
 
       describe "the default sort tag" do
 
-        it "should reference its field name"
+        it "shoud use AJAX submission" do
+          @make_html.should match(/Ajax.Updater/)
+        end
 
-        it "shoud use AJAX submission"
-
-        it "should have utilize any HTML options"
+        it "should have utilize any HTML options" do
+          @make_html.should match(/Manufacturer/)
+        end
         
-        it "should overwrite or ignore any pagination page"
-        
-        it "should use the icon for the default sort"
+        it "should use the unsorted icon" do
+          @make_html.should match(/sortArrow001.gif/)
+        end
 
       end
 
       describe "the secondary sort tag" do
+        
+        it "should use AJAX submission" do
+          @year_html.should match(/Ajax.Updater/)
+        end
 
-        it "should reference its field name"
+        it "should use a sensible default for column caption" do
+          @year_html.should match(/Year/)
+        end
         
-        it "shoud use AJAX submission"
-
-        it "should have utilize any HTML options"
+        it "should indicate descending order has been selected" do
+          @year_html.should match(/sort_desc.gif/)
+        end
         
-        it "should overwrite or ignore any pagination page"
-        
-        it "should use an icon representing an unsorted condition"        
+        it "should link to the alternative sort ordering" do
+          @year_html.should match(/cars%5Bsort_key%5D=year&amp;cars%5Bsort_order%5D=asc&amp;cars%5Bcolor%5D=blue/)
+        end
 
       end
 
