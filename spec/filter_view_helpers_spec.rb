@@ -102,6 +102,10 @@ describe DataTable::FilterViewHelpers do
         it "should be sensitive to a page parameter from will_paginate" do
           @cars.merged_params({:page => 1}).should == {"cars[page]"=>"1"}
         end
+        
+        it "should use the get method for form submission" do
+          @form_html.should match(/method:'get'/)
+        end
 
       end
 
@@ -118,6 +122,10 @@ describe DataTable::FilterViewHelpers do
         it "should have the right number of options" do
           @form_html.split(/<option/).should have(7).things
           # 6 breaks, one for the prelude and the last one includes aftermath
+        end
+        
+        it "should use the get method for form submission" do
+          @form_html.should match(/method:'get'/)
         end
 
       end
