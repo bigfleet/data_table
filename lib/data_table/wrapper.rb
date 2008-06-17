@@ -38,7 +38,7 @@ module DataTable
       @name = options[:name] || "data_table"
       @url_options = {}
       @remote_options = {}
-      @html_options = {:id => "filterForm"}
+      @html_options = {:filter => {:id => "filterForm"}}
       @other_options = {}
     end
     
@@ -81,17 +81,17 @@ module DataTable
       {@name => (named_params.merge(other_hash))}.flatten_one_level
     end
     
-    def nested_params
-      params && params[@name] ? params[@name] : {}
-    end
-    
-    # this returns all parameters that have been associated with this
-    # data_table in flattened form.
-    #
-    # external parameters that have been included with the :with option
-    def exposed_params
-      (params||{}).flatten_one_level
-    end
+    # def nested_params
+    #   params && params[@name] ? params[@name] : {}
+    # end
+    # 
+    # # this returns all parameters that have been associated with this
+    # # data_table in flattened form.
+    # #
+    # # external parameters that have been included with the :with option
+    # def exposed_params
+    #   (params||{}).flatten_one_level
+    # end
     
     def conditions
       @filter.nil? ? nil : @filter.conditions
@@ -102,7 +102,14 @@ module DataTable
     end
         
     def form_id
-      html_options[:id]
+      html_options[:filter][:id]
+    end
+    
+    # Examines the state of the options that have been provided to the
+    # filter in the context of the request parameters to determine
+    # which parameters should be passed to a url_for in a view helper
+    def params_for_url(additional_params = {})
+      return additional_params
     end
     
   end

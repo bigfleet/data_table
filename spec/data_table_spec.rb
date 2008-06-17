@@ -8,7 +8,7 @@ describe "a data_table" do
     self.should respond_to(:data_table)
   end
   
-  it "should have support sorting" do
+  it "should support basic sorting" do
     data_table(:cars) do |table|
       table.sort_spec do |s|
         s.default 'make'
@@ -22,7 +22,7 @@ describe "a data_table" do
     @cars.filter.should be_nil
   end
   
-  it "should have support filtering" do
+  it "should support basic filtering" do
     data_table(:cars) do |table|
       table.filter_spec do |f|
         f.element(:color) do |e|
@@ -41,12 +41,6 @@ describe "a data_table" do
     @cars.filter.elements.should have_at_least(1).things
     @cars.sort.should be_nil
   end
-  
-  it "should provide options suitable for will_paginate integration"
-  
-  it "should handle options gracefully from everywhere, including the kitchen sink"
-  
-  # html options for form elements, url options for url generation, etc.
   
   describe "fully specced" do
     before(:each) do
@@ -67,14 +61,19 @@ describe "a data_table" do
         end
       end
       @cars = data_table(:cars)
-      @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox'},
-                            :with => [:tab] }
-      @default_opts = {:html => {:id => "filterForm"}, :remote => {:url => ""}}
+      @url_options = {:controller => "cars", :action => "hottest_sellers"}
+      @remote_options = {:update => 'hotBox'}
+      @other_options = {:with => [:tab]}
     end
     
-    it "should remove :with option for remote filter form submission" do
-      @cars.options = @opts
-      @cars.options_for_remote_function.should_not include(:with)
+    it "should have a default form ID" do
+      @cars.form_id.should == "filterForm"
+    end
+    
+    it "should have an overridable form ID" do
+      form_id = "hottest_cars_filter"
+      @cars.html_options = {:filter => {:id => form_id }}
+      @cars.form_id.should == form_id
     end
     
     it "should be able to have sort and filter specifications" do
@@ -83,6 +82,34 @@ describe "a data_table" do
       @cars.sort.options.should have_at_least(2).things
       @cars.filter.should_not be_nil
       @cars.filter.elements.should have_at_least(1).things
+    end
+    
+    describe "when determining which parameters should be used for url generation" do
+      
+      it "should have no internal preconceptions about the url to submit" do
+        @cars.params_for_url.should == {}
+      end
+      
+      describe "when given basic url parameters" do
+        
+        before(:each) do
+          @cars.url_options = @url_options
+        end
+        
+        it "should be able to receive instruction about what url to submit to" do
+          @cars.params_for_url.should == @url_options
+        end
+        
+        it "should be able to include sorting parameters"
+        
+        it "should be able to include filtering parameters"
+        
+        it "should be able to include sorting and filtering parameters together"
+        
+        it "should be able to include pagination parameters"
+        
+      end
+      
     end
     
     describe "when integrating with parameters" do
