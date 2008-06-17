@@ -33,18 +33,23 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.pagination_url_for(2).should be_nil
+        @cars.pagination_url_for(2).should == "?page=2"
       end
     end
     
     describe "the remote url options" do
       
+      before(:each) do
+        @cars.options = @opts
+      end
+      
       it "should include only the page in the url" do
-        @cars.remote_pagination_options_for(2).should be_nil
+        @cars.remote_pagination_options_for(2)[:url].should match(/page=2/)
       end
       
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2).should be_nil
+        @cars.remote_pagination_options_for(2).should == 
+          {:url => "/cars/hottest_sellers?page=2", :update => 'hotBox', :method => "get"}
       end
     end
     

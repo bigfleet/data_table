@@ -132,11 +132,12 @@ module DataTable
     end
     
     def pagination_url_for(page)
-      "foo"
+      "?page="+page.to_s
     end
     
     def remote_pagination_options_for(page)
-      "bar"
+      pagination_url = remote_options[:url] + pagination_url_for(page)
+      remote_options.merge(:url => pagination_url)
     end
     
     
