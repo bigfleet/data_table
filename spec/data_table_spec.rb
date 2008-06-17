@@ -105,7 +105,7 @@ describe "a data_table" do
             @params = {:cars => {:sort_key => "make", :sort_order => "desc"}}
             @cars.params = @params
             @expected = @params.flatten_one_level.merge(@url_options)
-            @expected_paginated = @expected.merge("cars[page]" => 2)
+            @expected_paginated = @expected.merge("cars[page]" => "2")
           end
           
           it "should be able to include sorting parameters" do
@@ -117,12 +117,44 @@ describe "a data_table" do
           end
           
         end
-                
-        it "should be able to include filtering parameters"
         
-        it "should be able to include sorting and filtering parameters together"
+        describe "in filtering context" do
+          
+          before(:each) do
+            @params = {:cars => {:color => "blue"}}
+            @cars.params = @params
+            @expected = @params.flatten_one_level.merge(@url_options)
+            @expected_paginated = @expected.merge("cars[page]" => "2")
+          end
+          
+          it "should be able to include sorting parameters" do
+            @cars.params_for_url.should == @expected
+          end
+
+          it "should be able to include sorting parameters and pagination" do
+            @cars.params_for_url(:page => 2).should == @expected_paginated
+          end
+          
+        end
         
-        it "should be able to include pagination parameters"
+        describe "in sorting and filtering context" do
+          
+          before(:each) do
+            @params = {:cars => {:color => "blue", :sort_key => "make", :sort_order => "desc"}}
+            @cars.params = @params
+            @expected = @params.flatten_one_level.merge(@url_options)
+            @expected_paginated = @expected.merge("cars[page]" => "2")
+          end
+          
+          it "should be able to include sorting parameters" do
+            @cars.params_for_url.should == @expected
+          end
+
+          it "should be able to include sorting parameters and pagination" do
+            @cars.params_for_url(:page => 2).should == @expected_paginated
+          end
+          
+        end
         
       end
       
@@ -130,7 +162,7 @@ describe "a data_table" do
     
     describe "when integrating with parameters" do
       
-      # having no sorting or filtering will crash with nil reference
+      # having no sorting or filtering might otherwise crash with nil reference
       
       it "should have optional sorting"
       

@@ -93,7 +93,7 @@ module DataTable
     # filter in the context of the request parameters to determine
     # which parameters should be passed to a url_for in a view helper
     def params_for_url(additional_params = {})
-      return @url_options.merge(additional_params)
+      merged_params(additional_params).merge(@url_options)
     end
     
     # this returns a list of parameters suitable for passing to any Rails
