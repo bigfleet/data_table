@@ -14,7 +14,8 @@ require 'action_controller'
 
 $:.unshift "#{plugin_root}/lib"
 
-%w[filter_element filter_selection filter sort sort_option wrapper].each {|file| require "data_table/#{file}"}
+%w[filter_element filter_selection filter 
+   sort sort_option wrapper pagination_support].each {|file| require "data_table/#{file}"}
 
 class Hash
   def flatten_one_level
@@ -85,4 +86,5 @@ ActionView::Base.class_eval {
   include DataTable::ViewHelpers
   include DataTable::SortViewHelpers
   include DataTable::FilterViewHelpers
+  include DataTable::PaginationSupport
 }
