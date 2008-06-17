@@ -100,11 +100,11 @@ module DataTable
     end
     
     def conditions
-      @filter.conditions
+      @filter.nil? ? nil : @filter.conditions
     end
     
     def filter_options
-      @filter.options
+      @filter.nil? ? {} : @filter.options
     end
     
     def remote_options
