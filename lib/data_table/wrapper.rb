@@ -135,14 +135,12 @@ module DataTable
     # FIXME: This should be a useful helper across standard and AJAX modes
     # FIXME: Line above probably necessitates option shuffling
     
-    def pagination_url_for(page)
-      table_params = merged_params({}).flatten_one_level
-      "?page="+page.to_s+table_params.inspect
+    def url_for_pagination_params(page)
+      merged_params({:page => page})
     end
     
-    def remote_pagination_options_for(page)
-      pagination_url = remote_options[:url] + pagination_url_for(page)
-      remote_options.merge(:url => pagination_url)
+    def remote_pagination_options_for(dest_url)
+      remote_options.merge(:url => dest_url)
     end
     
     

@@ -33,7 +33,7 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.pagination_url_for(2).should == "?page=2"
+        @cars.url_for_pagination_params(2).should == {"cars[page]" => "2"}
       end
     end
     
@@ -43,13 +43,9 @@ describe DataTable::PaginationSupport do
         @cars.options = @opts
       end
       
-      it "should include only the page in the url" do
-        @cars.remote_pagination_options_for(2)[:url].should match(/page=2/)
-      end
-      
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2).should == 
-          {:url => "/cars/hottest_sellers?page=2", :update => 'hotBox', :method => "get"}
+        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
+        @cars.remote_pagination_options_for(2)[:method].should == "get"
       end
     end
     
@@ -63,8 +59,9 @@ describe DataTable::PaginationSupport do
     end
     
     describe "the standard url" do
-      it "should include the page and the sorting options" do
-        @cars.pagination_url_for(2).should == "?page=2&cars[sort_order]=desc&cars[sort_key]=year"
+      it "should include only the page" do
+        @cars.url_for_pagination_params(2).should == 
+          {"cars[page]" => "2", "cars[sort_order]" => "desc", "cars[sort_key]" => "year"}
       end
     end
     
@@ -74,13 +71,9 @@ describe DataTable::PaginationSupport do
         @cars.options = @opts
       end
       
-      it "should include the page and the sorting options" do
-        @cars.remote_pagination_options_for(2)[:url].should match(/page=2/)
-      end
       it "should respect the other appropriate remote options" do
-         @cars.remote_pagination_options_for(2).should == 
-            {:url => "/cars/hottest_sellers?page=2&cars[sort_order]=desc&cars[sort_key]=year", 
-              :update => 'hotBox', :method => "get"}
+        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
+        @cars.remote_pagination_options_for(2)[:method].should == "get"
       end
     end
     

@@ -30,7 +30,7 @@ module DataTable
     end
     
     def url_for(page)
-      @data_table.pagination_url_for(page)
+      @template.url_for(@data_table.url_for_pagination_params(page))
     end
     
     def remote_options_for(page)
