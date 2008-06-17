@@ -31,7 +31,8 @@ module DataTable
     
     DEFAULT_FORM_ID = "filterForm"
     
-    attr_accessor :name, :sort, :filter, :params, :options
+    attr_accessor :name, :sort, :filter, :params
+    attr_accessor :url_options, :html_options
     
     def initialize(options)
       @name = options[:name] || "data_table"
@@ -80,17 +81,6 @@ module DataTable
       params && params[@name] ? params[@name] : {}
     end
     
-    # return the relevant options for remote_function calls that are using
-    # this data_table
-    def options_for_remote_function
-      remote_options.merge({:html => html_options})
-    end
-    
-    def remote_options_for_link
-      return remote_options if remote_options.empty?
-      {:url => remote_options[:url], :update => remote_options[:update]}
-    end    
-
     # this returns all parameters that have been associated with this
     # data_table in flattened form.
     #
@@ -106,47 +96,10 @@ module DataTable
     def filter_options
       @filter.nil? ? {} : @filter.options
     end
-    
-    def remote_options
-      options[:remote].reverse_merge(:method => "get") || {}
-    end
-    
+        
     def form_id
       html_options[:id]
     end
-    
-    def html_options
-      options[:html] || {:id => DEFAULT_FORM_ID}
-    end
-    
-    def html_select_options
-      html_options[:selects] || {}
-    end
-    
-    def options=(other_options)
-      @options = other_options.reverse_merge(:html => {:id => DEFAULT_FORM_ID}, :remote => {:url => ""})
-    end
-    
-    def mode
-      options && options[:form] ? :standard : :ajax
-    end
-    
-    def options
-      @options || {}
-    end
-    
-    # FIXME: This url could be shared across sorting and pagination, probably
-    # FIXME: This should be a useful helper across standard and AJAX modes
-    # FIXME: Line above probably necessitates option shuffling
-    
-    def url_for_pagination_params(page)
-      merged_params({:page => page})
-    end
-    
-    def remote_pagination_options_for(dest_url)
-      remote_options.merge(:url => dest_url)
-    end
-    
     
   end
 end
