@@ -54,6 +54,27 @@ module DataTable
       @sort
     end
     
+    # An ActiveRecord ready array of conditions to be passed
+    # to a model finder.
+    def conditions
+      @filter.nil? ? nil : @filter.conditions
+    end
+    
+    # A sparsely populated options hash (e.g. {:color => nil})
+    # corresponding to the conditions method.
+    def filter_options
+      @filter.nil? ? {} : @filter.options
+    end
+       
+    # The form id to be used for the filter.  Sorts and pagination
+    # use links and do not need form submission.
+    def form_id
+      html_options[:filter][:id]
+    end
+    
+    # receives a set of parameters from a request, and returns a filter
+    # with the appropriately activated sort and filter elements.  Retrieving
+    # an activated wrapper should be a part of any view helper call.
     def with(params)
       w = Wrapper.new(:name => @name)
       w.params = params
@@ -66,6 +87,13 @@ module DataTable
         w.filter.wrapper = self
       end
       w
+    end
+    
+    # Examines the state of the options that have been provided to the
+    # filter in the context of the request parameters to determine
+    # which parameters should be passed to a url_for in a view helper
+    def params_for_url(additional_params = {})
+      return @url_options.merge(additional_params)
     end
     
     # this returns a list of parameters suitable for passing to any Rails
@@ -81,9 +109,16 @@ module DataTable
       {@name => (named_params.merge(other_hash))}.flatten_one_level
     end
     
-    # def nested_params
-    #   params && params[@name] ? params[@name] : {}
-    # end
+    # Takes the parameters that have been used to initialize the table
+    # and removes the namespacing effect so that they can more
+    # effectively be used in model finders.
+    #
+    # For example {"cars[color]" => "blue"} would yield "color" => "blue"
+    # or possible :color => "blue" depending on how you specified your
+    # filter.
+    def nested_params
+      params && params[@name] ? params[@name] : {}
+    end
     # 
     # # this returns all parameters that have been associated with this
     # # data_table in flattened form.
@@ -92,25 +127,6 @@ module DataTable
     # def exposed_params
     #   (params||{}).flatten_one_level
     # end
-    
-    def conditions
-      @filter.nil? ? nil : @filter.conditions
-    end
-    
-    def filter_options
-      @filter.nil? ? {} : @filter.options
-    end
-        
-    def form_id
-      html_options[:filter][:id]
-    end
-    
-    # Examines the state of the options that have been provided to the
-    # filter in the context of the request parameters to determine
-    # which parameters should be passed to a url_for in a view helper
-    def params_for_url(additional_params = {})
-      return additional_params
-    end
     
   end
 end
