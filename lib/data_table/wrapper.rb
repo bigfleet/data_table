@@ -131,6 +131,14 @@ module DataTable
       @options || {}
     end
     
+    def pagination_url_for(page)
+      "foo"
+    end
+    
+    def remote_pagination_options_for(page)
+      "bar"
+    end
+    
     
   end
 end

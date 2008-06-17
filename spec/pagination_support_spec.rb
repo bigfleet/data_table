@@ -27,7 +27,69 @@ describe DataTable::PaginationSupport do
     :with => [:tab] }
     @data_tables = {}
   end
+
   
-  it "should setup correctly"
+  describe "with no parameters" do
+    
+    describe "the standard url" do
+      it "should include only the page" do
+        @cars.pagination_url_for(2).should be_nil
+      end
+    end
+    
+    describe "the remote url options" do
+      
+      it "should include only the page in the url" do
+        @cars.remote_pagination_options_for(2).should be_nil
+      end
+      
+      it "should respect the other appropriate remote options" do
+        @cars.remote_pagination_options_for(2).should be_nil
+      end
+    end
+    
+  end
+  
+  describe "with parameters for sorting" do
+    
+    
+    describe "the standard url" do
+      it "should include the page and the sorting options"
+    end
+    
+    describe "the remote url options" do
+      it "should include the page and the sorting options"
+      it "should respect the other appropriate remote options"
+    end
+    
+  end
+  
+  describe "with parameters for filtering" do
+    
+    
+    describe "the standard url" do
+      it "should include the page and the filtering options"
+    end
+    
+    describe "the remote url options" do
+      it "should include the page and the filtering options"
+      it "should respect the other appropriate remote options"
+    end
+    
+  end
+  
+  describe "with parameters for filtering and sorting" do
+    
+    
+    describe "the standard url" do
+      it "should include the page and all appropriate options"
+    end
+    
+    describe "the remote url options" do
+      it "should include the page and all appropriate options"
+      it "should respect the other appropriate remote options"
+    end
+    
+  end
   
 end
