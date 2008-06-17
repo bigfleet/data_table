@@ -57,14 +57,31 @@ describe DataTable::PaginationSupport do
   
   describe "with parameters for sorting" do
     
+    before(:each) do
+      @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
+      @cars.params = @params
+    end
     
     describe "the standard url" do
-      it "should include the page and the sorting options"
+      it "should include the page and the sorting options" do
+        @cars.pagination_url_for(2).should == "?page=2&cars[sort_order]=desc&cars[sort_key]=year"
+      end
     end
     
     describe "the remote url options" do
-      it "should include the page and the sorting options"
-      it "should respect the other appropriate remote options"
+      
+      before(:each) do
+        @cars.options = @opts
+      end
+      
+      it "should include the page and the sorting options" do
+        @cars.remote_pagination_options_for(2)[:url].should match(/page=2/)
+      end
+      it "should respect the other appropriate remote options" do
+         @cars.remote_pagination_options_for(2).should == 
+            {:url => "/cars/hottest_sellers?page=2&cars[sort_order]=desc&cars[sort_key]=year", 
+              :update => 'hotBox', :method => "get"}
+      end
     end
     
   end

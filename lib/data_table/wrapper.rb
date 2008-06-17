@@ -131,8 +131,13 @@ module DataTable
       @options || {}
     end
     
+    # FIXME: This url could be shared across sorting and pagination, probably
+    # FIXME: This should be a useful helper across standard and AJAX modes
+    # FIXME: Line above probably necessitates option shuffling
+    
     def pagination_url_for(page)
-      "?page="+page.to_s
+      table_params = merged_params({}).flatten_one_level
+      "?page="+page.to_s+table_params.inspect
     end
     
     def remote_pagination_options_for(page)
