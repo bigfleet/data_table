@@ -34,7 +34,7 @@ module DataTable
     end
     
     def remote_options_for(page)
-      @data_table.remote_pagination_options_for(page)
+      @data_table.remote_pagination_options_for(url_for(page))
     end
     
   end

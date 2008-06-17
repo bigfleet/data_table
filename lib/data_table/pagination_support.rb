@@ -9,7 +9,5 @@ module DataTable
       )
     end
     
-    
-    
   end
 end
