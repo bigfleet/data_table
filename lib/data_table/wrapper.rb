@@ -103,12 +103,16 @@ module DataTable
       @filter.conditions
     end
     
-    def condition_options
+    def filter_options
       @filter.options
     end
     
     def remote_options
       options[:remote].reverse_merge(:method => "get") || {}
+    end
+    
+    def form_id
+      html_options[:id]
     end
     
     def html_options

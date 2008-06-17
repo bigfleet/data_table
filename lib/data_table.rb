@@ -49,7 +49,7 @@ module DataTable
     end
     
     def options_for(name)
-      find_data_table_by_name(name).with(params).options
+      find_data_table_by_name(name).with(params).filter_options
     end
     
     def find_data_table_by_name(name)
