@@ -32,10 +32,14 @@ module DataTable
     DEFAULT_FORM_ID = "filterForm"
     
     attr_accessor :name, :sort, :filter, :params
-    attr_accessor :url_options, :html_options
+    attr_accessor :url_options, :remote_options, :html_options, :other_options
     
     def initialize(options)
       @name = options[:name] || "data_table"
+      @url_options = {}
+      @remote_options = {}
+      @html_options = {:id => "filterForm"}
+      @other_options = {}
     end
     
     def filter_spec(options={}, &block)
