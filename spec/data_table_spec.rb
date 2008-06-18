@@ -288,7 +288,44 @@ describe "a data_table" do
 
     end
     
-    it "should have its option overwriting feature via options= tested"
+    describe "and its option overwriting functionality" do
+      
+      before(:each) do
+        @cars.url_options = @url_options
+        @cars.remote_options = @remote_options
+        @cars.other_options = @other_options
+      end
+      
+      it "should leave options undisturbed with passing no additional options" do
+        @cars.options = {}
+        @cars.url_options.should == @url_options
+        @cars.remote_options.should == @remote_options
+        @cars.other_options.should == @other_options
+      end
+      
+      it "should allow for selective overwriting of url options" do
+        @cars.options = {:url => {:action => "clearance"}}
+        @cars.url_options.should == {:controller => "cars", :action => "clearance"}
+      end
+
+      it "should allow for selective overwriting of remote options" do
+        @cars.options = {:remote => {:complete => "Element.highlight('sales')"}}
+        @cars.remote_options.should == 
+          {:update => "hotBox", :complete => "Element.highlight('sales')"}
+      end
+      
+      it "should allow for selective overwriting of form options" do
+        @cars.options = {:html => {:form => {:id => "overwritten", :class=>"filterForm"}}}
+        @cars.html_options.should == {:form => {:id => "overwritten", :class=>"filterForm"}}
+      end
+      
+      it "should allow for selective overwriting of other options" do
+        @cars.options = {:with => [:tab]}
+        @cars.other_options.should == {:with => [:tab]}
+      end
+      
+    end
+    
   end
   
 end
