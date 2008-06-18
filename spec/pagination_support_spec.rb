@@ -23,8 +23,9 @@ describe DataTable::PaginationSupport do
     end
     @cars = data_table(:cars)
     @params = {}
-    @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox', :method => "get"}, 
-    :with => [:tab] }
+    @opts = {:url => {:controller => "cars", :action => "hottest_sellers"}}
+    @opts = @opts.merge({:remote => {:update => 'hotBox'}})
+    @opts = @opts.merge({:with => [:tab] })
     @data_tables = {}
   end
 
@@ -33,7 +34,7 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.url_for_pagination_params(2).should == {"cars[page]" => "2"}
+        @cars.params_for_url(:page => 2).should == {"cars[page]" => "2"}
       end
     end
     
@@ -44,8 +45,8 @@ describe DataTable::PaginationSupport do
       end
       
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
-        @cars.remote_pagination_options_for(2)[:method].should == "get"
+        @cars.remote_options_with_url(nil)[:update].should == "hotBox"
+        @cars.remote_options_with_url(nil)[:method].should == "get"
       end
     end
     
@@ -60,7 +61,7 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.url_for_pagination_params(2).should == 
+        @cars.params_for_url(:page => 2).should == 
           {"cars[page]" => "2", "cars[sort_order]" => "desc", "cars[sort_key]" => "year"}
       end
     end
@@ -72,8 +73,8 @@ describe DataTable::PaginationSupport do
       end
       
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
-        @cars.remote_pagination_options_for(2)[:method].should == "get"
+        @cars.remote_options_with_url(nil)[:update].should == "hotBox"
+        @cars.remote_options_with_url(nil)[:method].should == "get"
       end
     end
     
@@ -88,7 +89,7 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.url_for_pagination_params(2).should == 
+        @cars.params_for_url(:page => 2).should == 
           {"cars[page]" => "2", "cars[color]" => "blue"}
       end
     end
@@ -100,8 +101,8 @@ describe DataTable::PaginationSupport do
       end
       
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
-        @cars.remote_pagination_options_for(2)[:method].should == "get"
+        @cars.remote_options_with_url(nil)[:update].should == "hotBox"
+        @cars.remote_options_with_url(nil)[:method].should == "get"
       end
     end
     
@@ -116,7 +117,7 @@ describe DataTable::PaginationSupport do
     
     describe "the standard url" do
       it "should include only the page" do
-        @cars.url_for_pagination_params(2).should == 
+        @cars.params_for_url(:page => 2).should == 
           {"cars[color]"=>"blue", "cars[page]"=>"2", 
             "cars[sort_key]"=>"year", "cars[sort_order]"=>"desc"}
       end
@@ -129,8 +130,8 @@ describe DataTable::PaginationSupport do
       end
       
       it "should respect the other appropriate remote options" do
-        @cars.remote_pagination_options_for(2)[:update].should == "hotBox"
-        @cars.remote_pagination_options_for(2)[:method].should == "get"
+        @cars.remote_options_with_url(nil)[:update].should == "hotBox"
+        @cars.remote_options_with_url(nil)[:method].should == "get"
       end
     end
     
