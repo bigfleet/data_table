@@ -1,19 +1,13 @@
 module DataTable
-  
-  # The Filter objects role is that of the manager of filter elements and options
-  # Without parameters, it will respect the defaults of the filtering specification
-  # that the client application provides.  When provided with the parameters
-  # (usually the params from the incoming request) via the <code>with</code>
-  # method, the filter will reconfigure itself to reflect the selections that
-  # have been made.
-  #
-  # In either of the above cases, the filter is also responsible for two forms
-  # of communication with its natural partner: the ActiveRecord finder.  The
-  # <code>conditions</code> method will be appropriate for direct inclusion
-  # in the :conditions phrase of <code>ActiveRecord.find</code> calls.  The
-  # <code>options</code> method is meant as a fall-back or workaround when
-  # things get hairy.  It provides a hash that a finder method can process
-  # and act on in a manner of its choosing
+
+  # A Filter is a component managed completely by the Wrapper object at this
+  # point. This class is irrelevant to the public API, although element
+  # generation via the <code>element</code> method may be useful to review.
+  # 
+  # For the internals of data_table, a Filter is a collection of many
+  # FilterElements. Its primary task is to organize and inspect these elements in
+  # various contexts and to communicate the results of that inspection to the
+  # Wrapper.
   class Filter
   
     attr_accessor :elements, :wrapper

@@ -1,4 +1,13 @@
 module DataTable
+
+  # A FilterElement plays no part in the public API, although FilterSelection
+  # generation via <code>default</code> and <code>option</code> may be of
+  # interest.
+  # 
+  # In the internal workings of data_table, a FilterElement represents a potential
+  # filtering of a set of model finder results on a specific column or
+  # calculation. It is in charge of being able to address that column or
+  # calculation, and to interpret the meaning of any active FilterSelection.
   class FilterElement
   
     attr_accessor :table, :field, :operator, :selected, :default_option, :parent
