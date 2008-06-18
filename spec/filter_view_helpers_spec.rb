@@ -35,8 +35,9 @@ describe DataTable::FilterViewHelpers do
     end
     @params = {}
     @cars = data_table(:cars)
-    @opts = {:remote => {:url => '/cars/hottest_sellers', :update => 'hotBox', :method => "get"}, 
-    :with => [:tab] }
+    @opts = {:url => {:controller => "cars", :action => "hottest_sellers"}}
+    @opts = @opts.merge({:remote => {:update => 'hotBox'}})
+    @opts = @opts.merge({:with => [:tab] })
     @data_tables = {}
     @controller = Object.new
   end
@@ -52,9 +53,13 @@ describe DataTable::FilterViewHelpers do
     describe "when customizing CSS" do
       
       before(:each) do
-        @opts = @opts.merge(:html =>{:id => "car_color_filter", :selects =>{:class => "filter"}})
+        form_opts   = {:form => {:id => "car_color_filter"}}
+        select_opts = {:select =>{:class => "filter"}}
+        html_opts = {:html => form_opts.merge(select_opts)}
+        @opts = @opts.merge(html_opts)
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]        
       end

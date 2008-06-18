@@ -28,6 +28,7 @@ module DataTable
     
     attr_accessor :name, :sort, :filter, :params
     attr_accessor :url_options, :remote_options, :html_options, :other_options
+    attr_accessor :mode
     
     def initialize(options)
       @name = options[:name] || "data_table"
@@ -35,6 +36,14 @@ module DataTable
       @remote_options = {}
       @html_options = {:filter => {:id => "filterForm"}}
       @other_options = {}
+      @mode = :ajax
+    end
+    
+    def options=(options = {})
+      @remote_options = options.delete(:remote)
+      @html_options = options.delete(:html)
+      @url_options = options.delete(:url)
+      @other_options = options
     end
     
     def filter_spec(options={}, &block)

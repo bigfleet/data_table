@@ -24,7 +24,10 @@ module DataTable
     
     def element_to_html(filter_element, nest_name, options = {})
       select_tag("#{nest_name}[#{filter_element.field}]", 
-                    options_for_select(filter_element.selections.map(&:to_option), filter_element.selected.valuize_label), 
+                    options_for_select(
+                      filter_element.selections.map(&:to_option), 
+                      filter_element.selected.valuize_label
+                    ), 
                     options)
     end    
     
@@ -41,14 +44,15 @@ module DataTable
     
     def form_for_filter_via_builder(wrapper)
       filter = wrapper.filter
-      remote_options = wrapper.remote_options
-      # some of this code should be moved to the wrapper to make this as easy as possible.
       xml = Builder::XmlMarkup.new
+      form_url = controller.url_for(wrapper.params_for_url)
+      form_options = wrapper.html_options[:form]
       case wrapper.mode
       when :standard
-        xml << form_tag(form_options[:url], form_options)        
+        xml << form_tag(form_url, form_options)
       else
-        xml << form_remote_tag(wrapper.options_for_remote_function)
+        html_form_options = {:html => form_options}
+        xml << form_remote_tag(wrapper.remote_options_with_url(form_url).merge(html_form_options))
       end
       xml.div do
         filter.elements.each do |elt|
@@ -59,8 +63,9 @@ module DataTable
           else
             # AJAX style submission
             # Is there anything more ridiculous than the remote options in Rails?
-            submit_function = remote_function(wrapper.options_for_remote_function)
-            elt_html = element_to_html(elt, wrapper.name, wrapper.html_select_options.merge(:onchange => submit_function))
+            select_options = wrapper.html_options[:select] || {}
+            submit_function = remote_function(wrapper.remote_options_with_url(form_url))
+            elt_html = element_to_html(elt, wrapper.name, select_options.merge(:onchange => submit_function))
             xml << elt_html
           end
         end
@@ -71,7 +76,7 @@ module DataTable
         xml << hidden_field_tag("#{name}[sort_key]", active_sort.key.to_s, :id => "#{name}_sort_key")
         xml << hidden_field_tag("#{name}[sort_order]", active_sort.current_order.to_s, :id => "#{name}_sort_order")
       end
-      if with_options = wrapper.options[:with] # note this IS intentionally an assignment
+      if with_options = wrapper.other_options[:with] # note this IS intentionally an assignment
         with_options.each do |opt|
           xml << hidden_field_tag(opt.to_s, params[opt], :id => "#{wrapper.name}_#{opt}")
         end
