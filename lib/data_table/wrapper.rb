@@ -11,22 +11,17 @@ module DataTable
   # etc.  If you are trying to set which URL to hit or jimmy with the way
   # that your page works
   #
-  # Known options:
-  #
-  # :selects => HTML styling to be applied to the select inputs in a filter
-  #             form
-  # 
-  # :with => See below
-  # 
-  # Of course, to make this interesting, there is one exception.  The :with
-  # option allows the client code to define a set of parameters that will
-  # be included in any of data_table's form and filter workings.  This can
-  # be used to handle nested routing contents, controller actions that
-  # behave differently in the presence of certain parameters, etc. withou
-  # needing to hack the crap out of data_table.
-  #
-  # Note:  the default rendering mode is Ajax.  That's the only one well
-  # supported right now
+  # url_options: For now, we have to use the old controller/action method
+  #              of passing to url_for in view helpers.  Named urls should
+  #              be coming soon.
+  # remote_options: When using the :ajax mode of operation for data_table,
+  #                 these options will be used in any appropriate context
+  #                 for remote forms or links
+  # html_options: These options will be passed to the various DOM elements
+  #               that data_table creates for you.  More docs later.
+  # other_options: Use the :with parameter to indicate which "external"
+  #                parameters from the request should be included in
+  #                data_table
   class Wrapper
     
     DEFAULT_FORM_ID = "filterForm"
@@ -119,14 +114,14 @@ module DataTable
     def nested_params
       params && params[@name] ? params[@name] : {}
     end
-    # 
-    # # this returns all parameters that have been associated with this
-    # # data_table in flattened form.
-    # #
-    # # external parameters that have been included with the :with option
-    # def exposed_params
-    #   (params||{}).flatten_one_level
-    # end
+    
+    # Takes in an externally calculated url to be merged in with the
+    # existing remote parameters to give a full set of options
+    # appropriate for inclusion in link_to_remote or form_remote_tag
+    # call in the view helpers
+    def remote_options_with_url(url)
+      @remote_options.merge(:url => url)
+    end
     
   end
 end

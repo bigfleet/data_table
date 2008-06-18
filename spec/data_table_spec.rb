@@ -8,38 +8,83 @@ describe "a data_table" do
     self.should respond_to(:data_table)
   end
   
-  it "should support basic sorting" do
-    data_table(:cars) do |table|
-      table.sort_spec do |s|
-        s.default 'make'
-        s.option  'year', 'desc'
-      end
-    end
-    @cars = data_table(:cars)
-    @cars.should_not be_nil
-    @cars.sort.should_not be_nil
-    @cars.sort.options.should have_at_least(2).things
-    @cars.filter.should be_nil
-  end
-  
-  it "should support basic filtering" do
-    data_table(:cars) do |table|
-      table.filter_spec do |f|
-        f.element(:color) do |e|
-          e.default "All"
-          e.option  "Blue"
-          e.option  "Red"
-          e.option  "Silver"
-          e.option  "Black"
-          e.option  "Other"
+  describe "while supporting basic sorting" do
+    
+    before(:each) do
+      data_table(:cars) do |table|
+        table.sort_spec do |s|
+          s.default 'make'
+          s.option  'year', 'desc'
         end
       end
+      @cars = data_table(:cars)
     end
-    @cars = data_table(:cars)
-    @cars.should_not be_nil
-    @cars.filter.should_not be_nil
-    @cars.filter.elements.should have_at_least(1).things
-    @cars.sort.should be_nil
+    
+    it "should be accessible via the data_table call" do
+      @cars.should_not be_nil
+    end
+    
+    it "should have a reference to a sort object" do
+      @cars.sort.should_not be_nil
+    end
+    
+    it "should properly initialize sort options" do
+      @cars.sort.options.should have(2).things
+    end
+    
+    it "should have no filter pointer" do
+      @cars.filter.should be_nil
+    end
+    
+    it "should note raise an error when internalizing request params" do
+      # these are a "raise no error" type of test-- results are later
+      sort_params = {:cars => {:sort_order => "desc", :sort_key => "make"}}
+      # FIXME: be_is_a? [jvf]
+      @cars.with(sort_params).should be_is_a(DataTable)
+    end
+    
+  end
+  
+  describe "while supporting basic filtering" do
+    
+    before(:each) do
+      data_table(:cars) do |table|
+        table.filter_spec do |f|
+          f.element(:color) do |e|
+            e.default "All"
+            e.option  "Blue"
+            e.option  "Red"
+            e.option  "Silver"
+            e.option  "Black"
+            e.option  "Other"
+          end
+        end
+      end
+      @cars = data_table(:cars)
+    end
+    
+    it "should be accessible via the data_table call" do
+      @cars.should_not be_nil
+    end
+    
+    it "should have a reference to a filter object" do
+      @cars.filter.should_not be_nil
+    end
+    
+    it "should properly initialize filter elements" do
+      @cars.filter.elements.should have(1).things
+    end
+    
+    it "should have no sort pointer" do
+      @cars.sort.should be_nil
+    end
+    
+    it "should note raise an error when internalizing request params" do
+      sort_params = {:cars => {:color => "blue"}}
+      # FIXME: be_is_a? [jvf]
+      @cars.with(sort_params).should be_is_a(DataTable)
+    end
+    
   end
   
   describe "fully specced" do
@@ -159,100 +204,88 @@ describe "a data_table" do
       end
       
     end
-    
-    describe "when integrating with parameters" do
-      
-      # having no sorting or filtering might otherwise crash with nil reference
-      
-      it "should have optional sorting"
-      
-      it "should have optional filtering"
-      
-    end
-    
-    describe "with no additional parameters" do
-            
-      it "should be able to expose parameters that should be used by other libraries" do
-        @cars.exposed_params.should == {}
-      end
-      
-      it "should be able to store remote form submission parameters" do
-        @cars.options = @opts
-        @cars.options.should == @default_opts.merge(@opts)
-      end
-
-    end
-    
+        
     describe "when sorted" do
       before(:each) do
         @parms = {:cars => {:sort_key => "year", :sort_order => "asc"}}
         @sorted_cars = data_table(:cars).with(@parms)
+        @sorted_cars.remote_options = @remote_options
       end
-      
-      it "should be able to expose parameters that should be used by other libraries" do
-        @sorted_cars.exposed_params.should == @parms.flatten_one_level
-      end
-
       
       it "should be able to store remote form submission parameters" do
-        @sorted_cars.options = @opts
-        @sorted_cars.options.should == @default_opts.merge(@opts)
+        @sorted_cars.remote_options = @remote_options
       end
       
-      it "should be able to merge sort parameters for form submission" do
-        new_keys = {:color => "blue"}
-        merged = @sorted_cars.merged_params(new_keys)
-        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "year", "cars[sort_order]" => "asc"}
+      it "should be able to merge remote form submission parameters" do
+        url = "/cars/hottest_sellers"
+        opts = @sorted_cars.remote_options_with_url(url)
+        opts.should == @remote_options.merge(:url => url)
       end
       
+      it "should be able to remove nesting for ease of use" do
+        @sorted_cars.nested_params.should == @parms[:cars]
+      end
+      
+      it "should have an active sort option" do
+        @sorted_cars.sort.selected.should_not be_nil
+      end
     end
     
     describe "when filtered" do
       before(:each) do
         @parms = {:cars => {:color => "blue"}}
         @filtered_cars = data_table(:cars).with(@parms)
+        @filtered_cars.remote_options = @remote_options
       end
-      
-      it "should be able to expose parameters that should be used by other libraries" do
-        @filtered_cars.exposed_params.should == @parms.flatten_one_level
-      end
-
       
       it "should be able to store remote form submission parameters" do
-        @filtered_cars.options = @opts
-        @filtered_cars.options.should == @default_opts.merge(@opts)
+        @filtered_cars.remote_options = @remote_options
       end
       
-      it "should be able to merge sort parameters for form submission" do
-        new_keys = {:sort_key => "make", :sort_order => "desc"}
-        merged = @filtered_cars.merged_params(new_keys)
-        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "make", "cars[sort_order]" => "desc"}
+      it "should be able to merge remote form submission parameters" do
+        url = "/cars/hottest_sellers"
+        opts = @filtered_cars.remote_options_with_url(url)
+        opts.should == @remote_options.merge(:url => url)
       end
       
+      it "should be able to remove nesting for ease of use" do
+        @filtered_cars.nested_params.should == @parms[:cars]
+      end
+      
+      it "should have an active filter option" do
+        @filtered_cars.filter.active_elements.should have_at_least(1).thing
+      end
     end
     
     describe "when sorted and filtered" do
       before(:each) do
         @parms = {:cars => {:sort_key => "year", :sort_order => "asc", :color => "blue"}}
         @sorted_and_filtered_cars = data_table(:cars).with(@parms)
+        @sorted_and_filtered_cars.remote_options = @remote_options
       end
-      
-      it "should be able to expose parameters that should be used by other libraries" do
-        @sorted_and_filtered_cars.exposed_params.should == @parms.flatten_one_level
-      end
-
       
       it "should be able to store remote form submission parameters" do
-        @sorted_and_filtered_cars.options = @opts
-        @sorted_and_filtered_cars.options.should == @default_opts.merge(@opts)
+        @sorted_and_filtered_cars.remote_options = @remote_options
       end
       
-      it "should be able to override sort parameters for form submission" do
-        new_keys = {:sort_key => "make", :sort_order => "desc"}
-        merged = @sorted_and_filtered_cars.merged_params(new_keys)
-        merged.should == {"cars[color]"=>"blue", "cars[sort_key]" => "make", "cars[sort_order]" => "desc"}
+      it "should be able to merge remote form submission parameters" do
+        url = "/cars/hottest_sellers"
+        opts = @sorted_and_filtered_cars.remote_options_with_url(url)
+        opts.should == @remote_options.merge(:url => url)
       end
       
+      it "should be able to remove nesting for ease of use" do
+        @sorted_and_filtered_cars.nested_params.should == @parms[:cars]
+      end
+      
+      it "should have an active filter option" do
+        @sorted_and_filtered_cars.filter.active_elements.should have_at_least(1).thing
+      end
+      
+      it "should have an active sort option" do
+        @sorted_and_filtered_cars.sort.selected.should_not be_nil
+      end
+
     end
     
   end
