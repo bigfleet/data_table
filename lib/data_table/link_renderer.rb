@@ -1,6 +1,11 @@
 module DataTable
   class LinkRenderer < WillPaginate::LinkRenderer
     
+    def initialize(arg1, arg2, arg3)
+      # not sure why this is necessary, but it appears to be
+      prepare(arg1, arg2, arg3)
+    end
+    
     # * +collection+ is a WillPaginate::Collection instance or any other object
     #   that conforms to that API
     # * +options+ are forwarded from +will_paginate+ view helper
@@ -30,7 +35,7 @@ module DataTable
     end
     
     def url_for(page)
-      @template.url_for(@data_table.url_for_pagination_params(page))
+      @template.url_for(@data_table.params_for_url(:page => page))
     end
     
     def remote_options_for(page)

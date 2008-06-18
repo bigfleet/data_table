@@ -45,7 +45,11 @@ module DataTable
     def form_for_filter_via_builder(wrapper)
       filter = wrapper.filter
       xml = Builder::XmlMarkup.new
-      form_url = controller.url_for(wrapper.params_for_url)
+      # For submitting the filter form, we can depend on the hidden
+      # options and the existing select boxes to convey needed
+      # parameters.  For the url itself, we just need the basics
+      # that we configured.
+      form_url = controller.url_for(wrapper.url_options)
       form_options = wrapper.html_options[:form]
       case wrapper.mode
       when :standard
@@ -62,9 +66,13 @@ module DataTable
             xml << element_to_html(elt, wrapper.name)
           else
             # AJAX style submission
-            # Is there anything more ridiculous than the remote options in Rails?
+            # When using form_remote_tag, the tag itself knows that
+            # it should serialize itself.  In this case, we need
+            # to instruct the select fields they should do the same.
             select_options = wrapper.html_options[:select] || {}
-            submit_function = remote_function(wrapper.remote_options_with_url(form_url))
+            raw_remote_opts = wrapper.remote_options_with_url(form_url)
+            with_submission_opts = raw_remote_opts.merge(:submit => wrapper.form_id)
+            submit_function = remote_function(with_submission_opts)
             elt_html = element_to_html(elt, wrapper.name, select_options.merge(:onchange => submit_function))
             xml << elt_html
           end
