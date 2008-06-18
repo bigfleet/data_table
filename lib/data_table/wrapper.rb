@@ -34,16 +34,20 @@ module DataTable
       @name = options[:name] || "data_table"
       @url_options = {}
       @remote_options = {}
-      @html_options = {:filter => {:id => "filterForm"}}
+      @html_options = {:form => {:id => "filterForm"}}
       @other_options = {}
       @mode = :ajax
     end
     
     def options=(options = {})
-      @remote_options = options.delete(:remote)
-      @html_options = options.delete(:html)
-      @url_options = options.delete(:url)
-      @other_options = options
+      remote = options.delete(:remote)
+      @remote_options = remote.reverse_merge(@remote_options) unless remote.nil? 
+      html = options.delete(:html)
+      @html_options = html.reverse_merge(@html_options) unless html.nil?       
+      url = options.delete(:url)
+      @url_options = url.reverse_merge(@url_options) unless url.nil?       
+      other = options
+      @other_options = other.reverse_merge(@other_options) unless other.nil? 
     end
     
     def filter_spec(options={}, &block)
@@ -73,7 +77,7 @@ module DataTable
     # The form id to be used for the filter.  Sorts and pagination
     # use links and do not need form submission.
     def form_id
-      html_options[:filter][:id]
+      html_options[:form][:id]
     end
     
     # receives a set of parameters from a request, and returns a filter
@@ -82,6 +86,10 @@ module DataTable
     def with(params)
       w = Wrapper.new(:name => @name)
       w.params = params
+      w.html_options = @html_options
+      w.remote_options = @remote_options
+      w.url_options = @url_options
+      w.other_options = @other_options
       if @sort
         w.sort = @sort.with(w.nested_params)
         w.sort.wrapper = self

@@ -117,7 +117,7 @@ describe "a data_table" do
     
     it "should have an overridable form ID" do
       form_id = "hottest_cars_filter"
-      @cars.html_options = {:filter => {:id => form_id }}
+      @cars.html_options = {:form => {:id => form_id }}
       @cars.form_id.should == form_id
     end
     
@@ -288,6 +288,7 @@ describe "a data_table" do
 
     end
     
+    it "should have its option overwriting feature via options= tested"
   end
   
 end

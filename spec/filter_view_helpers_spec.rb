@@ -80,6 +80,7 @@ describe DataTable::FilterViewHelpers do
       before(:each) do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
       end
