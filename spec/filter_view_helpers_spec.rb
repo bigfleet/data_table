@@ -81,13 +81,8 @@ describe DataTable::FilterViewHelpers do
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
         @controller.should_receive(:url_for).at_least(1)
-        @form_html = filter_for(:cars, @opts)
+        @form_html = filter_for(:cars, @opts)        
         @cars = @data_tables[:cars]
-      end
-
-      it "should internalize the form options correctly" do
-        @cars.mode.should == :ajax
-        @cars.remote_options.should == @opts[:remote]
       end
 
       describe "the form tag" do
@@ -160,13 +155,13 @@ describe DataTable::FilterViewHelpers do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)        
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
       end
 
       it "should internalize the form options correctly" do
         @cars.mode.should == :ajax
-        @cars.remote_options.should == @opts[:remote]
       end
 
       describe "the form tag" do
@@ -232,6 +227,7 @@ describe DataTable::FilterViewHelpers do
         @params = {:cars => {:color => "blue"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)        
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
         @cars.filter.active_elements.should_not be_empty
@@ -239,9 +235,7 @@ describe DataTable::FilterViewHelpers do
 
       it "should internalize the form options correctly" do
         @cars.mode.should == :ajax
-        @cars.remote_options.should == @opts[:remote]
       end
-
 
       describe "the form tag" do
 
@@ -304,13 +298,13 @@ describe DataTable::FilterViewHelpers do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}, :tab => "used"}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)        
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
       end
 
       it "should internalize the form options correctly" do
         @cars.mode.should == :ajax
-        @cars.remote_options.should == @opts[:remote]
       end
 
 
@@ -383,13 +377,13 @@ describe DataTable::FilterViewHelpers do
         @params = {:cars => {:sort_key => "year", :sort_order => "desc", :color => "blue"}}
         @controller.should_receive(:find_data_table_by_name).with(:cars).and_return(@cars)
         @controller.should_receive(:data_tables).with().and_return(@data_tables)
+        @controller.should_receive(:url_for).at_least(1)        
         @form_html = filter_for(:cars, @opts)
         @cars = @data_tables[:cars]
       end
 
       it "should internalize the form options correctly" do
         @cars.mode.should == :ajax
-        @cars.remote_options.should == @opts[:remote]
       end
 
 

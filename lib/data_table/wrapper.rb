@@ -33,10 +33,14 @@ module DataTable
     def initialize(options)
       @name = options[:name] || "data_table"
       @url_options = {}
-      @remote_options = {}
+      @remote_options = {:method => "get"}
       @html_options = {:form => {:id => "filterForm"}}
       @other_options = {}
       @mode = :ajax
+    end
+    
+    def options
+      @remote_options.merge(@html_options).merge(@url_options).merge(@other_options)
     end
     
     def options=(options = {})
