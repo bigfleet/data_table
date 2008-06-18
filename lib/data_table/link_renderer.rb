@@ -1,3 +1,4 @@
+require 'cgi'
 module DataTable
   class LinkRenderer < WillPaginate::LinkRenderer
     
@@ -39,7 +40,8 @@ module DataTable
     end
     
     def remote_options_for(page)
-      @data_table.remote_options_with_url(url_for(page))
+      url = CGI.unescapeHTML(url_for(page))
+      @data_table.remote_options_with_url(url)
     end
     
   end
