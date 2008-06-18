@@ -2,20 +2,26 @@ h1. data_table:
 
 h2. Status
 
-data_table is slated for its first use in production any day now.  If you feel capable of finding and fixing your own bugs, data_table should be ready for you.  It's already meeting some advanced use-cases, so I hope it's of immediate use.
+data_table is slated for its first use in production any day now. If you feel
+capable of finding and fixing your own bugs, data_table should be ready for
+you. It's already meeting some advanced use-cases, so I hope it's of immediate
+use.
 
-There is a full test suite, but I'm sure rcov will say it needs plenty of help.
+There is a full test suite, but I'm sure rcov will say it needs plenty of
+help.
 
-Right now, only AJAX mode is well supported.  I plan on supporting "standard mode" (a.k.a. simple form submission) in the immediate future.  Eventually, I would like front end to be skinnable.
+Right now, only AJAX mode is well supported. I plan on supporting "standard
+mode" (a.k.a. simple form submission) in the immediate future. Eventually, I
+would like front end to be skinnable.
 
 h2. Upcoming Initiative
 
-The full picture of data_table has come into view.
-  * optional filtering
-  * optional sorting
-  * included pagination
-  
-At its simplest, data_table can be a wrapper around will_paginate.  At it's most complex, it can ensure that information is supplied only once, and shared and used among those interrelated pieces as freely as possible
+The full picture of data_table has come into view. * optional filtering *
+optional sorting * included pagination
+
+At its simplest, data_table can be a wrapper around will_paginate. At it's
+most complex, it can ensure that information is supplied only once, and shared
+and used among those interrelated pieces as freely as possible
 
 h2. Goal:
 
@@ -39,11 +45,16 @@ h3. get a lot.
 
 h4. In your controlller
 
-You can get an array of filter conditions ready to pass along to ActiveRecord (from <code>conditions_for</code>).  You can get an options hash that contains all the information a more complex query might need to reflect the user's sorting, filtering, and pagination selections (from <code>options_for</code>).
+You can get an array of filter conditions ready to pass along to ActiveRecord
+(from <code>conditions_for</code>). You can get an options hash that contains
+all the information a more complex query might need to reflect the user's
+sorting, filtering, and pagination selections (from <code>options_for</code>).
 
-You'll probably have to do a little inspection of pagination parameters to get the query that you want.
+You'll probably have to do a little inspection of pagination parameters to get
+the query that you want.
 
-You can also use multiple data_tables per page, without having to worry about all the different parameters flying around.
+You can also use multiple data_tables per page, without having to worry about
+all the different parameters flying around.
 
 h4. In the view
 
@@ -51,8 +62,12 @@ h4. In the view
 filter_form(:cars) 
 </code></pre>
 
-This fellow recognizes what, if any, request parameters have any bearing on the user's sorting/filtering/pagination desires, combines that with your instructions about whether to use AJAX or non-AJAX modes, what remote callbacks to use, what external parameters need to be respected, etc.
-and generates a form that will seamlessly work with the controller to aid in query formation.
+This fellow recognizes what, if any, request parameters have any bearing on
+the user's sorting/filtering/pagination desires, combines that with your
+instructions about whether to use AJAX or non-AJAX modes, what remote
+callbacks to use, what external parameters need to be respected, etc. and
+generates a form that will seamlessly work with the controller to aid in query
+formation.
 
 <pre><code>
 sort_header(:cars) 
@@ -68,14 +83,18 @@ going back and forth between sorting and filtering in AJAX or non-AJAX modes.
 pagination_for(@cars, :cars) 
 </code></pre>
 
-This will call a will_paginate view helper that uses a special <code>DataTable::LinkRenderer</code> which can handle Ajax-ified requests to fetch different pages of your current dataset.  It also passes all options through to will_paginate, and you can just as easily use your own LinkRenderer with this use case.
+This will call a will_paginate view helper that uses a special
+<code>DataTable::LinkRenderer</code> which can handle Ajax-ified requests to
+fetch different pages of your current dataset. It also passes all options
+through to will_paginate, and you can just as easily use your own LinkRenderer
+with this use case.
 
 h2. For more information.
 
-If you are interested in seeing more specifically what kinds of filtration 
-that you can do, check out these wishlists.  I have not yet updated them
-to be in line with the codebase, but it should give you a lot better idea
-about the API that I am aiming for.
+If you are interested in seeing more specifically what kinds of filtration
+that you can do, check out these wishlists. I have not yet updated them to be
+in line with the codebase, but it should give you a lot better idea about the
+API that I am aiming for.
 
 * "Filtering":http://github.com/bigfleet/data_table/wikis/filteringwishlist
 * "Sorting":http://github.com/bigfleet/data_table/wikis/sortingwishlist
@@ -85,20 +104,33 @@ h2. Philosophy
 
 * Sorting, filtering, and pagination are inter-related
 
-Why aren't we all using client-side sorting?  That's easy to implement!  Oh, wait, that's only for the records that were returned to the screen.  And if you've sorted or filtered, it's OK if clicking for the second page of results resets your end user's intentions, right?  Nope.
+Why aren't we all using client-side sorting? That's easy to implement! Oh,
+wait, that's only for the records that were returned to the screen. And if
+you've sorted or filtered, it's OK if clicking for the second page of results
+resets your end user's intentions, right? Nope.
 
 * Pagination is already a public problem in the Rails space
 
-This project will look to integrate with other plugins in this space rather than offering an alternative implementation.
+This project will look to integrate with other plugins in this space rather
+than offering an alternative implementation.
 
 * Finders in the model are the place for complex queries
 
-This project's philosophy is that's where complex queries lead to the overall highest quality of testing.
+This project's philosophy is that's where complex queries lead to the overall
+highest quality of testing.
 
 * Easy things should be easy...
 
-In many cases, a filter will just be operating on a couple of important fields on a model.  In these cases, the filter itself could be made capable of generating ActiveRecord-ready conditions that can be passed directly to a finder for direct use.
+In many cases, a filter will just be operating on a couple of important fields
+on a model. In these cases, the filter itself could be made capable of
+generating ActiveRecord-ready conditions that can be passed directly to a
+finder for direct use.
 
 * Difficult things should be possible
 
-Sometimes, things get pretty hairy in those finders.  For times when the filter's AR-ready conditions cannot be reliable, the filter should still provide an expressive options hash which the finder code can inspect before ultimately issuing a query.  This options hash should include all relevant information for sorting and pagination as well, to keep the method signatures as simple as possible.
+Sometimes, things get pretty hairy in those finders. For times when the
+filter's AR-ready conditions cannot be reliable, the filter should still
+provide an expressive options hash which the finder code can inspect before
+ultimately issuing a query. This options hash should include all relevant
+information for sorting and pagination as well, to keep the method signatures
+as simple as possible.
