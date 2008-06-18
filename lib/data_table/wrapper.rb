@@ -82,6 +82,10 @@ module DataTable
     def sort_options
       @sort.nil? ? {} : @sort.options_hash
     end
+    
+    def page
+      nested_params[:page]
+    end    
        
     # The form id to be used for the filter.  Sorts and pagination
     # use links and do not need form submission.
@@ -114,7 +118,34 @@ module DataTable
     # filter in the context of the request parameters to determine
     # which parameters should be passed to a url_for in a view helper
     def params_for_url(additional_params = {})
-      merged_params(additional_params).merge(@url_options)
+      params = @url_options
+      params = params.merge(external_params)
+      params = params.merge(merged_params(additional_params))
+      params = params.merge(@url_options)
+      params
+    end
+    
+    
+    # Using the :with option in a data table indicates that these
+    # options should be included in data_table request submission,
+    # even if they are not part of data_table.  For example, extra
+    # model ids might be important for data retrieval.
+    def external_params
+      included_keys = @other_options[:with]
+      if @other_options && @other_options[:with]
+        included_keys = @other_options[:with]
+        included_strings = @other_options[:with].map(&:to_s)
+        included_params = params.select{|key, val| 
+          included_keys.include?(key) || included_strings.include?(key) 
+        }
+        retVal = {}
+        included_params.each do |e1, e2|
+          retVal[e1] = e2
+        end
+        retVal
+      else
+        {}
+      end
     end
     
     # this returns a list of parameters suitable for passing to any Rails

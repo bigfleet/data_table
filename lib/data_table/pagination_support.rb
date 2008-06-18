@@ -5,7 +5,7 @@ module DataTable
       will_paginate( collection, 
         options.reverse_merge(
           :renderer => "DataTable::LinkRenderer", 
-          :data_table => controller.find_data_table_by_name(table_name))
+          :data_table => controller.find_data_table_by_name(table_name).with(params))
       )
     end
     

@@ -50,7 +50,8 @@ module DataTable
     
     def options_for(name)
       table = find_data_table_by_name(name).with(params)
-      table.filter_options.merge(table.sort_options)
+      f_and_s = table.filter_options.merge(table.sort_options)
+      f_and_s.merge(:page => table.page)
     end
     
     def find_data_table_by_name(name)
