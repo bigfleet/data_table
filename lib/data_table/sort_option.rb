@@ -37,4 +37,8 @@ class SortOption
     @parent.wrapper rescue nil
   end
   
+  def to_hash
+    {:sort_key => @key, :sort_order => current_order}
+  end
+  
 end

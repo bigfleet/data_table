@@ -56,7 +56,7 @@ module DataTable
       # render the appropriate icon for this sort option based on current sorting and state
       def icon_for(sort_option, options)
         icon = if sort_option.current_order
-          "sort_#{sort_option.current_order}"
+          "current_sort_#{sort_option.current_order}"
         else
           "sortArrow001"
         end    

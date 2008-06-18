@@ -37,13 +37,17 @@ class Sort
   def with(params = {})
     s = Sort.new
     sort_key = params[:sort_key] || default_key
-    sort_order = params[:sort_order] || 'asc'
+    sort_order = params[:sort_order]
     s.options = @options.collect{|o| o.clone(s) }
     s.default_option = s.options.select{ |o| o.key == self.default_option.key }.first
     s.selected = s.options.select{ |o| o.key == sort_key }.first
-    s.selected.current_order = sort_order
+    s.selected.current_order = sort_order if sort_order
     s
   end
+  
+  def options_hash
+    @selected.nil? ? @default_option.to_hash : @selected.to_hash
+  end  
   
     
   def self.spec(options)

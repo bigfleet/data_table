@@ -77,6 +77,11 @@ module DataTable
     def filter_options
       @filter.nil? ? {} : @filter.options
     end
+    
+    # The sort options that should be active
+    def sort_options
+      @sort.nil? ? {} : @sort.options_hash
+    end
        
     # The form id to be used for the filter.  Sorts and pagination
     # use links and do not need form submission.

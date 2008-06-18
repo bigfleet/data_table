@@ -49,7 +49,8 @@ module DataTable
     end
     
     def options_for(name)
-      find_data_table_by_name(name).with(params).filter_options
+      table = find_data_table_by_name(name).with(params)
+      table.filter_options.merge(table.sort_options)
     end
     
     def find_data_table_by_name(name)
