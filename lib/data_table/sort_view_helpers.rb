@@ -34,25 +34,23 @@ module DataTable
         s = find_sort_key(key)
         caption = caption_for(s, options)
         icon = icon_for(s, options)
-        options_params = params_for(s, options)
+        sort_url = @controller.url_for(wrapper.params_for_url(sort_params_for(s)))
+        sort_html_options = wrapper.html_options[:sort] || {}
         link_text = [caption, icon].join(" ")
         case mode
         when :standard
-          content_tag("td", link_to(link_text, @controller.url_for(options_params)))
+          content_tag("td", link_to(link_text, sort_url), sort_html_options)
         else
-          
-          url = @controller.url_for(options_params)
-          link_params = @wrapper.remote_options_for_link.merge({:url => url})
-          content_tag("td", link_to_remote(link_text, link_params))
+          full_remote_opts = wrapper.remote_options_with_url(sort_url).merge(sort_html_options)
+          content_tag("td", link_to_remote(link_text, full_remote_opts))
         end
         
       end
       
-      def params_for(sort_option, options)
+      def sort_params_for(sort_option)
         # for the url that we generate, we link to the *opposite* sort
-        sort_params = {:sort_key => sort_option.key,
+        {:sort_key => sort_option.key,
          :sort_order => sort_option.other_order}
-        @wrapper.merged_params(sort_params)
       end
 
       # render the appropriate icon for this sort option based on current sorting and state

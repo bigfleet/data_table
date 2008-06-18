@@ -64,7 +64,6 @@ describe DataTable::SortViewHelpers do
       before(:each) do
         @controller.should_receive(:url_for).with(@make_desc_params.flatten_one_level).at_least(1).and_return(@make_desc_url)
         @controller.should_receive(:url_for).with(@year_desc_params.flatten_one_level).at_least(1).and_return(@year_desc_url)
-
         @html_helper = sort_header(:cars, @opts) do |sort|
           @make_html = sort.column :make, :caption => "Manufacturer"
           @year_html = sort.column :year
@@ -74,10 +73,6 @@ describe DataTable::SortViewHelpers do
 
       it "should render in AJAX mode" do
         @html_helper.mode.should == :ajax
-      end
-
-      it "should internalize the form options correctly" do
-        @html_helper.wrapper.remote_options.should == @opts[:remote]
       end
 
       describe "the default sort tag" do
@@ -146,10 +141,6 @@ describe DataTable::SortViewHelpers do
         @html_helper.mode.should == :ajax
       end
 
-      it "should internalize the form options correctly" do
-        @html_helper.wrapper.remote_options.should == @opts[:remote]
-      end
-
       describe "the default sort tag" do
 
         it "shoud use AJAX submission" do
@@ -208,10 +199,6 @@ describe DataTable::SortViewHelpers do
 
       it "should render in AJAX mode" do
         @html_helper.mode.should == :ajax
-      end
-
-      it "should internalize the form options correctly" do
-        @html_helper.wrapper.remote_options.should == @opts[:remote]
       end
 
       describe "the default sort tag" do
@@ -273,10 +260,6 @@ describe DataTable::SortViewHelpers do
 
       it "should render in AJAX mode" do
         @html_helper.mode.should == :ajax
-      end
-
-      it "should internalize the form options correctly" do
-        @html_helper.wrapper.remote_options.should == @opts[:remote]
       end
 
       describe "the default sort tag" do
