@@ -36,6 +36,6 @@ Gem::Specification.new do |s|
   "spec/sort_view_helpers_spec.rb",
   "spec/spec.opts",
   "spec/spec_helper.rb"]
-  s.add_dependency("will-paginate", ["> 2.2.0"])
+  s.add_dependency("will_paginate", ["> 2.2.0"])
 end
 
