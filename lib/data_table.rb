@@ -1,14 +1,9 @@
 # Stolen outright from will_paginate
-
+require 'active_support'
 plugin_root = File.join(File.dirname(__FILE__), '..')
 
 # One of data_table's goals is max compatability-- these are the gems for Rails 1.2.3
 
-require 'rubygems'
-  
-gem 'actionpack', ">= 1.13.3"
-gem 'activerecord', ">= 1.15.3"
-gem 'activesupport', ">= 1.4.2"
 require 'action_controller'
 
 

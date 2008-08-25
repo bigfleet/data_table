@@ -1,8 +1,11 @@
-require File.join(File.dirname(__FILE__), '/../lib/data_table')
-require 'spec'
-gem 'mocha'
+require 'test/unit'
+require 'rubygems'
 
-require 'data_table'
+# gem install redgreen for colored test output
+begin require 'redgreen'; rescue LoadError; end
+
+require File.join(File.dirname(__FILE__), 'boot') unless defined?(ActiveRecord)
+require File.join(File.dirname(__FILE__), '/../lib/data_table')
 include DataTable
 
 class HaveHtmlLinkWith
