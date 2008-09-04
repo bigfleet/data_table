@@ -23,7 +23,7 @@ module DataTable
       end
       
       def protect_against_forgery?
-        @controller.protect_against_forgery?
+        @controller.send(:protect_against_forgery?)
       end
       
       def mode
