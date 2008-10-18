@@ -65,7 +65,7 @@ module DataTable
 
       # Determine caption for option, can be overriden by a <code>:caption</code> option
       def caption_for(sort_option, options = {})
-        caption = (options && options[:caption]) || Inflector::humanize(sort_option.key).titleize
+        caption = (options && options[:caption]) || ActiveSupport::Inflector::humanize(sort_option.key).titleize
       end
       
       

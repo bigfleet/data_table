@@ -1,11 +1,7 @@
 # Stolen outright from will_paginate
 require 'active_support'
-plugin_root = File.join(File.dirname(__FILE__), '..')
-
-# One of data_table's goals is max compatability-- these are the gems for Rails 1.2.3
-
 require 'action_controller'
-
+plugin_root = File.join(File.dirname(__FILE__), '..')
 
 $:.unshift "#{plugin_root}/lib"
 
@@ -33,6 +29,12 @@ module DataTable
       else
         find_data_table_by_name(name)
       end
+    end
+    
+    def options_group_from(collection, options)
+      collection.find(options).collect{ |ar|
+        yield(ar)
+      }
     end
     
     def params_for(name)

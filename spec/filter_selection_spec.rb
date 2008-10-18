@@ -36,6 +36,26 @@ describe "A standard filter selection" do
   
 end
 
+describe "A numeric filter selection" do
+  
+  describe "simply invoked" do
+  
+    before(:each) do
+      @fs = FilterSelection.for(2000)
+    end
+  
+    it "should valuize the label correctly" do
+      @fs.valuize_label.should == "2000"
+    end
+  
+    it "should use the label valuization as the activation phrase" do
+      @fs.phrase.should == "2000"
+    end
+  
+  end
+
+end
+
 # TODO: Your day will come, more intricate selections!
 
 # describe "A 'between' filter selection" do
